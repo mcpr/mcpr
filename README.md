@@ -1,2 +1,2 @@
 # mc-registry
-Minecraft plugin/mod registry. 
+A Minecraft plugin/mod registry. 

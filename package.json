@@ -1,0 +1,35 @@
+{
+  "name": "mc-registry",
+  "version": "0.0.1",
+  "description": "A Minecraft plugin/mod registry. ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "lint": "jshint server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HexagonMinecraft/mc-registry.git"
+  },
+  "keywords": [
+    "minecraft",
+    "plugins",
+    "registry",
+    "mods"
+  ],
+  "author": "Hexagon Minecraft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HexagonMinecraft/mc-registry/issues"
+  },
+  "homepage": "https://github.com/HexagonMinecraft/mc-registry#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.4",
+    "nodemon": "^1.11.0"
+  }
+}
