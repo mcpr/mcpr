@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row">
+        <div class="col m8">
+            <h2>{{id}}</h2>
+            <h5>{{plugin.short_description}}</h5>
+            <h4>Description</h4>
+            <div>{{markdown plugin.readme}}</div>
+        </div>
+        <div class="col m4">
+            <div class="card-panel grey darken-3">
+                <span class="white-text">
+                    <h5>Download</h5>
+                    <i class="material-icons download-icon">file_download</i>
+                    <code>mc install {{id}}</code>
+                    <br>
+                    <a href="/how/{{id}}">How?</a>
+
+                    <h6><b>Latest Version:</b> v{{plugin.latest_version}}</h6>
+                    <h6><b>Last Release:</b> {{plugin.last_ver_date}}</h6>
+                    {{#if plugin.source}}
+                        {{#if plugin.sourceGithub}}
+                        <h6><b>Source:</b> <a href="https://github.com/{{plugin.source}}" target="_blank">github.com/{{plugin.source}}</a></h6>
+                        {{else}}
+                        <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
+                        {{/if}}
+                    {{/if}}
+                    <h6><b>License:</b> {{plugin.license}}</h6>
+                    <h6><b>Flavors:</b></h6>
+                    {{#each plugin.flavors}}
+                    <h6 class="flavor">{{this}}</h6>
+                    {{/each}}
+                    <h5>Stats</h5>
+                    <h6>{{plugin.download_day}} downloads in the last day</h6>
+                    <h6>{{plugin.download_week}} downloads in the last week</h6>
+                    <h6>{{plugin.download_month}} downloads in the last month</h6>
+
+                    <h5>Keywords</h5>
+                    {{#each plugin.keywords}}
+                    <h6 class="flavor">{{this}}</h6>
+                    {{/each}}                    
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+$mainColor: #000;
+.brand-logo {
+    padding-left: 20px !important;
+}
+
+nav {
+    background-color: $mainColor
+}
+
+.download-icon {
+    vertical-align: middle !important;
+    padding-right: 10px;
+}
+
+.flavor {
+    text-transform: capitalize;
+}

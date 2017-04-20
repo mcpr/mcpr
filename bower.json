@@ -1,0 +1,28 @@
+{
+  "name": "mc-registry",
+  "description": "A Minecraft plugin/mod registry.",
+  "main": "server.js",
+  "authors": [
+    "Hexagon Minecraft"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "minecraft",
+    "plugins",
+    "registry",
+    "mods"
+  ],
+  "homepage": "https://github.com/HexagonMinecraft/mc-registry",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "^0.98.2"
+  }
+}

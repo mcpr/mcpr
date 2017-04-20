@@ -1,4 +1,6 @@
 # mc-registry
+[![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry)
+
 A Minecraft plugin/mod registry. 
 
 ## Installation
@@ -19,4 +21,3 @@ Finally, run the Node server.
 $ npm start
 ```
 - Web App [localhost:3000](http://localhost:3000).
-- API [localhost:3000/api](http://localhost:3000/api).

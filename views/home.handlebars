@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="center">
+            <h3>A Minecraft Plugin Registry</h3>
+
+            <form>
+                <div class="input-field">
+                    <input id="search" type="search" required>
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                </div>
+            </form>
+            <br>
+            <h4>Popular Plugins</h4>
+            <hr> {{#each plugins}}
+            <div class="col s4">
+                <div class="card grey darken-3">
+                    <div class="card-content white-text">
+                        <span class="card-title"><a href="/plugin/{{_id}}">{{title}}</a></span>
+                        <p>{{short_description}}</p>
+                        <small><b><a href="/plugin/{{_id}}">v{{latest_version}}</a></b> published {{last_ver_date}} by <b><a href="/user/{{author}}">{{author}}</a></b></small>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
