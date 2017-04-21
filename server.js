@@ -16,11 +16,13 @@ const dbname = 'mc-registry';
 const nano = require('nano')('https://db.filiosoft.com');
 const db = nano.db.use('mc-registry');
 
+// Handlebars markdown to html converter
 Handlebars.registerHelper('markdown', function (markdown) {
     var html = converter.makeHtml(markdown);
 
     return new Handlebars.SafeString(html);
 });
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -74,7 +76,8 @@ router.get('/plugin/:id', (req, res) => {
         console.log('Body: ' + body);
         console.dir(body);
         var data = {
-            title: `${req.params.id} - MC Registry`,
+            title: `${req.params.id} - MCPR`,
+            description: `${body.short_description} - MCPR`,
             plugin: body,
             id: req.params.id
         };
@@ -84,7 +87,7 @@ router.get('/plugin/:id', (req, res) => {
 
 router.get('/how/:id', (req, res) => {
     res.render('how', {
-        title: `Help ${req.params.id} - MC Registry`,
+        title: `Help ${req.params.id} - MCPR`,
         id: req.params.id
     });
 });
