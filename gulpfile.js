@@ -19,7 +19,8 @@ var paths = {
     allJs: [
         './**/*.js',
         '!node_modules/**/*.*',
-        '!gulpfile.js'
+        '!gulpfile.js',
+        '!public/**/*.*'
     ]
 }
 
