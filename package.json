@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "gulp lint && snyk test || true",
-    "postinstall": "./node_modules/.bin/bower install --allow-root && gulp build",
+    "postinstall": "bower install --allow-root && gulp build",
     "start": "node server.js",
     "dev": "gulp watch",
     "lint": "gulp lint"
@@ -33,7 +33,8 @@
     "morgan": "^1.8.1",
     "nano": "^6.2.0",
     "showdown": "^1.6.4",
-    "snyk": "^1.29.0"
+    "snyk": "^1.29.0",
+    "bower": "1.8.0"
   },
   "devDependencies": {
     "browser-sync": "^2.18.8",
