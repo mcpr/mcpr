@@ -6,7 +6,6 @@ const nEnv = app.get('env');
 const os = require('os');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cradle = require('cradle');
 const showdown = require('showdown');
 const converter = new showdown.Converter();
 const Handlebars = require('handlebars');
