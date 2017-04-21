@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "gulp lint && snyk test || true",
-    "postinstall": "bower install --allow-root",
+    "postinstall": "./node_modules/.bin/bower install --allow-root && gulp build",
     "start": "node server.js",
     "dev": "gulp watch",
     "lint": "gulp lint"

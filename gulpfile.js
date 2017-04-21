@@ -40,6 +40,8 @@ gulp.task('clean', function () {
     del('tests');
 });
 
+gulp.task('build', ['min-css', 'min-js']);
+
 gulp.task('sass', function () {
     return gulp.src(paths.sassSrc)
         .pipe(sourcemaps.init())

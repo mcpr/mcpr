@@ -55,5 +55,7 @@
   "browser": true,
   "node": true,
 
-  "globals": {}
+  "globals": {
+    "$": true
+  }
 }

@@ -18,7 +18,7 @@ const nano = require('nano')('https://db.filiosoft.com');
 const db = nano.db.use('mc-registry');
 
 Handlebars.registerHelper('markdown', function (markdown) {
-    var html = converter.makeHtml(markdown)
+    var html = converter.makeHtml(markdown);
 
     return new Handlebars.SafeString(html);
 });
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 app.engine('handlebars', exphbs({
     defaultLayout: 'main'
@@ -40,7 +40,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     function render(list) {
         res.render('home', {
-            title: "Home - MC Registry",
+            title: 'Home - MC Registry',
             plugins: list
         });
     }
@@ -49,16 +49,18 @@ router.get('/', (req, res) => {
     }, function (err, body) {
         const list = [];
         if (err) {
-            console.log(err)
+            console.log(err);
         }
         var itemsProcessed = 0;
         body.rows.forEach((item, index, array) => {
             db.get(item.id, (err, body) => {
-                if (err) console.log(err);
+                if (err) {
+                    console.log(err);
+                }
                 list.push(body);
                 itemsProcessed++;
                 if (itemsProcessed === array.length) {
-                    render(list)
+                    render(list);
                 }
             });
         });
@@ -73,23 +75,23 @@ router.get('/plugin/:id', (req, res) => {
         console.log('Body: ' + body);
         console.dir(body);
         var data = {
-            title: req.params.id + " - MC Registry",
+            title: `${req.params.id} - MC Registry`,
             plugin: body,
             id: req.params.id
-        }
+        };
         res.render('plugin', data);
     });
 });
 
 router.get('/how/:id', (req, res) => {
     res.render('how', {
-        title: 'Help ' + req.params.id + " - MC Registry",
+        title: `Help ${req.params.id} - MC Registry`,
         id: req.params.id
     });
 });
 
 router.get('/user/:id', (req, res) => {
-    res.send(req.params)
+    res.send(req.params);
 });
 
 router.get('/version', (reg, res) => {
