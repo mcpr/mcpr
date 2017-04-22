@@ -1,4 +1,6 @@
 # mc-registry
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/HexagonMinecraft/mc-registry.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry)
 
 A Minecraft plugin/mod registry. 
