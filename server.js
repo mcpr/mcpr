@@ -42,7 +42,8 @@ router.get('/', (req, res) => {
     function render(list) {
         res.render('home', {
             title: 'Home - MC Registry',
-            plugins: list
+            plugins: list,
+            currentUrl: `https://registry.hexagonminecraft.com`
         });
     }
     db.list({
@@ -76,8 +77,9 @@ router.get('/plugin/:id', (req, res) => {
         console.log('Body: ' + body);
         console.dir(body);
         var data = {
-            title: `${req.params.id} - MCPR`,
-            description: `${body.short_description} - MCPR`,
+            title: req.params.id,
+            currentUrl: `https://registry.hexagonminecraft.com/plugin/${req.params.id}`,
+            description: body.short_description,
             plugin: body,
             id: req.params.id
         };
@@ -87,8 +89,9 @@ router.get('/plugin/:id', (req, res) => {
 
 router.get('/how/:id', (req, res) => {
     res.render('how', {
-        title: `Help ${req.params.id} - MCPR`,
-        id: req.params.id
+        title: `Help ${req.params.id}`,
+        id: req.params.id,
+        currentUrl: `https://registry.hexagonminecraft.com/how/${req.params.id}`
     });
 });
 
