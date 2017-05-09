@@ -29,13 +29,18 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "express-graphql": "^0.6.4",
     "express-handlebars": "^3.0.0",
+    "global": "^4.3.2",
+    "graphql": "^0.9.6",
+    "graphql-docs": "^0.2.0",
     "morgan": "^1.8.1",
     "nano": "^6.2.0",
     "showdown": "^1.6.4",
     "snyk": "^1.29.0"
   },
   "devDependencies": {
+    "bower": "1.8.0",
     "browser-sync": "^2.18.8",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
@@ -49,7 +54,6 @@
     "gulp-uglify": "^2.1.2",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
-    "nodemon": "^1.11.0",
-    "bower": "1.8.0"
+    "nodemon": "^1.11.0"
   }
 }

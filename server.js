@@ -9,6 +9,8 @@ const morgan = require('morgan');
 const showdown = require('showdown');
 const converter = new showdown.Converter();
 const Handlebars = require('handlebars');
+const graphqlHTTP = require('express-graphql');
+const Schema = require('./schema');
 
 // Config
 const port = process.env.PORT || 3000;
@@ -106,6 +108,12 @@ router.get('/version', (reg, res) => {
         homepage: pkg.homepage
     });
 });
+
+app.use('/api', graphqlHTTP({
+    schema: Schema,
+    graphiql: true,
+    pretty: true
+}));
 
 app.use('/', router);
 
