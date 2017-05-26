@@ -32,7 +32,7 @@
     "express-graphql": "^0.6.4",
     "express-handlebars": "^3.0.0",
     "global": "^4.3.2",
-    "graphql": "^0.9.6",
+    "graphql": "^0.10.0",
     "graphql-docs": "^0.2.0",
     "morgan": "^1.8.1",
     "nano": "^6.2.0",
