@@ -14,4 +14,39 @@ ignore:
     - eslint > shelljs:
         reason: Waiting for patch
         expires: '2017-05-20T22:55:49.434Z'
-patch: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:marked:20170112':
+    - graphql-docs > marked:
+        patched: '2017-06-06T13:01:39.167Z'
+  'npm:ms:20170412':
+    - snyk > snyk-module > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-try-require > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-policy > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-policy > snyk-module > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - clite > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-policy > snyk-try-require > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-config > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve-deps > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve-deps > snyk-module > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve-deps > snyk-resolve > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve-deps > snyk-try-require > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-policy > snyk-resolve > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > snyk-resolve-deps > clite > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'
+    - snyk > debug > ms:
+        patched: '2017-06-06T13:01:39.167Z'

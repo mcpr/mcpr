@@ -8,7 +8,9 @@
     "postinstall": "bower install --allow-root && gulp build",
     "start": "node server.js",
     "dev": "gulp watch",
-    "lint": "gulp lint"
+    "lint": "gulp lint",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -27,16 +29,12 @@
   },
   "homepage": "https://github.com/HexagonMinecraft/mc-registry#readme",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "global": "^4.3.2",
     "graphql": "^0.9.6",
     "graphql-docs": "^0.2.0",
-    "morgan": "^1.8.1",
-    "nano": "^6.2.0",
     "showdown": "^1.6.4",
-    "snyk": "^1.29.0"
+    "snyk": "^1.33.1"
   },
   "devDependencies": {
     "bower": "1.8.0",
@@ -54,5 +52,6 @@
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
     "nodemon": "^1.11.0"
-  }
+  },
+  "snyk": true
 }
