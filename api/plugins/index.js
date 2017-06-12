@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const dbname = 'mc-registry';
-const nano = require('nano')('https://db.filiosoft.com');
-const db = nano.db.use(dbname);
 const controller = require('./plugin.controller');
 
 /**
