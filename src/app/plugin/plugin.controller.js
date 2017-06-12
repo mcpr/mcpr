@@ -2,7 +2,7 @@
 
 angular.module('app')
     .controller('PluginCtrl', function ($scope, $http, $stateParams) {
-        var id = $stateParams.id
+        var id = $stateParams.id;
         $http.get('/api/plugins/' + id).then(function (res) {
             $scope.plugin = res.data;
         }).catch(function (err) {

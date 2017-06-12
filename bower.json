@@ -23,7 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "materialize": "^0.98.2",
+    "materialize": "0.98.2",
     "angular": "^1.6.4",
     "angular-ui-router": "^1.0.4",
     "angular-materialize": "^0.2.2"
