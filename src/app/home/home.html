@@ -17,7 +17,7 @@
                     <div class="card-content white-text">
                         <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
                         <p>{{short_description}}</p>
-                        <small><b><a href="/plugin/{{plugin._id}}">v{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date}} by <b><a href="/user/{{plugin.author}}">{{plugin.author}}</a></b></small>
+                        <small><b><a href="/plugin/{{plugin._id}}">v{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date | moment}} by <b><a href="/user/{{plugin.author}}">{{plugin.author}}</a></b></small>
                     </div>
                 </div>
             </div>
