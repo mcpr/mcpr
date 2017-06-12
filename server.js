@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const showdown = require('showdown');
 const converter = new showdown.Converter();
 const Handlebars = require('handlebars');
+const mongoose = require('mongoose');
 
 // Config
 const port = process.env.PORT || 3000;
@@ -35,6 +36,18 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
+
+var mongoAddress = 'mongodb://localhost/' + dbname;
+console.log(mongoAddress);
+mongoose.connect(mongoAddress, {
+    user: app.get('dbuser'),
+    pass: app.get('dbpwd'),
+});
+var monDb = mongoose.connection;
+monDb.on('error', console.error.bind(console, 'connection error:'));
+monDb.once('open', function () {
+    console.log('connected successfully to db: ' + dbname);
+});
 
 
 const router = express.Router();
@@ -107,7 +120,7 @@ router.get('/version', (reg, res) => {
     });
 });
 
-app.use('/api', require('./api/api.js')(app));
+require('./api/api')(app);
 
 app.use('/', router);
 

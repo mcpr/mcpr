@@ -34,6 +34,7 @@
     "express-handlebars": "^3.0.0",
     "global": "^4.3.2",
     "handlebars": "^4.0.10",
+    "mongoose": "^4.10.5",
     "morgan": "^1.8.2",
     "nano": "^6.3.0",
     "showdown": "^1.7.1",

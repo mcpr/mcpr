@@ -1,12 +1,22 @@
+const pkg = require('../package.json');
+const express = require('express');
+const apiRouter = express.Router();
+
 module.exports = function (app) {
     /**
-     * GET /api/v1/
+     * GET /api
      */
-    app.use('/api/v1', require('./v1/v1.js')(app));
+    apiRouter.get('/', (req, res) => {
+        res.json({
+            name: "MCPR API",
+            version: pkg.version,
+        });
+    });
 
     /**
-     * GET /api/
+     * GET /api/plugins
      */
-    app.use('/api', require('./v1/v1.js')(app));
+    apiRouter.use('/plugins', require('./plugins/index'));
 
+    app.use('/api', apiRouter)
 }
