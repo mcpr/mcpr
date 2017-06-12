@@ -13,7 +13,8 @@
                 <h2>{{plugin._id}}</h2>
                 <h5>{{plugin.short_description}}</h5>
                 <h4>Description</h4>
-                <div>{{plugin.readme}}</div>
+                <hr>
+                <div markdown-to-html="plugin.readme"></div>
             </div>
             <div class="col m4">
                 <div class="card-panel grey darken-3">

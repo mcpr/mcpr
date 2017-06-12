@@ -3,5 +3,6 @@
 angular
     .module('app', [
         'ui.router',
-        'ui.materialize'
+        'ui.materialize',
+        'ng-showdown'
     ]);

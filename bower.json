@@ -26,6 +26,9 @@
     "materialize": "0.97.8",
     "angular": "^1.6.4",
     "angular-ui-router": "^1.0.4",
-    "angular-materialize": "^0.2.2"
+    "angular-materialize": "^0.2.2",
+    "ng-showdown": "^1.1.0",
+    "angular-sanitize": "^1.6.4",
+    "showdown": "^1.7.1"
   }
 }
