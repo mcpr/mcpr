@@ -6,21 +6,18 @@ const nEnv = app.get('env');
 const os = require('os');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const showdown = require('showdown');
-const converter = new showdown.Converter();
-const Handlebars = require('handlebars');
 const mongoose = require('mongoose');
+const env = process.env;
 
 // Config
 const port = process.env.PORT || 3000;
-const dbname = 'mc-registry';
-
-// Handlebars markdown to html converter
-Handlebars.registerHelper('markdown', function (markdown) {
-    var html = converter.makeHtml(markdown);
-
-    return new Handlebars.SafeString(html);
-});
+const config = {
+    dbName: env.DB_NAME || 'mc-registry',
+    dbAdress: env.DB_ADDRESS || 'localhost',
+    dbPort: env.DB_PORT || '27017',
+    dbUsername: env.DB_USER || '',
+    dbPassword: env.DB_PASS || ''
+}
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -35,17 +32,17 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
-const mongoAddress = 'mongodb://localhost/' + dbname;
+const mongoAddress = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
 
 mongoose.connect(mongoAddress, {
-    user: app.get('dbuser'),
-    pass: app.get('dbpwd'),
+    user: config.dbUsername,
+    pass: config.dbPassword,
 });
 
 const monDb = mongoose.connection;
 monDb.on('error', console.error.bind(console, 'Connection Error:'));
 monDb.once('open', function () {
-    console.log('Connected Successfully to DB: ' + dbname);
+    console.log('Connected Successfully to DB: ' + config.dbName);
 });
 
 
