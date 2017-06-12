@@ -62,8 +62,8 @@ var paths = {
             `${src}/app/**/*.js`
         ],
         dist: `${dist}/app/`
-    }
-
+    },
+    clean: [dist, './tests']
 }
 
 gulp.task('lint', ['clean'], function () {

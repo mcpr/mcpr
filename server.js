@@ -48,7 +48,9 @@ monDb.once('open', function () {
 
 const router = express.Router();
 router.get('/*', (req, res) => {
-    res.render('app');
+    res.render('app', {
+        currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl
+    });
 });
 
 require('./api/api')(app);
