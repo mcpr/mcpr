@@ -36,7 +36,6 @@
     "handlebars": "^4.0.10",
     "mongoose": "^4.10.5",
     "morgan": "^1.8.2",
-    "nano": "^6.3.0",
     "snyk": "^1.33.1"
   },
   "devDependencies": {
