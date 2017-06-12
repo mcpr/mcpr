@@ -31,7 +31,8 @@ var paths = {
             bowerFolder + 'angular-materialize/src/angular-materialize.js',
             bowerFolder + 'angular-sanitize/angular-sanitize.js',
             bowerFolder + 'showdown/dist/showdown.js',
-            bowerFolder + 'ng-showdown/dist/ng-showdown.js'
+            bowerFolder + 'ng-showdown/dist/ng-showdown.js',
+            bowerFolder + 'moment/min/moment.min.js'
         ],
         custom: './src/js/**/*.js',
         dist: `${dist}/js/`
