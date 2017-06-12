@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+        <div ng-show="notfound">
+            <h1>Not Found</h1>
+            <p>The plugin that you requested was not found...</p>
+        </div>
+        <div ng-show="error">
+            <h1>{{error.statusText}}</h1>
+            <p>An error occurred...</p>
+        </div>
+        <div ng-hide="notfound || error">
+            <div class="col m8">
+                <h2>{{plugin._id}}</h2>
+                <h5>{{plugin.short_description}}</h5>
+                <h4>Description</h4>
+                <div>{{plugin.readme}}</div>
+            </div>
+            <div class="col m4">
+                <div class="card-panel grey darken-3">
+                    <span class="white-text">
+                    <h5>Download</h5>
+                    <i class="material-icons download-icon">file_download</i>
+                    <code>mc install {{plugin._id}}</code>
+                    <br>
+                    <a href="/how/{{plugin._id}}">How?</a>
+
+                    <h6><b>Latest Version:</b> v{{plugin.latest_version}}</h6>
+                    <h6><b>Last Release:</b> {{plugin.latest_version_date}}</h6>
+                    <div ng-if="plugin.source">
+                        <div ng-show="plugin.sourceGithub">
+                            <h6><b>Source:</b> <a href="https://github.com/{{plugin.source}}" target="_blank">github.com/{{plugin.source}}</a></h6>
+                        </div>
+                        <div ng-hide="plugin.sourceGithub">
+                            <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
+                        </div>
+                    </div>
+                    <h6><b>License:</b> {{plugin.license}}</h6>
+                    <h6><b>Flavors:</b></h6>
+                    <div ng-repeat="flavor in plugin.flavors">
+                        <h6 class="flavor">{{flavor}}</h6>
+                    </div>
+                    <h5>Keywords</h5>
+                    <div ng-repeat="keyword in plugin.keywords">
+                        <h6 class="flavor">{{keyword}}</h6>
+                    </div>             
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

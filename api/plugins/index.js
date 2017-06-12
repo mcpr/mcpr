@@ -39,12 +39,10 @@ const controller = require('./plugin.controller');
 
 var after = function (req, res) {
     if (req.plugin) {
-        console.log(req.plugin)
         var plugin = req.plugin.toObject();
         res.json(plugin);
     }
     if (req.plugins) {
-        console.log(req.plugins)
         var plugins = req.plugins;
         res.json(req.plugins);
     } else {
@@ -52,8 +50,27 @@ var after = function (req, res) {
     }
 }
 
+/**
+ * @api {get} /plugins Request Plugin List
+ * @apiName GetPlugins
+ * @apiGroup Plugin
+ * 
+ * @apiSuccess {Array} plugins       List of plugins.
+ */
 router.get('/', controller.all, after);
+/**
+ * @api {post} /plugins Create Plugin
+ * @apiName CreatePlugin
+ * @apiGroup Plugin
+ */
 router.post('/', controller.create, after);
+/**
+ * @api {get} /plugins/:id Get Plugin
+ * @apiName GetPlugin
+ * @apiGroup Plugin
+ * 
+ * @apiSuccess {String} _id       ID of plugin.
+ */
 router.get('/:id', controller.show, after);
 router.put('/:id', controller.update, after);
 router.delete('/:id', controller.delete, after);

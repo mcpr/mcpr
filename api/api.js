@@ -10,6 +10,7 @@ module.exports = function (app) {
         res.json({
             name: "MCPR API",
             version: pkg.version,
+            homepage: pkg.homepage
         });
     });
 

@@ -14,8 +14,6 @@ const mongoose = require('mongoose');
 // Config
 const port = process.env.PORT || 3000;
 const dbname = 'mc-registry';
-const nano = require('nano')('https://db.filiosoft.com');
-const db = nano.db.use('mc-registry');
 
 // Handlebars markdown to html converter
 Handlebars.registerHelper('markdown', function (markdown) {
@@ -37,87 +35,23 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
-var mongoAddress = 'mongodb://localhost/' + dbname;
-console.log(mongoAddress);
+const mongoAddress = 'mongodb://localhost/' + dbname;
+
 mongoose.connect(mongoAddress, {
     user: app.get('dbuser'),
     pass: app.get('dbpwd'),
 });
-var monDb = mongoose.connection;
-monDb.on('error', console.error.bind(console, 'connection error:'));
+
+const monDb = mongoose.connection;
+monDb.on('error', console.error.bind(console, 'Connection Error:'));
 monDb.once('open', function () {
-    console.log('connected successfully to db: ' + dbname);
+    console.log('Connected Successfully to DB: ' + dbname);
 });
 
 
 const router = express.Router();
-router.get('/', (req, res) => {
-    function render(list) {
-        res.render('home', {
-            title: 'Home - MC Registry',
-            plugins: list,
-            currentUrl: `https://registry.hexagonminecraft.com`
-        });
-    }
-    db.list({
-        limit: 12
-    }, function (err, body) {
-        const list = [];
-        if (err) {
-            console.log(err);
-        }
-        var itemsProcessed = 0;
-        body.rows.forEach((item, index, array) => {
-            db.get(item.id, (err, body) => {
-                if (err) {
-                    console.log(err);
-                }
-                list.push(body);
-                itemsProcessed++;
-                if (itemsProcessed === array.length) {
-                    render(list);
-                }
-            });
-        });
-    });
-});
-
-router.get('/plugin/:id', (req, res) => {
-    db.get(req.params.id, (err, body) => {
-        if (!err) {
-            console.log(err);
-        }
-        console.log('Body: ' + body);
-        console.dir(body);
-        var data = {
-            title: req.params.id,
-            currentUrl: `https://registry.hexagonminecraft.com/plugin/${req.params.id}`,
-            description: body.short_description,
-            plugin: body,
-            id: req.params.id
-        };
-        res.render('plugin', data);
-    });
-});
-
-router.get('/how/:id', (req, res) => {
-    res.render('how', {
-        title: `Help ${req.params.id}`,
-        id: req.params.id,
-        currentUrl: `https://registry.hexagonminecraft.com/how/${req.params.id}`
-    });
-});
-
-router.get('/user/:id', (req, res) => {
-    res.send(req.params);
-});
-
-router.get('/version', (reg, res) => {
-    res.json({
-        name: pkg.name,
-        version: pkg.version,
-        homepage: pkg.homepage
-    });
+router.get('/*', (req, res) => {
+    res.render('app');
 });
 
 require('./api/api')(app);
@@ -129,6 +63,8 @@ app.listen(port);
 console.log(`Server Listening on port ${port}`);
 if (nEnv === 'development') {
     console.log(`Web App: http://localhost:${port}/`);
+    console.log(`Web App: http://localhost:${port}/api`);
 } else {
     console.log(`Web App: http://${os.hostname()}:${port}/`);
+    console.log(`Web App: http://${os.hostname()}:${port}/api`);
 }

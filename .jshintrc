@@ -56,6 +56,7 @@
   "node": true,
 
   "globals": {
-    "$": true
+    "$": true,
+    "angular": true
   }
 }

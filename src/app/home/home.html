@@ -11,17 +11,16 @@
             </form>
             <br>
             <h4>Popular Plugins</h4>
-            <hr> {{#each plugins}}
-            <div class="col s4">
+            <hr>
+            <div class="col s4" ng-repeat="plugin in plugins">
                 <div class="card grey darken-3">
                     <div class="card-content white-text">
-                        <span class="card-title"><a href="/plugin/{{_id}}">{{title}}</a></span>
+                        <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
                         <p>{{short_description}}</p>
-                        <small><b><a href="/plugin/{{_id}}">v{{latest_version}}</a></b> published {{last_ver_date}} by <b><a href="/user/{{author}}">{{author}}</a></b></small>
+                        <small><b><a href="/plugin/{{plugin._id}}">v{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date}} by <b><a href="/user/{{plugin.author}}">{{plugin.author}}</a></b></small>
                     </div>
                 </div>
             </div>
-            {{/each}}
         </div>
     </div>
 </div>

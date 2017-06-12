@@ -1,31 +1,70 @@
-var gulp = require('gulp');
-var nodemon = require('gulp-nodemon');
-var jshint = require('gulp-jshint');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps')
-var cleanCSS = require('gulp-clean-css');
-var uglify = require('gulp-uglify');
-var rename = require("gulp-rename");
-var del = require('del');
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const jshint = require('gulp-jshint');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps')
+const cleanCSS = require('gulp-clean-css');
+const uglify = require('gulp-uglify');
+const rename = require("gulp-rename");
+const del = require('del');
+const bower = require('bower');
+const concat = require('gulp-concat');
+const imagemin = require('gulp-imagemin');
+const concatCss = require('gulp-concat-css');
+const ngAnnotate = require('gulp-ng-annotate');
+const browserSync = require('browser-sync').create();
+const templateCache = require('gulp-angular-templatecache');
 
-var public = './public/'
-var src = './src/'
+
+// config and paths
+const bowerFolder = './bower_components/';
+const public = './public'
+const src = './src'
+const dist = `${public}/build`;
 var paths = {
-    cssPub: public + 'css',
-    jsPub: public + 'js',
-    sassSrc: src + 'sass/**/*.scss',
-    jsSrc: src + 'js/**/*.js',
-    views: './views',
-    allJs: [
-        './**/*.js',
-        '!node_modules/**/*.*',
-        '!gulpfile.js',
-        '!public/**/*.*'
-    ]
+    js: {
+        lib: [
+            bowerFolder + 'jquery/dist/jquery.js',
+            bowerFolder + 'materialize/dist/js/materialize.js',
+            bowerFolder + 'angular/angular.js',
+            bowerFolder + 'angular-ui-router/release/angular-ui-router.js',
+            bowerFolder + 'angular-materialize/src/angular-materialize.js'
+        ],
+        custom: './src/js/**/*.js',
+        dist: `${dist}/js/`
+    },
+    css: {
+        lib: [
+            bowerFolder + 'materialize/dist/css/materialize.css',
+        ],
+        sass: './src/sass/**/*.scss',
+        dist: `${dist}/css/`
+    },
+    fonts: {
+        all: [
+            './src/fonts/**/*.*',
+            bowerFolder + 'materialize/dist/fonts/**/*.*',
+        ],
+        dist: `${dist}/fonts/`
+    },
+    images: {
+        all: './src/images/*',
+        dist: `${dist}/images/`
+    },
+    app: {
+        templates: './src/app/**/*.html',
+        js: [
+            `${src}/app/app.module.js`,
+            `${dist}/app/templates.js`,
+            `${src}/app/**/*.js`
+        ],
+        dist: `${dist}/app/`
+    }
+
 }
 
 gulp.task('lint', ['clean'], function () {
-    gulp.src(paths.allJs)
+    gulp.src(paths.app.js)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish', {
             verbose: true
@@ -37,21 +76,71 @@ gulp.task('lint', ['clean'], function () {
 });
 
 gulp.task('clean', function () {
-    del('tests');
+    return del(dist);
 });
 
-gulp.task('build', ['min-css', 'min-js']);
+gulp.task('build', ['js', 'css', 'fonts', 'images']);
 
-gulp.task('sass', function () {
-    return gulp.src(paths.sassSrc)
+// All JS Tasks
+gulp.task('js', ['js-min', 'js-min-lib', 'app-min']);
+
+// All CSS Tasks
+gulp.task('css', ['sass-min', 'css-min-lib']);
+
+
+/**
+ * JS Tasks
+ */
+
+// Custom JS Min - Depends on Custom JS Concat
+gulp.task('js-min', ['js-con'], () => {
+    return gulp.src(paths.js.dist + 'custom.js')
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(rename('custom.min.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.js.dist));
+});
+
+// Custom JS Concat
+gulp.task('js-con', () => {
+    return gulp.src(paths.js.custom)
+        .pipe(sourcemaps.init())
+        .pipe(concat('custom.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.js.dist));
+});
+
+// Lib JS Min - Depends on Lib JS Concat
+gulp.task('js-min-lib', ['js-con-lib'], () => {
+    return gulp.src(paths.js.dist + 'lib.js')
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(rename('lib.min.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.js.dist));
+});
+
+// Lib JS Concat
+gulp.task('js-con-lib', ['bower'], () => {
+    return gulp.src(paths.js.lib)
+        .pipe(sourcemaps.init())
+        .pipe(concat('lib.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.js.dist));
+});
+
+
+gulp.task('sass-con', function () {
+    return gulp.src(paths.css.sass)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write('./maps'))
-        .pipe(gulp.dest(paths.cssPub));
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.css.dist));
 });
 
-gulp.task('min-css', ['sass'], function () {
-    return gulp.src(paths.cssPub + '/app.css')
+gulp.task('sass-min', ['sass-con'], function () {
+    return gulp.src(paths.css.dist + '/app.css')
         .pipe(sourcemaps.init())
         .pipe(cleanCSS({
             compatibility: 'ie8'
@@ -59,24 +148,96 @@ gulp.task('min-css', ['sass'], function () {
         .pipe(rename({
             extname: '.min.css'
         }))
-        .pipe(sourcemaps.write('./maps'))
-        .pipe(gulp.dest(paths.cssPub));
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.css.dist));
 });
 
-gulp.task('min-js', function () {
-    return gulp.src(paths.jsSrc)
+// Lib CSS Min - Depends on Lib CSS Concat
+gulp.task('css-min-lib', ['css-con-lib'], () => {
+    return gulp.src(paths.css.dist + 'lib.css')
         .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(rename({
-            extname: '.min.js'
+        .pipe(cleanCSS({
+            compatibility: 'ie8'
         }))
-        .pipe(sourcemaps.write('./maps'))
-        .pipe(gulp.dest(paths.jsPub));
+        .pipe(rename('lib.min.css'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.css.dist));
 });
+
+// Lib CSS Concat
+gulp.task('css-con-lib', ['bower'], () => {
+    return gulp.src(paths.css.lib)
+        .pipe(sourcemaps.init())
+        .pipe(concatCss('lib.css'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.css.dist));
+});
+
+
+// Copy fonts to dist
+gulp.task('fonts', () => {
+    return gulp.src(paths.fonts.all)
+        .pipe(gulp.dest(paths.fonts.dist));
+})
+
+// Optimize images
+gulp.task('images', () => {
+    gulp.src(paths.images.all)
+        .pipe(imagemin())
+        .pipe(gulp.dest(paths.images.dist))
+});
+
+/**
+ * Angular.js Tasks
+ */
+
+// Angular.js Templates
+gulp.task('templates', () => {
+    return gulp.src(paths.app.templates)
+        .pipe(templateCache({
+            module: 'app'
+        }))
+        .pipe(gulp.dest(paths.app.dist));
+});
+
+// Custom App.JS Min - Depends on Custom App.JS Concat
+gulp.task('app-min', ['app-con'], () => {
+    return gulp.src(paths.app.dist + 'app.js')
+        .pipe(sourcemaps.init())
+        .pipe(ngAnnotate())
+        .pipe(uglify())
+        .pipe(rename('app.min.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.app.dist));
+});
+
+// Custom App.JS Concat
+gulp.task('app-con', ['templates'], () => {
+    return gulp.src(paths.app.js)
+        .pipe(sourcemaps.init())
+        .pipe(concat('app.js'))
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest(paths.app.dist));
+});
+
+
+
+// bower install
+gulp.task('bower', () => {
+    return bower.commands
+        .install()
+        .on('log', function (data) {
+            console.log('bower:', data.message);
+        });
+});
+
+
 
 gulp.task('watch', function () {
-    gulp.watch(paths.sassSrc, ['min-css']);
-    gulp.watch(paths.jsSrc, ['min-js']);
+    gulp.watch(paths.css.sass, ['sass-min']);
+    gulp.watch(paths.js.custom, ['js-min']);
+    gulp.watch(paths.app.js, ['app-min']);
+    gulp.watch(paths.app.templates, ['app-min']);
 
     nodemon({
         script: 'server.js',
