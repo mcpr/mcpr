@@ -80,5 +80,6 @@ router.delete('/:id', controller.delete, after);
 
 // bukkitdev
 router.get('/@bukkitdev/:id', bukkitController.show, after);
+router.get('/@bukkitdev', bukkitController.all, after);
 
 module.exports = router

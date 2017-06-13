@@ -6,6 +6,9 @@ angular.module('app')
         $http.get('/api/plugins/' + id).then(function (res) {
             $scope.plugin = res.data;
             $scope.loaded = true;
+            $timeout(function () {
+                addImgClass();
+            });
         }).catch(function (err) {
             console.log(err);
             if (err.status === 404) {

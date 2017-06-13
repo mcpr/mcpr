@@ -24,6 +24,19 @@ exports.show = function (req, res, next) {
         });
 }
 
+exports.all = function (req, res, next) {
+    bukkitApi.getAll()
+        .then((res) => {
+            jsonRes = JSON.parse(res);
+            req.bukkitPlugin = plugin;
+            next();
+        })
+        .catch((err) => {
+            console.error(err)
+            return handleError(res, err);
+        });
+}
+
 function handleError(res, err) {
     console.log('ERROR: ' + err);
     if (err.statusCode = 404) {

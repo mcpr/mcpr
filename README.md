@@ -1,4 +1,4 @@
-# mc-registry [![Greenkeeper badge](https://badges.greenkeeper.io/HexagonMinecraft/mc-registry.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry) [![Known Vulnerabilities](https://snyk.io/test/github/hexagonminecraft/mc-registry/badge.svg)](https://snyk.io/test/github/hexagonminecraft/mc-registry)
+# MCPR [![Greenkeeper badge](https://badges.greenkeeper.io/HexagonMinecraft/mc-registry.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry) [![Known Vulnerabilities](https://snyk.io/test/github/hexagonminecraft/mc-registry/badge.svg)](https://snyk.io/test/github/hexagonminecraft/mc-registry)
 
 A Minecraft plugin/mod registry. 
 
@@ -19,5 +19,11 @@ Finally, run the Node server.
 ```bash
 $ npm start
 ```
-- Web App [localhost:3000](http://localhost:3000).
-- Web API [localhost:3000/api](http://localhost:3000/api).
+- Web App: [localhost:3000](http://localhost:3000)
+- Web API: [localhost:3000/api](http://localhost:3000/api)
+
+
+## Hosted Registry
+
+- Web App: [registry.hexagonminecraft.com](https://registry.hexagonminecraft.com)
+- Web API: [registry.hexagonminecraft.com/api](https://registry.hexagonminecraft.com/api)
