@@ -3,6 +3,7 @@ const router = express.Router();
 
 const dbname = 'mc-registry';
 const controller = require('./plugin.controller');
+const bukkitController = require('./plugin-bukkit.controller');
 
 /**
  * GET /api/plugins
@@ -40,6 +41,10 @@ var after = function (req, res) {
         var plugin = req.plugin.toObject();
         res.json(plugin);
     }
+    if (req.bukkitPlugin) {
+        var plugin = req.bukkitPlugin;
+        res.json(plugin);
+    }
     if (req.plugins) {
         var plugins = req.plugins;
         res.json(req.plugins);
@@ -72,5 +77,8 @@ router.post('/', controller.create, after);
 router.get('/:id', controller.show, after);
 router.put('/:id', controller.update, after);
 router.delete('/:id', controller.delete, after);
+
+// bukkitdev
+router.get('/@bukkitdev/:id', bukkitController.show, after);
 
 module.exports = router

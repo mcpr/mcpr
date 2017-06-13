@@ -9,7 +9,12 @@
             <p>An error occurred...</p>
         </div>
 
-        <div ng-hide="notfound || error">
+        <div ng-hide="loaded || notfound || error" class="col m12 center">
+            <br>
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div ng-hide="notfound || error || !loaded">
             <div class="col m8">
                 <h2>{{plugin.title}}</h2>
                 <h5>{{plugin.short_description}}</h5>
@@ -22,7 +27,7 @@
                     <span class="white-text">
                     <h5>Download</h5>
                     <i class="material-icons download-icon">file_download</i>
-                    <code>mc install {{plugin._id}}</code>
+                    <code>mc install <span ng-show="plugin.external">@{{plugin.external}}/</span>{{plugin._id}}</code>
                     <br>
                     <a href="/how/{{plugin._id}}">How?</a>
 
@@ -36,16 +41,20 @@
                             <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
                         </div>
                     </div>
-                    <h6><b>License:</b> {{plugin.license}}</h6>
-                    <h6><b>Flavors:</b></h6>
-                    <div ng-repeat="flavor in plugin.flavors">
-                        <h6 class="flavor">{{flavor}}</h6>
+                    <h6 ng-show="plugin.license"><b>License:</b> {{plugin.license}}</h6>
+                    <div ng-show="plugin.flavors">
+                        <h6><b>Flavors:</b></h6>
+                        <div ng-repeat="flavor in plugin.flavors">
+                            <h6 class="flavor">{{flavor}}</h6>
+                        </div>
                     </div>
-                    <h5>Keywords</h5>
-                    <div ng-repeat="keyword in plugin.keywords">
-                        <h6 class="flavor">{{keyword}}</h6>
-                    </div>             
-                </span>
+                    <div ng-show="plugin.keywords">
+                        <h5>Keywords</h5>
+                        <div ng-repeat="keyword in plugin.keywords">
+                            <h6 class="flavor">{{keyword}}</h6>
+                        </div>
+                    </div>
+                    </span>
                 </div>
             </div>
         </div>

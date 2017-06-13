@@ -20,6 +20,11 @@ angular
                 templateUrl: 'plugin/plugin.html',
                 controller: 'PluginCtrl'
             })
+            .state('bukkit-plugin', {
+                url: '/plugin/@bukkitdev/:id',
+                templateUrl: 'plugin/plugin.html',
+                controller: 'BukkitPluginCtrl'
+            })
             .state('how', {
                 url: '/how/:id',
                 templateUrl: 'how/how.html',

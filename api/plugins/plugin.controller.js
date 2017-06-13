@@ -1,6 +1,5 @@
 const Plugin = require('./plugin.model');
 
-
 exports.model = Plugin;
 
 exports.all = function (req, res, next) {
@@ -56,7 +55,6 @@ exports.update = function (req, res) {
                 });
         });
 }
-
 
 exports.delete = function (req, res, next) {
     var pluginId = req.params.id

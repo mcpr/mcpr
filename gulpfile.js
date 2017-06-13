@@ -40,6 +40,7 @@ var paths = {
     css: {
         lib: [
             bowerFolder + 'materialize/dist/css/materialize.css',
+            bowerFolder + 'font-awesome/css/font-awesome.css',
         ],
         sass: './src/sass/**/*.scss',
         dist: `${dist}/css/`
@@ -48,6 +49,7 @@ var paths = {
         all: [
             './src/fonts/**/*.*',
             bowerFolder + 'materialize/dist/fonts/**/*.*',
+            bowerFolder + 'font-awesome/fonts/**/*.*',
         ],
         dist: `${dist}/fonts/`
     },
@@ -172,7 +174,9 @@ gulp.task('css-min-lib', ['css-con-lib'], () => {
 gulp.task('css-con-lib', ['bower'], () => {
     return gulp.src(paths.css.lib)
         .pipe(sourcemaps.init())
-        .pipe(concatCss('lib.css'))
+        .pipe(concatCss('lib.css', {
+            rebaseUrls: false
+        }))
         .pipe(sourcemaps.write('../maps'))
         .pipe(gulp.dest(paths.css.dist));
 });

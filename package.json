@@ -42,6 +42,7 @@
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "request-promise": "^4.2.1",
     "serve-favicon": "^2.4.3",
     "snyk": "^1.33.1"
   },

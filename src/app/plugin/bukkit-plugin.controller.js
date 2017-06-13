@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('app')
-    .controller('PluginCtrl', function ($scope, $http, $stateParams) {
+    .controller('BukkitPluginCtrl', function ($scope, $http, $stateParams) {
         var id = $stateParams.id;
-        $http.get('/api/plugins/' + id).then(function (res) {
+        $http.get('/api/plugins/@bukkitdev/' + id).then(function (res) {
             $scope.plugin = res.data;
             $scope.loaded = true;
         }).catch(function (err) {
