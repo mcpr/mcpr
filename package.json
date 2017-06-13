@@ -30,12 +30,19 @@
   "homepage": "https://github.com/HexagonMinecraft/mc-registry#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0",
+    "express-jwt": "^5.3.0",
+    "express-session": "^1.15.3",
     "global": "^4.3.2",
     "handlebars": "^4.0.10",
+    "jsonwebtoken": "^7.4.1",
     "mongoose": "^4.10.5",
     "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "serve-favicon": "^2.4.3",
     "snyk": "^1.33.1"
   },
   "devDependencies": {

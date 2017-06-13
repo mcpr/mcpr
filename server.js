@@ -8,31 +8,39 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const env = process.env;
+const passport = require('passport');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const favicon = require('serve-favicon');
+
+require('./api/users/user.model');
+require('./config/passport');
 
 // Config
 const port = process.env.PORT || 3000;
-const config = {
-    dbName: env.DB_NAME || 'mc-registry',
-    dbAdress: env.DB_ADDRESS || 'localhost',
-    dbPort: env.DB_PORT || '27017',
-    dbUsername: env.DB_USER || '',
-    dbPassword: env.DB_PASS || ''
-}
+const config = require('./config/config');
+const mongoAddress = config.dbUrl();
 
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(morgan('dev'));
+app.use(session({
+    secret: process.env.MCPR_KEY,
+    resave: false,
+    saveUninitialized: false
+})); // session secret
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
 app.use(bodyParser.json());
-app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('public'));
 
 app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
-
-const mongoAddress = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
 
 mongoose.connect(mongoAddress, {
     user: config.dbUsername,
@@ -56,6 +64,17 @@ router.get('/*', (req, res) => {
 require('./api/api')(app);
 
 app.use('/', router);
+
+// error handlers
+// Catch unauthorised errors
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401);
+        res.json({
+            'message': err.name + ': ' + err.message
+        });
+    }
+});
 
 app.listen(port);
 

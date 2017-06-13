@@ -18,6 +18,7 @@ module.exports = function (app) {
      * GET /api/plugins
      */
     apiRouter.use('/plugins', require('./plugins/index'));
+    apiRouter.use('/auth', require('./users/index'));
 
     app.use('/api', apiRouter)
 }

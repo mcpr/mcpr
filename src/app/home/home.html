@@ -5,14 +5,14 @@
 
             <form>
                 <div class="input-field">
-                    <input id="search" type="search" required>
+                    <input id="search" type="search" ng-model="search">
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                 </div>
             </form>
             <br>
             <h4>Popular Plugins</h4>
             <hr>
-            <div class="col s4" ng-repeat="plugin in plugins">
+            <div class="col s4" ng-repeat="plugin in plugins | filter:search">
                 <div class="card grey darken-3">
                     <div class="card-content white-text">
                         <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>

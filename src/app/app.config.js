@@ -24,7 +24,12 @@ angular
                 url: '/how/:id',
                 templateUrl: 'how/how.html',
                 controller: 'HowCtrl'
+            })
+            .state('notfound', {
+                url: '/notfound',
+                templateUrl: 'notfound/notfound.html',
+                controller: 'NotFoundCtrl'
             });
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/notfound');
     });
