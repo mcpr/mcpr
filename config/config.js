@@ -7,10 +7,10 @@ const config = {
     dbUsername: env.DB_USER || '',
     dbPassword: env.DB_PASS || '',
     dbUrl: function () {
-        let dbUrl = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`
+        let dbUrl = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
         return dbUrl;
     }
-}
+};
 
 module.exports = config;
 //module.exports.dbUrl = `mongodb://${this.dbAdress}:${this.dbPort}/${this.dbName}`;

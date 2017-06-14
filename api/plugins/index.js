@@ -35,23 +35,26 @@ const bukkitController = require('./plugin-bukkit.controller');
         res.json(list);
     }
 });*/
-
-var after = function (req, res) {
+const after = function (req, res) {
     if (req.plugin) {
-        var plugin = req.plugin.toObject();
+        let plugin = req.plugin.toObject();
         res.json(plugin);
     }
     if (req.bukkitPlugin) {
-        var plugin = req.bukkitPlugin;
+        let plugin = req.bukkitPlugin;
         res.json(plugin);
     }
     if (req.plugins) {
-        var plugins = req.plugins;
+        let plugins = req.plugins;
+        res.json(req.plugins);
+    }
+    if (req.bukkitPlugins) {
+        let plugins = req.plugins;
         res.json(req.plugins);
     } else {
         res.status(204).end();
     }
-}
+};
 
 /**
  * @api {get} /plugins Request Plugin List
@@ -82,4 +85,4 @@ router.delete('/:id', controller.delete, after);
 router.get('/@bukkitdev/:id', bukkitController.show, after);
 router.get('/@bukkitdev', bukkitController.all, after);
 
-module.exports = router
+module.exports = router;

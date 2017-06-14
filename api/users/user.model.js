@@ -46,4 +46,4 @@ userSchema.methods.generateJwt = function () {
         exp: parseInt(expiry.getTime() / 1000),
     }, key);
 };
-module.exports = model
+module.exports = model;

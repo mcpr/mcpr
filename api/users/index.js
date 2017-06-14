@@ -9,4 +9,4 @@ const controller = require('./profile.controller');
 
 router.get('/profile', auth, controller.profileRead);
 
-module.exports = router
+module.exports = router;

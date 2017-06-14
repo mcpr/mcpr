@@ -14,7 +14,7 @@ const concatCss = require('gulp-concat-css');
 const ngAnnotate = require('gulp-ng-annotate');
 const browserSync = require('browser-sync').create();
 const templateCache = require('gulp-angular-templatecache');
-const argv = require('yargs');
+const argv = require('yargs').argv;
 
 
 // config and paths
@@ -67,23 +67,30 @@ var paths = {
         ],
         dist: `${dist}/app/`
     },
-    clean: [dist, './tests']
+    clean: [dist, './tests'],
+    lint: [
+        './**/*.js',
+        '!./node_modules/**/*.js',
+        '!./bower_components/**/*.js',
+        '!./public/**/*.js',
+        '!./gulpfile.js',
+    ]
 }
 
 gulp.task('lint', ['clean:tests'], function () {
     if (argv.fail) {
-        return gulp.src(paths.app.js)
+        return gulp.src(paths.lint)
             .pipe(jshint())
             .pipe(jshint.reporter('jshint-stylish', {
                 verbose: true
             }))
-            .pipe(jshint.reporter('fail'))
             .pipe(jshint.reporter('gulp-jshint-html-reporter', {
                 filename: __dirname + '/tests/jshint-output.html',
                 createMissingFolders: true
-            }));
+            }))
+            .pipe(jshint.reporter('fail'));
     }
-    gulp.src(paths.app.js)
+    gulp.src(paths.lint)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish', {
             verbose: true
@@ -244,8 +251,6 @@ gulp.task('app-con', ['templates'], () => {
         .pipe(gulp.dest(paths.app.dist));
 });
 
-
-
 // bower install
 gulp.task('bower', () => {
     return bower.commands
@@ -254,8 +259,6 @@ gulp.task('bower', () => {
             console.log('bower:', data.message);
         });
 });
-
-
 
 gulp.task('watch', function () {
     gulp.watch(paths.css.sass, ['sass-min']);

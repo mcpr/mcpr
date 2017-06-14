@@ -8,7 +8,7 @@ module.exports = function (app) {
      */
     apiRouter.get('/', (req, res) => {
         res.json({
-            name: "MCPR API",
+            name: 'MCPR API',
             version: pkg.version,
             homepage: pkg.homepage
         });
@@ -20,5 +20,5 @@ module.exports = function (app) {
     apiRouter.use('/plugins', require('./plugins/index'));
     apiRouter.use('/auth', require('./users/index'));
 
-    app.use('/api', apiRouter)
-}
+    app.use('/api', apiRouter);
+};

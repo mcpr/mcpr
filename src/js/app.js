@@ -4,11 +4,11 @@ $(document).ready(function () {
 });
 
 function addImgClass() {
-    var images = document.getElementsByTagName("img");
+    var images = document.getElementsByTagName('img');
     var i;
     console.log(images);
 
     for (i = 0; i < images.length; i++) {
-        images[i].className += " responsive-img";
+        images[i].className += ' responsive-img';
     }
 }

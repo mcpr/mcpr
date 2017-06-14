@@ -38,4 +38,4 @@ model.schema
     .path('short_description')
     .required('You need to have a description');
 
-module.exports = model
+module.exports = model;

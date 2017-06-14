@@ -4,7 +4,7 @@
   "description": "A Minecraft plugin/mod registry. ",
   "main": "server.js",
   "scripts": {
-    "test": "gulp lint && snyk test || true",
+    "test": "gulp lint --fail && snyk test",
     "postinstall": "bower install --allow-root && gulp build",
     "start": "node server.js",
     "dev": "gulp watch",

@@ -6,12 +6,16 @@ exports.all = function (req, res, next) {
     Plugin
         .find({})
         .exec(function (err, plugins) {
-            if (err) return handleError(res, err);
-            if (!plugins) return res.status(404).end();
+            if (err) {
+                return handleError(res, err);
+            }
+            if (!plugins) {
+                return res.status(404).end();
+            }
             req.plugins = plugins;
             next();
         });
-}
+};
 
 
 exports.create = function (req, res, next) {
@@ -19,23 +23,31 @@ exports.create = function (req, res, next) {
 
     return Plugin
         .create(req.body, function (err, plugin) {
-            if (err) return handleError(res, err);
-            if (!plugin) return res.status(404);
+            if (err) {
+                return handleError(res, err);
+            }
+            if (!plugin) {
+                return res.status(404);
+            }
             req.plugin = plugin;
             next();
         });
-}
+};
 
 exports.show = function (req, res, next) {
     Plugin
         .findById(req.params.id)
         .exec(function (err, plugin) {
-            if (err) return handleError(res, err);
-            if (!plugin) return res.status(404).end();
+            if (err) {
+                return handleError(res, err);
+            }
+            if (!plugin) {
+                return res.status(404).end();
+            }
             req.plugin = plugin;
             next();
         });
-}
+};
 
 exports.update = function (req, res) {
     var updatedPlugin = req.body;
@@ -44,8 +56,12 @@ exports.update = function (req, res) {
     Plugin
         .findById(req.params.id)
         .exec(function (err, plugin) {
-            if (err) return handleError(res, err);
-            if (!plugin) return res.status(404).end();
+            if (err) {
+                return handleError(res, err);
+            }
+            if (!plugin) {
+                return res.status(404).end();
+            }
             Plugin
                 .update({
                     '_id': req.params.id
@@ -54,22 +70,26 @@ exports.update = function (req, res) {
                     return res.status(204).end();
                 });
         });
-}
+};
 
 exports.delete = function (req, res, next) {
-    var pluginId = req.params.id
+    let pluginId = req.params.id;
     Plugin
         .remove({
             '_id': pluginId
         })
         .exec(function (err, num) {
-            if (err) return handleError(res, err);
-            if (num == 0) return res.status(498).end();
+            if (err) {
+                return handleError(res, err);
+            }
+            if (num === 0) {
+                return res.status(498).end();
+            }
             next();
         });
-}
+};
 
 function handleError(res, err) {
-    console.log("ERROR: " + err);
+    console.log('ERROR: ' + err);
     return res.status(500).send(err);
 }

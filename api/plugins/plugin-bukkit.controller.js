@@ -4,7 +4,6 @@ const slugify = require('../../lib/slug');
 exports.show = function (req, res, next) {
     bukkitApi.getPlugin(req.params.id)
         .then((res) => {
-            if (!res) return res.status(404).end();
             bukkitApi.getPluginFiles(req.params.id)
                 .then((files) => {
                     let jsonFiles = JSON.parse(files);
@@ -30,37 +29,37 @@ exports.show = function (req, res, next) {
                         keywords: keywords,
                         externalUrl: jsonRes.url,
                         external: 'bukkitdev'
-                    }
+                    };
                     req.bukkitPlugin = plugin;
                     next();
                 })
                 .catch((err) => {
-                    console.error(err)
+                    console.error(err);
                     return handleError(res, err);
                 });
         })
         .catch((err) => {
-            console.error(err)
+            console.error(err);
             return handleError(res, err);
         });
-}
+};
 
 exports.all = function (req, res, next) {
     bukkitApi.getAll()
         .then((res) => {
-            jsonRes = JSON.parse(res);
-            req.bukkitPlugin = plugin;
+            let jsonRes = JSON.parse(res);
+            req.bukkitPlugins = jsonRes;
             next();
         })
         .catch((err) => {
-            console.error(err)
+            console.error(err);
             return handleError(res, err);
         });
-}
+};
 
 function handleError(res, err) {
     console.log('ERROR: ' + err);
-    if (err.statusCode = 404) {
+    if (err.statusCode === 404) {
         return res.status(404).send(err).end();
     }
     return res.status(500).send(err);
