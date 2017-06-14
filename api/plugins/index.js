@@ -45,7 +45,11 @@ router.post('/', controller.create, after);
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
  * 
- * @apiSuccess {String} _id       ID of plugin.
+ * @apiSuccess {String} _id       ID of plugin
+ * @apiSuccess {String} short_description       A short description of the plugin
+ * @apiSuccess {String} author       The author's user ID
+ * @apiSuccess {Date} created       The date on which the plugin was created
+ * 
  */
 router.get('/:id', controller.show, after);
 router.put('/:id', controller.update, after);

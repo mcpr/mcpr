@@ -74,5 +74,9 @@
   "engines": {
     "node": "6.9.4"
   },
-  "snyk": true
+  "snyk": true,
+  "apidoc": {
+    "title": "MCPR API Docs",
+    "url": "https://registry.hexagonminecraft.com/api"
+  }
 }
