@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-    .controller('PluginCtrl', function ($scope, $http, $stateParams) {
+    .controller('PluginCtrl', function ($scope, $http, $stateParams, $timeout) {
         var id = $stateParams.id;
         $http.get('/api/plugins/' + id).then(function (res) {
             $scope.plugin = res.data;
