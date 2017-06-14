@@ -7,4 +7,4 @@ angular.module('app')
             var out = moment(input).format('MMM Do YY');
             return out;
         };
-    })
+    });

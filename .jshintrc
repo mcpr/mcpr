@@ -57,6 +57,8 @@
 
   "globals": {
     "$": true,
-    "angular": true
+    "angular": true,
+    "moment": true,
+    "addImgClass": true
   }
 }

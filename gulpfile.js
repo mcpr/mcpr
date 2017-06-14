@@ -14,6 +14,7 @@ const concatCss = require('gulp-concat-css');
 const ngAnnotate = require('gulp-ng-annotate');
 const browserSync = require('browser-sync').create();
 const templateCache = require('gulp-angular-templatecache');
+const argv = require('yargs');
 
 
 // config and paths
@@ -69,7 +70,19 @@ var paths = {
     clean: [dist, './tests']
 }
 
-gulp.task('lint', ['clean'], function () {
+gulp.task('lint', ['clean:tests'], function () {
+    if (argv.fail) {
+        return gulp.src(paths.app.js)
+            .pipe(jshint())
+            .pipe(jshint.reporter('jshint-stylish', {
+                verbose: true
+            }))
+            .pipe(jshint.reporter('fail'))
+            .pipe(jshint.reporter('gulp-jshint-html-reporter', {
+                filename: __dirname + '/tests/jshint-output.html',
+                createMissingFolders: true
+            }));
+    }
     gulp.src(paths.app.js)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish', {
@@ -83,6 +96,9 @@ gulp.task('lint', ['clean'], function () {
 
 gulp.task('clean', function () {
     return del(dist);
+});
+gulp.task('clean:tests', function () {
+    return del('./tests');
 });
 
 gulp.task('build', ['js', 'css', 'fonts', 'images']);

@@ -53,7 +53,6 @@ monDb.once('open', function () {
     console.log('Connected Successfully to DB: ' + config.dbName);
 });
 
-
 const router = express.Router();
 router.get('/*', (req, res) => {
     res.render('app', {
