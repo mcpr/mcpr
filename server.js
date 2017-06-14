@@ -37,6 +37,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('public'));
 
+app.use(function (err, req, res, next) {
+  console.error(err.message);
+  next(err);
+});
+
+// error handlers
+// Catch unauthorised errors
+app.use(function (err, req, res, next) {
+    console.log('HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! error middleware');
+    if (err.name === 'UnauthorizedError') {
+        res.status(401);
+        res.json({
+            'message': err.name + ': ' + err.message
+        });
+    }
+});
+
 app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
@@ -59,21 +76,9 @@ router.get('/*', (req, res) => {
         currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl
     });
 });
-
 require('./api/api')(app);
 
 app.use('/', router);
-
-// error handlers
-// Catch unauthorised errors
-app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-        res.status(401);
-        res.json({
-            'message': err.name + ': ' + err.message
-        });
-    }
-});
 
 app.listen(port);
 

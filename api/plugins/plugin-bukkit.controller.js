@@ -28,18 +28,17 @@ exports.show = function (req, res, next) {
                         readme: jsonRes.description,
                         keywords: keywords,
                         externalUrl: jsonRes.url,
-                        external: 'bukkitdev'
+                        external: true,
+                        namespace: '@bukkitdev'
                     };
                     req.bukkitPlugin = plugin;
                     next();
                 })
                 .catch((err) => {
-                    console.error(err);
                     return handleError(res, err);
                 });
         })
         .catch((err) => {
-            console.error(err);
             return handleError(res, err);
         });
 };
@@ -58,9 +57,12 @@ exports.all = function (req, res, next) {
 };
 
 function handleError(res, err) {
-    console.log('ERROR: ' + err);
     if (err.statusCode === 404) {
-        return res.status(404).send(err).end();
+        return res.status(404).send({
+            name: err.name,
+            statusCode: err.statusCode,
+            message: err.message
+        }).end();
     }
     return res.status(500).send(err);
 }

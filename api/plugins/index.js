@@ -1,40 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const dbname = 'mc-registry';
 const controller = require('./plugin.controller');
 const bukkitController = require('./plugin-bukkit.controller');
 
-/**
- * GET /api/plugins
- */
-/*router.get('/', function (req, res) {
-    db.list({
-        limit: 12
-    }, function (err, body) {
-        const list = [];
-        if (err) {
-            console.log(err);
-        }
-        var itemsProcessed = 0;
-        body.rows.forEach((item, index, array) => {
-            db.get(item.id, (err, body) => {
-                if (err) {
-                    console.log(err);
-                }
-                list.push(body);
-                itemsProcessed++;
-                if (itemsProcessed === array.length) {
-                    send(list);
-                }
-            });
-        });
-    });
-
-    function send(list) {
-        res.json(list);
-    }
-});*/
 const after = function (req, res) {
     if (req.plugin) {
         let plugin = req.plugin.toObject();
@@ -74,6 +43,7 @@ router.post('/', controller.create, after);
  * @api {get} /plugins/:id Get Plugin
  * @apiName GetPlugin
  * @apiGroup Plugin
+ * @apiParam {String} id ID of plugin
  * 
  * @apiSuccess {String} _id       ID of plugin.
  */

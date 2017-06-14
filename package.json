@@ -10,7 +10,8 @@
     "dev": "gulp watch",
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "docs": "apidoc -i api/ -o apidoc/"
   },
   "repository": {
     "type": "git",
@@ -42,11 +43,13 @@
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "querymen": "^2.1.1",
     "request-promise": "^4.2.1",
     "serve-favicon": "^2.4.3",
     "snyk": "^1.33.1"
   },
   "devDependencies": {
+    "apidoc": "^0.17.6",
     "bower": "^1.8.0",
     "browser-sync": "^2.18.8",
     "del": "^3.0.0",

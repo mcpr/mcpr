@@ -27,7 +27,7 @@
                     <span class="white-text">
                     <h5>Download</h5>
                     <i class="material-icons download-icon">file_download</i>
-                    <code>mc install <span ng-show="plugin.external">@{{plugin.external}}/</span>{{plugin._id}}</code>
+                    <code>mc install <span ng-show="plugin.namespace">{{plugin.namespace}}/</span>{{plugin._id}}</code>
                     <br>
                     <a href="/how/{{plugin._id}}">How?</a>
 
@@ -51,7 +51,7 @@
                     <div ng-show="plugin.keywords">
                         <h5>Keywords</h5>
                         <div ng-repeat="keyword in plugin.keywords">
-                            <h6 class="flavor">{{keyword}}</h6>
+                            <h6 class="">{{keyword}}</h6>
                         </div>
                     </div>
                     </span>

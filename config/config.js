@@ -13,4 +13,3 @@ const config = {
 };
 
 module.exports = config;
-//module.exports.dbUrl = `mongodb://${this.dbAdress}:${this.dbPort}/${this.dbName}`;
