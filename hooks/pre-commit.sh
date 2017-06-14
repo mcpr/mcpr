@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo Hello
+echo Hello!!!!!!!!!!!!!!!!!!!!!
 exit 1
 
 gulp lint --fail
