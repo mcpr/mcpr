@@ -1,5 +1,7 @@
 const bukkitApi = require('../../lib/bukkitApi');
 const slugify = require('../../lib/slug');
+const convertModel = require('../../lib/bukkitToMcpr');
+
 
 exports.show = function (req, res, next) {
     bukkitApi.getPlugin(req.params.id)
@@ -47,8 +49,15 @@ exports.all = function (req, res, next) {
     bukkitApi.getAll()
         .then((res) => {
             let jsonRes = JSON.parse(res);
-            req.bukkitPlugins = jsonRes;
-            next();
+            convertModel(jsonRes)
+                .then((plugins) => {
+                    req.bukkitPlugins = plugins;
+                    next();
+                })
+                .catch((err) => {
+                    console.error(err);
+                    return handleError(res, err);
+                });
         })
         .catch((err) => {
             console.error(err);

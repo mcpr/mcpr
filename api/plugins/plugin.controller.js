@@ -10,7 +10,7 @@ exports.all = function (req, res, next) {
                 return handleError(res, err);
             }
             if (!plugins) {
-                return res.status(404).end();
+                return handle404(res);
             }
             req.plugins = plugins;
             next();
@@ -27,7 +27,7 @@ exports.create = function (req, res, next) {
                 return handleError(res, err);
             }
             if (!plugin) {
-                return res.status(404);
+                return handle404(res);
             }
             req.plugin = plugin;
             next();
@@ -42,7 +42,7 @@ exports.show = function (req, res, next) {
                 return handleError(res, err);
             }
             if (!plugin) {
-                return res.status(404).end();
+                return handle404(res, req.params.id);
             }
             req.plugin = plugin;
             next();
@@ -60,7 +60,7 @@ exports.update = function (req, res) {
                 return handleError(res, err);
             }
             if (!plugin) {
-                return res.status(404).end();
+                return handle404(res);
             }
             Plugin
                 .update({
@@ -92,4 +92,13 @@ exports.delete = function (req, res, next) {
 function handleError(res, err) {
     console.log('ERROR: ' + err);
     return res.status(500).send(err);
+}
+
+function handle404(res) {
+    res.status(404);
+    res.json({
+        name: 'NotFound',
+        statusCode: 404,
+        message: '404: the resource that you requested could not be found'
+    });
 }

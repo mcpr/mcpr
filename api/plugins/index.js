@@ -18,8 +18,7 @@ const after = function (req, res) {
         res.json(req.plugins);
     }
     if (req.bukkitPlugins) {
-        let plugins = req.plugins;
-        res.json(req.plugins);
+        res.json(req.bukkitPlugins);
     } else {
         res.status(204).end();
     }
@@ -39,6 +38,11 @@ router.get('/', controller.all, after);
  * @apiGroup Plugin
  */
 router.post('/', controller.create, after);
+
+// bukkitdev
+router.get('/@bukkitdev/:id', bukkitController.show, after);
+router.get('/@bukkitdev', bukkitController.all, after);
+
 /**
  * @api {get} /plugins/:id Get Plugin
  * @apiName GetPlugin
@@ -55,8 +59,5 @@ router.get('/:id', controller.show, after);
 router.put('/:id', controller.update, after);
 router.delete('/:id', controller.delete, after);
 
-// bukkitdev
-router.get('/@bukkitdev/:id', bukkitController.show, after);
-router.get('/@bukkitdev', bukkitController.all, after);
 
 module.exports = router;

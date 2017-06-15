@@ -38,8 +38,8 @@ app.use(passport.session());
 app.use(express.static('public'));
 
 app.use(function (err, req, res, next) {
-  console.error(err.message);
-  next(err);
+    console.error(err.message);
+    next(err);
 });
 
 // error handlers
