@@ -118,6 +118,14 @@ exports.show = function (req, res, next) {
         });
 };
 
+/**
+ * @api {put} /plugins/:id Update Plugin
+ * @apiName UpdatePlugin
+ * @apiGroup Plugin
+ * 
+ * @apiParam {String} id ID of plugin
+ * 
+ */
 exports.update = function (req, res) {
     var updatedPlugin = req.body;
     updatedPlugin.updated = Date.now();
@@ -141,6 +149,16 @@ exports.update = function (req, res) {
         });
 };
 
+
+/**
+ * @api {delete} /plugins/:id Delete Plugin
+ * @apiName DeletePlugin
+ * @apiGroup Plugin
+ * @apiParam {String} id ID of plugin
+ * 
+ * @apiExample {curl} Example usage:
+ *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/plugins/dynmap
+ */
 exports.delete = function (req, res, next) {
     let pluginId = req.params.id;
     Plugin
