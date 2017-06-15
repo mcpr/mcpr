@@ -45,7 +45,6 @@ app.use(function (err, req, res, next) {
 // error handlers
 // Catch unauthorised errors
 app.use(function (err, req, res, next) {
-    console.log('HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! error middleware');
     if (err.name === 'UnauthorizedError') {
         res.status(401);
         res.json({
@@ -72,8 +71,14 @@ monDb.once('open', function () {
 
 const router = express.Router();
 router.get('/*', (req, res) => {
+    let url = req.params[0];
+    let pluginId = false;
+    if (url.includes('plugin/')) {
+        pluginId = url.replace('plugin/', '');
+    }
     res.render('app', {
-        currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl
+        currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl,
+        pluginName: pluginId
     });
 });
 require('./api/api')(app);
