@@ -1,5 +1,5 @@
 {
-  "name": "mc-registry",
+  "name": "mcpr",
   "version": "0.0.1",
   "description": "A Minecraft plugin/mod registry. ",
   "main": "server.js",
@@ -21,7 +21,8 @@
     "minecraft",
     "plugins",
     "registry",
-    "mods"
+    "mods",
+    "mcpr"
   ],
   "author": "Hexagon Minecraft",
   "license": "MIT",
