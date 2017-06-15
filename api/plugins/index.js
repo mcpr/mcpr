@@ -24,37 +24,13 @@ const after = function (req, res) {
     }
 };
 
-/**
- * @api {get} /plugins Request Plugin List
- * @apiName GetPlugins
- * @apiGroup Plugin
- * 
- * @apiSuccess {Array} plugins       List of plugins.
- */
 router.get('/', controller.all, after);
-/**
- * @api {post} /plugins Create Plugin
- * @apiName CreatePlugin
- * @apiGroup Plugin
- */
 router.post('/', controller.create, after);
 
 // bukkitdev
 router.get('/@bukkitdev/:id', bukkitController.show, after);
 router.get('/@bukkitdev', bukkitController.all, after);
 
-/**
- * @api {get} /plugins/:id Get Plugin
- * @apiName GetPlugin
- * @apiGroup Plugin
- * @apiParam {String} id ID of plugin
- * 
- * @apiSuccess {String} _id       ID of plugin
- * @apiSuccess {String} short_description       A short description of the plugin
- * @apiSuccess {String} author       The author's user ID
- * @apiSuccess {Date} created       The date on which the plugin was created
- * 
- */
 router.get('/:id', controller.show, after);
 router.put('/:id', controller.update, after);
 router.delete('/:id', controller.delete, after);
