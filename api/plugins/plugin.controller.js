@@ -31,6 +31,20 @@ exports.all = function (req, res, next) {
  * @api {post} /plugins Create Plugin
  * @apiName CreatePlugin
  * @apiGroup Plugin
+ * 
+ * @apiParam  {String} _id       ID of plugin
+ * @apiParam  {String} short_description       A short description of the plugin
+ * @apiParam  {String} author       The author's user ID
+ * @apiParam  {Date} created="CurrentTime"       The date on which the plugin was created
+ * @apiParam  {String} title       The title of the plugin
+ * @apiParam  {Date} [latest_version_date]       The date on which the latest version was published
+ * @apiParam  {String} [latest_version]       Version number of the latest version
+ * @apiParam  {String} [source]       URL of the source code
+ * @apiParam  {Boolean} [sourceGithub]       Specifies whether or not the plugin source is hosted on GitHub
+ * @apiParam  {Array} [flavors]       List of supported Minecraft flavors
+ * @apiParam  {String} [readme]       The README.md file
+ * @apiParam  {String} license       The license of the plugin
+ * @apiParam  {Array} [keywords]       List of plugin keywords
  */
 exports.create = function (req, res, next) {
     let plugin = req.body;
@@ -70,6 +84,24 @@ exports.create = function (req, res, next) {
  * 
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/plugins/dynmap
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "_id": "dynmap",
+ *       "title": "Dynmap",
+ *       "author": "mikeprimm",
+ *       "short_description": "Dynamic \"Google Maps\" style web maps for your Spigot/Bukkit server",
+ *       "latest_version": "2.4",
+ *       "latest_version_date": "2017-02-11T00:00:00.000Z",
+ *       "source": "webbukkit/dynmap",
+ *       "sourceGithub": true,
+ *       "readme": "## Dynamp Readme",
+ *       "license": "MIT",
+ *       "__v": 0,
+ *       "keywords": ["map", "dynamic"],
+ *       "flavors": ["bukkit", "spigot"],
+ *       "created": "2017-06-12T22:55:07.759Z"
+ *     }
  */
 exports.show = function (req, res, next) {
     Plugin
