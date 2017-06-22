@@ -2,6 +2,13 @@
 
 A Minecraft plugin/mod registry. 
 
+## Project Status
+|Stage              |Status     |
+|-------------------|-----------|
+|Alpha Development  |Current    |
+|Public Beta        |Not Started|
+|Beta Development   |Not Started|
+
 ## Installation
 First, clone the repository. 
 ```bash
@@ -11,14 +18,15 @@ Then change to the directory of the repo and install the dependencies.
 
 ```bash
 $ cd mc-registry
-$ npm install
+$ yarn install
 ```
 
 Finally, run the Node server. 
 
 ```bash
-$ npm start
+$ yarn start
 ```
+
 - Web App: [localhost:3000](http://localhost:3000)
 - Web API: [localhost:3000/api](http://localhost:3000/api)
 

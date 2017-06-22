@@ -3,21 +3,41 @@
         <div class="center">
             <h3>A Minecraft Plugin Registry</h3>
 
-            <form>
-                <div class="input-field">
-                    <input id="search" type="search" ng-model="search">
-                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">search</i>
+                        <input id="icon_prefix" type="text" class="validate" ng-model="search">
+                        <label for="icon_prefix">Search</label>
+                    </div>
                 </div>
             </form>
             <br>
             <h4>Popular Plugins</h4>
             <hr>
-            <div class="col s4" ng-repeat="plugin in plugins | filter:search">
-                <div class="card grey darken-3">
-                    <div class="card-content white-text">
-                        <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
-                        <p>{{short_description}}</p>
-                        <small><b><a href="/plugin/{{plugin._id}}">v{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date | moment}} by <b><a href="/user/{{plugin.author}}">{{plugin.author}}</a></b></small>
+            <div class="preloader-wrapper big active" ng-show="!loaded">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-repeat="plugin in plugins | filter:search">
+                <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                <div class="col s4">
+                    <div class="card grey darken-3">
+                        <div class="card-content white-text">
+                            <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
+                            <p>{{short_description}}</p>
+                            <small><b><a href="/plugin/{{plugin._id}}">{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date | moment}} by <b><a href="/user/{{plugin.author}}">{{plugin.author}}</a></b></small>
+                        </div>
                     </div>
                 </div>
             </div>
