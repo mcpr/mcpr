@@ -4,10 +4,11 @@
   "description": "A Minecraft plugin/mod registry. ",
   "main": "server.js",
   "scripts": {
+    "prestart": "apidoc -i api/ -o public/docs/api",
     "test": "gulp lint --fail && snyk test",
     "postinstall": "bower install --allow-root && gulp build",
     "start": "node server.js",
-    "dev": "gulp watch",
+    "dev": "gulp serve",
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",

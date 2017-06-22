@@ -38,5 +38,6 @@ jspm_packages
 .vscode
 tests
 public/build/
+public/docs/
 node_modules/
 bower_components/

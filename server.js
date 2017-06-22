@@ -70,9 +70,10 @@ monDb.once('open', function () {
 });
 
 const router = express.Router();
-router.get('/*', (req, res) => {
-    let url = req.params[0];
+router.get(/^(?!.*(docs))/, (req, res) => {
+    let url = req.originalUrl;
     let pluginId = false;
+    console.log(req.originalUrl);
     if (url.includes('plugin/')) {
         pluginId = url.replace('plugin/', '');
     }
@@ -81,9 +82,11 @@ router.get('/*', (req, res) => {
         pluginName: pluginId
     });
 });
+
 require('./api/api')(app);
 
 app.use('/', router);
+
 
 app.listen(port);
 

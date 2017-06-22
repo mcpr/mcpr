@@ -5,7 +5,7 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps')
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
-const rename = require("gulp-rename");
+const rename = require('gulp-rename');
 const del = require('del');
 const bower = require('bower');
 const concat = require('gulp-concat');
@@ -272,5 +272,13 @@ gulp.task('watch', function () {
         env: {
             'NODE_ENV': 'development'
         }
+    });
+});
+
+gulp.task('serve', ['watch'], function () {
+    browserSync.init(null, {
+        proxy: 'http://localhost:3000',
+        files: ['public/**/*.*'],
+        port: 7000,
     });
 });
