@@ -25,8 +25,13 @@ angular
                 templateUrl: 'plugin/plugin.html',
                 controller: 'BukkitPluginCtrl'
             })
-            .state('how', {
+            .state('how-single', {
                 url: '/how/:id',
+                templateUrl: 'how/how.html',
+                controller: 'HowCtrl'
+            })
+            .state('how', {
+                url: '/how',
                 templateUrl: 'how/how.html',
                 controller: 'HowCtrl'
             })
@@ -34,6 +39,11 @@ angular
                 url: '/notfound',
                 templateUrl: 'notfound/notfound.html',
                 controller: 'NotFoundCtrl'
+            })
+            .state('why', {
+                url: '/why',
+                templateUrl: 'why/why.html',
+                controller: 'WhyCtrl'
             });
 
         $urlRouterProvider.otherwise('/notfound');
