@@ -5,11 +5,13 @@ A Minecraft plugin/mod registry.
 ## Project Status
 |Stage              |Status     |
 |-------------------|-----------|
-|Alpha Development  |Current    |
+|[Alpha Development](https://github.com/HexagonMinecraft/mc-registry/milestone/1)  |Current    |
 |Public Beta        |Not Started|
-|Beta Development   |Not Started|
+|[Beta Development](https://github.com/HexagonMinecraft/mc-registry/milestone/2)   |Not Started|
 
-## Installation
+## Run Localy
+_This requires MongoDB to be installed._
+
 First, clone the repository. 
 ```bash
 $ git clone https://github.com/HexagonMinecraft/mc-registry.git
