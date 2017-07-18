@@ -12,6 +12,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
+const helmet = require('helmet');
 
 require('./api/users/user.model');
 require('./config/passport');
@@ -21,6 +22,7 @@ const port = process.env.PORT || 3000;
 const config = require('./config/config');
 const mongoAddress = config.dbUrl();
 
+app.use(helmet());
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(morgan('dev'));
 app.use(session({
