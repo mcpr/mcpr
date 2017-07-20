@@ -6,6 +6,7 @@ const config = {
     dbPort: env.DB_PORT || '27017',
     dbUsername: env.DB_USER || '',
     dbPassword: env.DB_PASS || '',
+    secret: env.MCPR_KEY || '',
     dbUrl: function () {
         let dbUrl = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
         return dbUrl;

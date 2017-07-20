@@ -26,7 +26,7 @@ app.use(helmet());
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(morgan('dev'));
 app.use(session({
-    secret: process.env.MCPR_KEY,
+    secret: config.secret,
     resave: false,
     saveUninitialized: false
 })); // session secret

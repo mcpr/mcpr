@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const key = process.env.MCPR_KEY;
+const config = require('../../config/config');
+const key = config.secert;
 
 const userSchema = new Schema({
     email: {
@@ -19,6 +20,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    imageUrl: String,
     hash: String,
     salt: String
 });

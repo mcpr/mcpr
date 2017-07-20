@@ -30,6 +30,21 @@ angular
                 templateUrl: 'how/how.html',
                 controller: 'HowCtrl'
             })
+            .state('login', {
+                url: '/login',
+                templateUrl: 'login/login.html',
+                controller: 'LoginCtrl'
+            })
+            .state('signup', {
+                url: '/signup',
+                templateUrl: 'signup/signup.html',
+                controller: 'SignupCtrl'
+            })
+            .state('why', {
+                url: '/why',
+                templateUrl: 'why/why.html',
+                controller: 'WhyCtrl'
+            })
             .state('how', {
                 url: '/how',
                 templateUrl: 'how/how.html',
@@ -39,11 +54,6 @@ angular
                 url: '/notfound',
                 templateUrl: 'notfound/notfound.html',
                 controller: 'NotFoundCtrl'
-            })
-            .state('why', {
-                url: '/why',
-                templateUrl: 'why/why.html',
-                controller: 'WhyCtrl'
             });
 
         $urlRouterProvider.otherwise('/notfound');

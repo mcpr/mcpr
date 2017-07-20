@@ -19,7 +19,7 @@ module.exports = function (app) {
      * GET /api/plugins
      */
     apiRouter.use('/plugins', require('./plugins/index'));
-    apiRouter.use('/auth', require('./users/index'));
+    apiRouter.use('/users', require('./users/index'));
 
     /**
      * @api {get} /healthcheck Health Check
