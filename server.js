@@ -3,6 +3,8 @@ const app = express();
 const nEnv = app.get('env');
 const os = require('os');
 
+const newrelic = require('newrelic');
+
 require('./api/users/user.model');
 
 // Express config

@@ -27,13 +27,13 @@ module.exports = function (app) {
     app.use(passport.session());
     app.use(express.static(config.rootPath + '/public'));
 
+    // error handlers
+    // Catch unauthorised errors
     app.use(function (err, req, res, next) {
         console.error(err.message);
         next(err);
     });
 
-    // error handlers
-    // Catch unauthorised errors
     app.use(function (err, req, res, next) {
         if (err.name === 'UnauthorizedError') {
             res.status(401);
