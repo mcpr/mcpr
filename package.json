@@ -45,7 +45,7 @@
     "mongoose": "^4.10.5",
     "morgan": "^1.8.2",
     "newrelic": "^2.0.2",
-    "passport": "^0.3.2",
+    "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "querymen": "^2.1.1",
     "request-promise": "^4.2.1",
