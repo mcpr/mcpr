@@ -6,7 +6,7 @@ exports.model = Plugin
  * @api {get} /plugins Request Plugin List
  * @apiName GetPlugins
  * @apiGroup Plugin
- * 
+ *
  * @apiSuccess {Array} plugins       List of plugins.
  * 
  * @apiExample {curl} Example usage:
