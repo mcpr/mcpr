@@ -8,7 +8,7 @@ exports.model = Plugin
  * @apiGroup Plugin
  *
  * @apiSuccess {Array} plugins       List of plugins.
- * 
+ *
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/plugins
  */
@@ -31,7 +31,7 @@ exports.all = function (req, res, next) {
  * @api {post} /plugins Create Plugin
  * @apiName CreatePlugin
  * @apiGroup Plugin
- * 
+ *
  * @apiParam  {String} _id       ID of plugin
  * @apiParam  {String} short_description       A short description of the plugin
  * @apiParam  {String} author       The author's user ID
@@ -67,7 +67,7 @@ exports.create = function (req, res, next) {
  * @apiName GetPlugin
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
- * 
+ *
  * @apiSuccess {String} _id       ID of plugin
  * @apiSuccess {String} short_description       A short description of the plugin
  * @apiSuccess {String} author       The author's user ID
@@ -122,9 +122,8 @@ exports.show = function (req, res, next) {
  * @api {put} /plugins/:id Update Plugin
  * @apiName UpdatePlugin
  * @apiGroup Plugin
- * 
+ *
  * @apiParam {String} id ID of plugin
- * 
  */
 exports.update = function (req, res) {
   var updatedPlugin = req.body
@@ -154,7 +153,7 @@ exports.update = function (req, res) {
  * @apiName DeletePlugin
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
- * 
+ *
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/plugins/dynmap
  */
