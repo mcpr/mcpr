@@ -2,9 +2,9 @@
     <ul id="dropdown-user" class="dropdown-content">
         <div ng-if="$root.isAuthenticated">
             <li><a ui-sref="profile">Profile</a></li>
-            <li><a href="/create">Create</a></li>
+            <li><a ui-sref="create">Create</a></li>
             <li class="divider"></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a ng-click="logout()">Logout</a></li>
         </div>
         <div ng-if="!$root.isAuthenticated">
             <li><a ui-sref="login">Login</a></li>
@@ -17,7 +17,13 @@
                 <a href="/" class="brand-logo">MCPR <small>Alpha</small></a>
                 <a href='javascript:void(0);' data-activates="nav-mobile" dropdown class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul id="nav" class="right hide-on-med-and-down">
-                    <li><a class="dropdown-button" href='javascript:void(0);' dropdown data-activates="dropdown-user">User<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li>
+                        <a class="dropdown-button" href='javascript:void(0);' dropdown data-activates="dropdown-user">
+                            <span ng-if="profile">{{profile.username}}</span>
+                            <span ng-if="!profile">User</span>
+                            <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
                     <li><a ui-sref="why">Why?</a></li>
                     <li><a href="/docs/api" target="_self">Docs</a></li>
                     <li><a href="https://github.com/HexagonMinecraft/mc-registry" target="_blank">GitHub</a></li>

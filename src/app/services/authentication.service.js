@@ -4,29 +4,40 @@ angular.module('app')
     .service('auth', function ($http, $window, jwtHelper, $state, $q) {
         var saveToken = function (token) {
             $window.localStorage['id_token'] = token;
-            console.log('Token saved!', token);
         };
 
         var getToken = function () {
-            return $window.localStorage['id_token'];
+            var token = $window.localStorage['id_token']
+            if (token != undefined || null || '') {
+                return token;
+            } else {
+                return false
+            }
         };
 
         var isLoggedIn = function () {
-            var expired = jwtHelper.isTokenExpired(getToken());
-            if (expired) {
-                return false;
+            if (getToken()) {
+                var expired = jwtHelper.isTokenExpired(getToken());
+                if (expired) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
-                return true;
+                return false;
             }
         };
 
         var logout = function () {
             $window.localStorage.removeItem('id_token');
+            console.log('Logging out!')
+            $state.go('home').then(function (result) {
+                $window.location.reload();
+            });
         };
 
         var currentUser = function () {
             var deferred = $q.defer();
-            console.log(isLoggedIn);
             if (isLoggedIn()) {
                 $http.get('/api/users/profile').then(function (res) {
                     return deferred.resolve(res);
@@ -48,9 +59,10 @@ angular.module('app')
 
                     var tokenPayload = jwtHelper.decodeToken(expToken);
                     var date = jwtHelper.getTokenExpirationDate(expToken);
-                    console.log(tokenPayload);
-                    console.log(date);
-                    $state.go('profile');
+
+                    $state.go('profile').then(function (result) {
+                        $window.location.reload();
+                    });
                 }).catch(function (err) {
                     if (err.status === 401) {
                         return Materialize.toast(err.data.message, 4000);
