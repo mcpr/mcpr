@@ -1,12 +1,12 @@
 <div>
     <ul id="dropdown-user" class="dropdown-content">
-        <div ng-if="!$root.isAuthenticated">
+        <div ng-if="$root.isAuthenticated">
             <li><a ui-sref="profile">Profile</a></li>
             <li><a href="/create">Create</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Logout</a></li>
         </div>
-        <div ng-if="$root.isAuthenticated">
+        <div ng-if="!$root.isAuthenticated">
             <li><a ui-sref="login">Login</a></li>
             <li><a ui-sref="signup">Signup</a></li>
         </div>
