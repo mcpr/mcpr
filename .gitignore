@@ -41,3 +41,4 @@ public/build/
 public/docs/
 node_modules/
 bower_components/
+.env

@@ -7,9 +7,11 @@ const auth = jwt({
     userProperty: 'payload'
 });
 const controller = require('./profile.controller');
+const authController = require('./authentication.controller');
 
-router.get('/profile', auth, controller.profileRead);
-router.get('/', controller.showAll);
-router.post('/', controller.create);
+router.get('/profile', auth, authController.profileRead);
+router.get('/', authController.showAll);
+router.post('/signup', authController.register);
+router.post('/login', authController.login);
 
 module.exports = router;

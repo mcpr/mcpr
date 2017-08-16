@@ -4,5 +4,6 @@ angular
     .module('app', [
         'ui.router',
         'ui.materialize',
-        'ng-showdown'
+        'ng-showdown',
+        'angular-jwt'
     ]);

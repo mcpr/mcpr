@@ -31,6 +31,7 @@
     "angular-sanitize": "^1.6.4",
     "showdown": "^1.7.1",
     "moment": "^2.18.1",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "angular-jwt": "^0.1.9"
   }
 }

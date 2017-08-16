@@ -1,5 +1,4 @@
 const express = require('express');
-const newrelic = require('newrelic');
 
 module.exports = function (app) {
     const router = express.Router();
@@ -12,8 +11,7 @@ module.exports = function (app) {
         }
         res.render('app', {
             currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl,
-            pluginName: pluginId,
-            nreum: newrelic.getBrowserTimingHeader()
+            pluginName: pluginId
         });
     });
 

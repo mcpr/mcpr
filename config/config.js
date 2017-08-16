@@ -10,7 +10,12 @@ const config = {
     secret: env.MCPR_KEY || '',
     port: process.env.PORT || 3000,
     dbUrl: function () {
-        let dbUrl = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
+        let dbUrl;
+        if (env.DB_USER && env.DB_PASS) {
+            dbUrl = `mongodb://${env.DB_USER}:${env.DB_PASS}@${config.dbAdress}:${config.dbPort}/${config.dbName}`;
+        } else {
+            dbUrl = `mongodb://${config.dbAdress}:${config.dbPort}/${config.dbName}`;
+        }
         return dbUrl;
     },
     rootPath: path.normalize(__dirname + '/../')

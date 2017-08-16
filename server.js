@@ -3,7 +3,8 @@ const app = express();
 const nEnv = app.get('env');
 const os = require('os');
 
-const newrelic = require('newrelic');
+// Setup ENV
+require('dotenv').config();
 
 require('./api/users/user.model');
 

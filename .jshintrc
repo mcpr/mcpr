@@ -59,6 +59,7 @@
     "$": true,
     "angular": true,
     "moment": true,
-    "addImgClass": true
+    "addImgClass": true,
+    "Materialize": true
   }
 }

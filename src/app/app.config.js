@@ -2,7 +2,21 @@
 
 angular
     .module('app')
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .run(function (authManager, $rootScope) {
+        authManager.checkAuthOnRefresh();
+        authManager.redirectWhenUnauthenticated();
+        $rootScope.$on('tokenHasExpired', function () {
+            console.log('Your session has expired!');
+        });
+    })
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider) {
+        jwtOptionsProvider.config({
+            tokenGetter: ['auth', function (auth) {
+                return localStorage.getItem('id_token');
+            }],
+            unauthenticatedRedirectPath: '/login'
+        });
+        $httpProvider.interceptors.push('jwtInterceptor');
         $locationProvider.html5Mode(true);
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
@@ -34,6 +48,11 @@ angular
                 url: '/login',
                 templateUrl: 'login/login.html',
                 controller: 'LoginCtrl'
+            })
+            .state('profile', {
+                url: '/user/profile',
+                templateUrl: 'profile/profile.html',
+                controller: 'ProfileCtrl'
             })
             .state('signup', {
                 url: '/signup',

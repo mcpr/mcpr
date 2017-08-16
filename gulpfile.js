@@ -33,7 +33,8 @@ var paths = {
             bowerFolder + 'angular-sanitize/angular-sanitize.js',
             bowerFolder + 'showdown/dist/showdown.js',
             bowerFolder + 'ng-showdown/dist/ng-showdown.js',
-            bowerFolder + 'moment/min/moment.min.js'
+            bowerFolder + 'moment/min/moment.min.js',
+            bowerFolder + 'angular-jwt/dist/angular-jwt.js'
         ],
         custom: './src/js/**/*.js',
         dist: `${dist}/js/`
@@ -280,5 +281,6 @@ gulp.task('serve', ['watch'], function () {
         proxy: 'http://localhost:3000',
         files: ['public/**/*.*'],
         port: 7000,
+        reloadDelay: 3000
     });
 });
