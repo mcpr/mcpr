@@ -15,6 +15,10 @@ const ngAnnotate = require('gulp-ng-annotate');
 const browserSync = require('browser-sync').create();
 const templateCache = require('gulp-angular-templatecache');
 const argv = require('yargs').argv;
+const eslint = require('gulp-eslint');
+const eslintReporter = require('eslint-html-reporter');
+const path = require('path');
+const fs = require('fs')
 
 
 // config and paths
@@ -69,37 +73,41 @@ var paths = {
         dist: `${dist}/app/`
     },
     clean: [dist, './tests'],
-    lint: [
-        './**/*.js',
-        '!./node_modules/**/*.js',
-        '!./bower_components/**/*.js',
-        '!./public/**/*.js',
-        '!./gulpfile.js',
-    ]
+    lint: {
+        server: [
+            './api/**/*.js',
+            './config/**/*.js',
+            './lib/**/*.js',
+            './server.js'
+        ]
+    }
 }
 
 gulp.task('lint', ['clean:tests'], function () {
+    const testDir = './tests/';
+    const reportFile = path.join(__dirname, testDir, 'eslint-report.html');
+    const eslintConfig = path.join(__dirname, '.eslintrc.json');
     if (argv.fail) {
-        return gulp.src(paths.lint)
-            .pipe(jshint())
-            .pipe(jshint.reporter('jshint-stylish', {
-                verbose: true
+        return gulp.src(paths.lint.server)
+            .pipe(eslint(eslintConfig))
+            .pipe(eslint.format())
+            .pipe(eslint.format(eslintReporter, function (results) {
+                if (!fs.existsSync(testDir)) {
+                    fs.mkdirSync(testDir);
+                }
+                fs.writeFileSync(path.join(reportFile), results);
             }))
-            .pipe(jshint.reporter('gulp-jshint-html-reporter', {
-                filename: __dirname + '/tests/jshint-output.html',
-                createMissingFolders: true
-            }))
-            .pipe(jshint.reporter('fail'));
+            .pipe(eslint.failAfterError());
     }
-    gulp.src(paths.lint)
-        .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish', {
-            verbose: true
+    return gulp.src(paths.lint.server)
+        .pipe(eslint(eslintConfig))
+        .pipe(eslint.format(eslintReporter, function (results) {
+            if (!fs.existsSync(testDir)) {
+                fs.mkdirSync(testDir);
+            }
+            fs.writeFileSync(path.join(reportFile), results);
         }))
-        .pipe(jshint.reporter('gulp-jshint-html-reporter', {
-            filename: __dirname + '/tests/jshint-output.html',
-            createMissingFolders: true
-        }));
+        .pipe(eslint.format());
 });
 
 gulp.task('clean', function () {

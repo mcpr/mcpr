@@ -1,4 +1,4 @@
-# MCPR [![Greenkeeper badge](https://badges.greenkeeper.io/HexagonMinecraft/mc-registry.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry) [![Known Vulnerabilities](https://snyk.io/test/github/hexagonminecraft/mc-registry/badge.svg)](https://snyk.io/test/github/hexagonminecraft/mc-registry)
+# MCPR [![Greenkeeper badge](https://badges.greenkeeper.io/HexagonMinecraft/mc-registry.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/HexagonMinecraft/mc-registry.svg?branch=master)](https://travis-ci.org/HexagonMinecraft/mc-registry) [![Known Vulnerabilities](https://snyk.io/test/github/hexagonminecraft/mc-registry/badge.svg)](https://snyk.io/test/github/hexagonminecraft/mc-registry) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 A Minecraft plugin/mod registry. 
 

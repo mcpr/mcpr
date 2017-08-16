@@ -5,4 +5,4 @@ ignore: {}
 patch:
   'npm:ms:20170412':
     - bcrypt > node-pre-gyp > tar-pack > debug > ms:
-        patched: '2017-08-16T01:48:02.479Z'
+        patched: '2017-08-16T15:27:04.737Z'

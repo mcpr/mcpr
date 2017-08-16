@@ -1,17 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const jwt = require('express-jwt');
-const config = require('../../config/config');
+const express = require('express')
+const router = express.Router()
+const jwt = require('express-jwt')
+const config = require('../../config/config')
 const auth = jwt({
-    secret: config.secret,
-    userProperty: 'payload'
-});
-const controller = require('./profile.controller');
-const authController = require('./authentication.controller');
+  secret: config.secret,
+  userProperty: 'payload'
+})
+const authController = require('./authentication.controller')
 
-router.get('/profile', auth, authController.profileRead);
-router.get('/', authController.showAll);
-router.post('/signup', authController.register);
-router.post('/login', authController.login);
+router.get('/profile', auth, authController.profileRead)
+router.get('/', authController.showAll)
+router.post('/signup', authController.register)
+router.post('/login', authController.login)
 
-module.exports = router;
+module.exports = router

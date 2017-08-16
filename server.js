@@ -1,34 +1,34 @@
-const express = require('express');
-const app = express();
-const nEnv = app.get('env');
-const os = require('os');
+const express = require('express')
+const app = express()
+const nEnv = app.get('env')
+const os = require('os')
 
 // Setup ENV
-require('dotenv').config();
+require('dotenv').config()
 
-require('./api/users/user.model');
+require('./api/users/user.model')
 
 // Express config
-require('./config/express')(app);
+require('./config/express')(app)
 
 // Mongoose config
-require('./config/mongoose')();
+require('./config/mongoose')()
 
 // Passport config
-require('./config/passport');
+require('./config/passport')
 
 // Routes
-require('./config/routes')(app);
+require('./config/routes')(app)
 
-const config = require('./config/config');
+const config = require('./config/config')
 
-app.listen(config.port);
+app.listen(config.port)
 
-console.log(`Server Listening on port ${config.port}`);
+console.log(`Server Listening on port ${config.port}`)
 if (nEnv === 'development') {
-    console.log(`Web App: http://localhost:${config.port}/`);
-    console.log(`Web App: http://localhost:${config.port}/api`);
+  console.log(`Web App: http://localhost:${config.port}/`)
+  console.log(`Web App: http://localhost:${config.port}/api`)
 } else {
-    console.log(`Web App: http://${os.hostname()}:${config.port}/`);
-    console.log(`Web App: http://${os.hostname()}:${config.port}/api`);
+  console.log(`Web App: http://${os.hostname()}:${config.port}/`)
+  console.log(`Web App: http://${os.hostname()}:${config.port}/api`)
 }
