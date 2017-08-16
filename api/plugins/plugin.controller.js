@@ -81,7 +81,7 @@ exports.create = function (req, res, next) {
  * @apiSuccess {String} readme       The README.md file
  * @apiSuccess {String} license       The license of the plugin
  * @apiSuccess {Array} keywords       List of plugin keywords
- * 
+ *
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/plugins/dynmap
  * @apiSuccessExample {json} Success-Response:
