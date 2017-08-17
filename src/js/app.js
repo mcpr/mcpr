@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('img').addClass('responsive-img');
     $('.button-collapse').sideNav();
+    $('.collapsible').collapsible();
 });
 
 function addImgClass() {
