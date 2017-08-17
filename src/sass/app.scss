@@ -19,6 +19,20 @@ nav {
 .card.green.darken-3 a {
     color: #000036;
 }
+
 body a {
     color: #000036;
+}
+
+.profile {
+    margin-top: 20px;
+    .profile-card {
+        text-align: center;
+        .socail-list {
+            list-style: none;
+        }
+    }
+    .profile-image {
+        margin-top: 20px;
+    }
 }

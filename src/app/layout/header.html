@@ -1,21 +1,20 @@
 <div>
-    <ul id="dropdown-user" class="dropdown-content">
-        <div ng-if="$root.isAuthenticated">
-            <li><a ui-sref="profile">Profile</a></li>
-            <li><a ui-sref="create">Create</a></li>
-            <li class="divider"></li>
-            <li><a ng-click="logout()">Logout</a></li>
-        </div>
-        <div ng-if="!$root.isAuthenticated">
-            <li><a ui-sref="login">Login</a></li>
-            <li><a ui-sref="signup">Signup</a></li>
-        </div>
-    </ul>
     <div class="navbar-fixed">
-        <nav class="top-nav">
-            <div class="nav-wrapper green darken-4">
+        <ul id="dropdown-user" class="dropdown-content">
+            <div ng-if="$root.isAuthenticated">
+                <li><a ui-sref="profile">Profile</a></li>
+                <li><a ui-sref="create">Create</a></li>
+                <li class="divider"></li>
+                <li><a ng-click="logout()">Logout</a></li>
+            </div>
+            <div ng-if="!$root.isAuthenticated">
+                <li><a ui-sref="login">Login</a></li>
+                <li><a ui-sref="signup">Signup</a></li>
+            </div>
+        </ul>
+        <nav class="green darken-4" role="navigation">
+            <div class="nav-wrapper container">
                 <a href="/" class="brand-logo">MCPR <small>Alpha</small></a>
-                <a href='javascript:void(0);' data-activates="nav-mobile" dropdown class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul id="nav" class="right hide-on-med-and-down">
                     <li>
                         <a class="dropdown-button" href='javascript:void(0);' dropdown data-activates="dropdown-user">
@@ -28,10 +27,18 @@
                     <li><a href="/docs/api" target="_self">Docs</a></li>
                     <li><a href="https://github.com/HexagonMinecraft/mc-registry" target="_blank">GitHub</a></li>
                 </ul>
+                <a href='javascript:void(0);' data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             </div>
         </nav>
     </div>
-    <ul class="side-nav" id="nav-mobile">
+    <ul class="side-nav" id="slide-out">
+        <li>
+            <a class="dropdown-button" href='javascript:void(0);' dropdown data-activates="dropdown-user">
+                <span ng-if="profile">{{profile.username}}</span>
+                <span ng-if="!profile">User</span>
+                <i class="material-icons right">arrow_drop_down</i>
+            </a>
+        </li>
         <li><a ui-sref="why">Why?</a></li>
         <li><a href="/docs/api" target="_self">Docs</a></li>
         <li><a href="https://github.com/HexagonMinecraft/mc-registry" target="_blank">GitHub</a></li>

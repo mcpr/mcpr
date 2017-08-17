@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../../config/config')
 const key = config.secert
+const hashEmail = require('../../lib/hashEmail')
 
 const userSchema = new Schema({
   email: {
@@ -24,13 +25,17 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  imageUrl: String,
-  hash: String,
-  salt: String
+  hashedEmail: String,
+  website: String,
+  github: String,
+  gitlab: String,
+  twitter: String
 })
 
 userSchema.pre('save', function (next) {
-  var user = this
+  let user = this
+  let hashedEmail = hashEmail(user.email)
+
   if (this.isModified('password') || this.isNew) {
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
@@ -41,6 +46,7 @@ userSchema.pre('save', function (next) {
           return next(err)
         }
         user.password = hash
+        user.hashedEmail = hashedEmail
         next()
       })
     })

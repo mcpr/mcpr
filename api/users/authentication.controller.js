@@ -18,6 +18,11 @@ module.exports.profileRead = function (req, res) {
         if (err) {
           return handleError(res, err)
         }
+        if (user === null) {
+          return handleError(res, {
+            message: 'The requested user doesn\'t seem to exist.'
+          })
+        }
         res.status(200).json(user)
       })
   }
