@@ -2,19 +2,48 @@
 
 angular
     .module('app')
-    .run(function (authManager, $rootScope) {
+    .run(function (authManager, $rootScope, $transitions) {
         authManager.checkAuthOnRefresh();
         authManager.redirectWhenUnauthenticated();
         $rootScope.$on('tokenHasExpired', function () {
             console.log('Your session has expired!');
+            Materialize.toast('Your session has expired!', 4000);
+        });
+
+        // collapse sidenav when transitioning
+        $transitions.onStart({
+            to: '*'
+        }, function (trans) {
+            $('.button-collapse').sideNav('hide');
+        });
+
+        // make sure the user is authenticated
+        $transitions.onStart({
+            to: '*'
+        }, function (trans) {
+            var auth = trans.injector().get('auth');
+            var data = trans.targetState()._identifier.data;
+
+            if (data) {
+                if (data.requiresLogin) {
+                    console.log('Requires login');
+                    if (!auth.isLoggedIn()) {
+                        // User isn't authenticated. Redirect to login
+                        Materialize.toast('You must be logged in to view this page.', 4000);
+                        return trans.router.stateService.target('login');
+                    }
+                }
+            }
         });
     })
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider, $uiViewScrollProvider) {
         jwtOptionsProvider.config({
-            tokenGetter: ['auth', function (auth) {
-                return localStorage.getItem('id_token');
+            tokenGetter: ['auth', '$window', function (auth, $window) {
+                return $window.localStorage['id_token'];
             }],
-            unauthenticatedRedirectPath: '/login'
+            unauthenticatedRedirector: ['$state', function ($state) {
+                $state.go('login');
+            }]
         });
         $httpProvider.interceptors.push('jwtInterceptor');
         $locationProvider.html5Mode(true);
@@ -24,6 +53,7 @@ angular
             var $state = $injector.get('$state');
             $state.go('home');
         });
+
         $stateProvider
             .state('home', {
                 url: '/',
@@ -53,7 +83,10 @@ angular
             .state('profile', {
                 url: '/user/profile',
                 templateUrl: 'profile/profile.html',
-                controller: 'ProfileCtrl'
+                controller: 'ProfileCtrl',
+                data: {
+                    requiresLogin: true
+                }
             })
             .state('signup', {
                 url: '/signup',

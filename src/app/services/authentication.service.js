@@ -7,11 +7,11 @@ angular.module('app')
         };
 
         var getToken = function () {
-            var token = $window.localStorage['id_token']
+            var token = $window.localStorage['id_token'];
             if (token != undefined || null || '') {
                 return token;
             } else {
-                return false
+                return false;
             }
         };
 
