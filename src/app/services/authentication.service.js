@@ -42,9 +42,33 @@ angular.module('app')
                 $http.get('/api/users/profile').then(function (res) {
                     return deferred.resolve(res);
                 }).catch(function (err) {
-                    deferred.reject(err);
+                    return deferred.reject(err);
                 });
             }
+            return deferred.promise;
+        };
+
+        var updateProfile = function (user) {
+            var deferred = $q.defer();
+            $http.put('/api/users/profile', user)
+                .then(function (res) {
+                    return deferred.resolve(res)
+                })
+                .catch(function (err) {
+                    return deferred.reject(err)
+                });
+            return deferred.promise;
+        };
+        
+        var updatePassword = function (user) {
+            var deferred = $q.defer();
+            $http.put('/api/users/password', user)
+                .then(function (res) {
+                    return deferred.resolve(res)
+                })
+                .catch(function (err) {
+                    return deferred.reject(err)
+                });
             return deferred.promise;
         };
 
@@ -92,6 +116,8 @@ angular.module('app')
             getToken: getToken,
             logout: logout,
             isLoggedIn: isLoggedIn,
-            currentUser: currentUser
+            currentUser: currentUser,
+            updateProfile: updateProfile,
+            updatePassword: updatePassword
         };
     });

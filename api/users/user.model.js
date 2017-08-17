@@ -29,31 +29,36 @@ const userSchema = new Schema({
   website: String,
   github: String,
   gitlab: String,
-  twitter: String
+  twitter: String,
+  updatedAt: Date
 })
 
 userSchema.pre('save', function (next) {
   let user = this
-  let hashedEmail = hashEmail(user.email)
+  const hashPassword = require('../../lib/hashPassword')
 
-  if (this.isModified('password') || this.isNew) {
-    bcrypt.genSalt(10, function (err, salt) {
-      if (err) {
-        return next(err)
-      }
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        if (err) {
-          return next(err)
-        }
-        user.password = hash
-        user.hashedEmail = hashedEmail
-        next()
-      })
+  if (user.isModified('email') || user.isNew) {
+    let hashedEmail = hashEmail(user.email)
+    user.hashedEmail = hashedEmail
+  }
+
+  if (user.isModified('password') || user.isNew) {
+    hashPassword(user.password).then((res) => {
+      user.password = res
+      next()
+    }).catch((err) => {
+      return next(err)
     })
   } else {
     return next()
   }
 })
+
+userSchema.post('find', function (result) {
+  console.log('postfind')
+  console.log('find() returned ' + JSON.stringify(result))
+})
+
 // Create method to compare password input to password saved in database
 userSchema.methods.comparePassword = function (password, cb) {
   bcrypt.compare(password, this.password, function (err, isMatch) {

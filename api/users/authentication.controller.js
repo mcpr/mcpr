@@ -112,6 +112,62 @@ module.exports.login = function (req, res) {
   })
 }
 
+module.exports.updateProfile = (req, res) => {
+  let user = req.body
+  User.findById(user._id, function (err, doc) {
+    if (err) {
+      handleError(res, err)
+    }
+    doc.name = user.name
+    doc.website = user.website
+    doc.github = user.github
+    doc.gitlab = user.gitlab
+    doc.twitter = user.twitter
+    doc.save(function (err) {
+      if (err) {
+        handleError(res, err)
+      }
+      res.status(200).json({
+        success: true,
+        message: 'Profile updated!'
+      })
+    })
+  })
+}
+
+module.exports.updatePassword = (req, res) => {
+  let passwords = req.body
+  console.log(passwords)
+
+  User.findById(passwords.userID, function (err, user) {
+    if (err) {
+      handleError(res, err)
+    }
+    user.comparePassword(passwords.current, function (err, isMatch) {
+      if (err) {
+        return handleError(res, err)
+      }
+      if (isMatch && !err) {
+        user.password = passwords.new
+        user.save(function (err) {
+          if (err) {
+            return handleError(res, err)
+          }
+          return res.status(200).json({
+            success: true,
+            message: 'Password updated!'
+          })
+        })
+      } else {
+        return res.status(400).send({
+          success: false,
+          message: 'Incorrect current password.'
+        })
+      }
+    })
+  })
+}
+
 function handleError (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)

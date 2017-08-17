@@ -9,6 +9,8 @@ const auth = jwt({
 const authController = require('./authentication.controller')
 
 router.get('/profile', auth, authController.profileRead)
+router.put('/profile', auth, authController.updateProfile)
+router.put('/password', auth, authController.updatePassword)
 router.get('/', authController.showAll)
 router.post('/signup', authController.register)
 router.post('/login', authController.login)
