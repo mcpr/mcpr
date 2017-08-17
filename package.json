@@ -11,7 +11,7 @@
     "dev": "gulp serve",
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect",
+    "prepublish": "yarn run snyk-protect",
     "docs": "apidoc -i api/ -o apidoc/"
   },
   "repository": {
