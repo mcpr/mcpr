@@ -9,7 +9,7 @@ angular
             console.log('Your session has expired!');
         });
     })
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider, $uiViewScrollProvider) {
         jwtOptionsProvider.config({
             tokenGetter: ['auth', function (auth) {
                 return localStorage.getItem('id_token');
@@ -18,6 +18,7 @@ angular
         });
         $httpProvider.interceptors.push('jwtInterceptor');
         $locationProvider.html5Mode(true);
+        $uiViewScrollProvider.useAnchorScroll();
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get('$state');

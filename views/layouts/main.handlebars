@@ -8,7 +8,7 @@
     <meta property="og:site_name" content="mcpr">
     <meta property="og:url" content="{{currentUrl}}" />
     <meta property="og:description" content="Minecraft Plugin Registry {{plugin.short_description}}">
-    <meta name="description" content="Minecraft Plugin Registry {{plugin.short_description}}">
+    <meta name="description" content="Minecraft Plugin Registry {{plugin.short_description}}"> 
     {{#if pluginName}}
     <meta property="og:title" content="{{pluginName}}" />
     <title>{{pluginName}} - mcpr</title>
@@ -26,12 +26,13 @@
 </head>
 
 <body>
-    <div header></div>
-    <main>
-        <div ui-view></div>
-    </main>
-    <div ng-include="'layout/footer.html'"></div>
-
+    <div class="page-flexbox-wrapper">
+        <div header></div>
+        <main>
+            <ui-view autoscroll="true" />
+        </main>
+        <div ng-include="'layout/footer.html'"></div>
+    </div>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="/build/js/lib.min.js"></script>
     <script type="text/javascript" src="/build/js/custom.min.js"></script>
