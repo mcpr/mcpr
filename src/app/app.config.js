@@ -58,11 +58,11 @@ angular
                 controller: 'BukkitPluginCtrl'
             })
             /**
-             * User States
+             * Account States
              */
             .state('profile', {
                 url: '/me',
-                templateUrl: 'user/profile/profile.html',
+                templateUrl: 'account/profile/profile.html',
                 controller: 'ProfileCtrl',
                 data: {
                     requiresLogin: true
@@ -70,7 +70,7 @@ angular
             })
             .state('edit-profile', {
                 url: '/me/edit',
-                templateUrl: 'user/edit-profile/edit-profile.html',
+                templateUrl: 'account/edit-profile/edit-profile.html',
                 controller: 'EditProfileCtrl',
                 data: {
                     requiresLogin: true
@@ -78,7 +78,7 @@ angular
             })
             .state('edit-password', {
                 url: '/me/password',
-                templateUrl: 'user/edit-password/edit-password.html',
+                templateUrl: 'account/edit-password/edit-password.html',
                 controller: 'EditPasswordCtrl',
                 data: {
                     requiresLogin: true
@@ -86,12 +86,12 @@ angular
             })
             .state('login', {
                 url: '/login',
-                templateUrl: 'user/login/login.html',
+                templateUrl: 'account/login/login.html',
                 controller: 'LoginCtrl'
             })
             .state('signup', {
                 url: '/signup',
-                templateUrl: 'user/signup/signup.html',
+                templateUrl: 'account/signup/signup.html',
                 controller: 'SignupCtrl'
             })
             .state('notfound', {

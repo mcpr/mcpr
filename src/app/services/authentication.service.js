@@ -39,7 +39,7 @@ angular.module('app')
         var currentUser = function () {
             var deferred = $q.defer();
             if (isLoggedIn()) {
-                $http.get('/api/users/profile').then(function (res) {
+                $http.get('/api/users/me/profile').then(function (res) {
                     return deferred.resolve(res);
                 }).catch(function (err) {
                     return deferred.reject(err);
@@ -50,7 +50,7 @@ angular.module('app')
 
         var updateProfile = function (user) {
             var deferred = $q.defer();
-            $http.put('/api/users/profile', user)
+            $http.put('/api/users/me/profile', user)
                 .then(function (res) {
                     return deferred.resolve(res)
                 })
@@ -59,10 +59,10 @@ angular.module('app')
                 });
             return deferred.promise;
         };
-        
+
         var updatePassword = function (user) {
             var deferred = $q.defer();
-            $http.put('/api/users/password', user)
+            $http.put('/api/users/me/password', user)
                 .then(function (res) {
                     return deferred.resolve(res)
                 })
@@ -74,7 +74,8 @@ angular.module('app')
 
         var login = function (user) {
             console.log('Logging in!');
-            $http.post('/api/users/login', user, {
+            var deferred = $q.defer();
+            $http.post('/api/users/me/login', user, {
                     skipAuthorization: true,
                 })
                 .then(function (res) {
@@ -83,31 +84,25 @@ angular.module('app')
 
                     var tokenPayload = jwtHelper.decodeToken(expToken);
                     var date = jwtHelper.getTokenExpirationDate(expToken);
-
-                    $state.go('profile').then(function (result) {
-                        $window.location.reload();
-                    });
+                    return deferred.resolve(res);
                 }).catch(function (err) {
-                    if (err.status === 401) {
-                        return Materialize.toast(err.data.message, 4000);
-                    }
-                    Materialize.toast(err.statusText, 4000);
+                    return deferred.reject(err);
                 });
+            return deferred.promise;
         };
 
         var signup = function (user) {
             console.log('Signing up!');
-            $http.post('/api/users/signup', user, {
+            var deferred = $q.defer();
+            $http.post('/api/users/me/signup', user, {
                     skipAuthorization: true,
                 })
                 .then(function (res) {
-                    login(user);
+                    return deferred.resolve(res);
                 }).catch(function (err) {
-                    if (err.status === 409) {
-                        return Materialize.toast(err.data.message, 4000);
-                    }
-                    Materialize.toast(err.statusText, 4000);
+                    return deferred.reject(err);
                 });
+            return deferred.promise;
         };
         return {
             signup: signup,

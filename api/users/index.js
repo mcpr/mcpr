@@ -6,13 +6,14 @@ const auth = jwt({
   secret: config.secret,
   userProperty: 'payload'
 })
-const authController = require('./authentication.controller')
+const controller = require('./user.controller')
 
-router.get('/profile', auth, authController.profileRead)
-router.put('/profile', auth, authController.updateProfile)
-router.put('/password', auth, authController.updatePassword)
-router.get('/', authController.showAll)
-router.post('/signup', authController.register)
-router.post('/login', authController.login)
+router.get('/', controller.showAll)
+router.post('/me/login', controller.login)
+router.post('/me/signup', controller.register)
+router.get('/me/profile', auth, controller.profileRead)
+router.put('/me/profile', auth, controller.updateProfile)
+router.put('/me/password', auth, controller.updatePassword)
+router.get('/:username', controller.getUser)
 
 module.exports = router

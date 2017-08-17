@@ -12,7 +12,9 @@ angular.module('app')
             });
 
         $scope.save = function (user) {
-            $scope.errors = [];
+            /**
+             * BETTER FORM VALIDATION NEEDED
+             */
             if (user != undefined) {
                 if (user.currentPassword === undefined || null || '') {
                     $scope.currentError = 'Please specify your current password.';

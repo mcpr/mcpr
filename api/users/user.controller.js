@@ -12,31 +12,53 @@ module.exports.profileRead = function (req, res) {
     })
   } else {
     // Otherwise continue
-    User
-      .findById(req.payload.id)
-      .exec(function (err, user) {
-        if (err) {
-          return handleError(res, err)
-        }
-        if (user === null) {
-          return handleError(res, {
-            message: 'The requested user doesn\'t seem to exist.'
-          })
-        }
-        res.status(200).json(user)
-      })
-  }
-}
+    let query = User.findById(req.payload.id)
+    query.select('-password')
 
-module.exports.showAll = function (req, res) {
-  User
-    .find()
-    .exec(function (err, users) {
+    query.exec(function (err, user) {
       if (err) {
         return handleError(res, err)
       }
-      res.status(200).json(users)
+      if (user === null) {
+        return handleError(res, {
+          message: 'The requested user doesn\'t seem to exist.'
+        })
+      }
+      res.status(200).json(user)
     })
+  }
+}
+
+module.exports.getUser = function (req, res) {
+  let query = User.findOne({
+    username: req.params.username
+  })
+  query.select('-password')
+
+  query.exec(function (err, user) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (user === null) {
+      return handleError(res, {
+        message: 'The requested user doesn\'t seem to exist.'
+      })
+    }
+    res.status(200).json(user)
+  })
+}
+
+module.exports.showAll = function (req, res) {
+  let query = User.find()
+
+  query.select('-password')
+
+  query.exec(function (err, users) {
+    if (err) {
+      return handleError(res, err)
+    }
+    res.status(200).json(users)
+  })
 }
 
 module.exports.register = function (req, res) {
