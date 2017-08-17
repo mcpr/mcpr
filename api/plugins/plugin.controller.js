@@ -174,6 +174,20 @@ exports.delete = function (req, res, next) {
     })
 }
 
+module.exports.showByUser = function (req, res) {
+  Plugin
+    .find({author: req.params.username})
+    .exec(function (err, plugins) {
+      if (err) {
+        return handleError(res, err)
+      }
+      if (!plugins) {
+        return handle404(res)
+      }
+      return res.status(200).json(plugins)
+    })
+}
+
 function handleError (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)

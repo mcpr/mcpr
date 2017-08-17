@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="profile">
+        <div class="profile" ng-show="profile">
             <div class="col m8">
                 <h3>{{profile.username}}</h3>
                 <!--<h5>0 Member Groups</h5>-->
@@ -10,11 +10,13 @@
             </div>
             <div class="col m4 profile-card card-panel grey lighten-4">
                 <img class="circle responsive-img profile-image" ng-src="https://www.gravatar.com/avatar/{{profile.hashedEmail}}?s=500" alt="Profile picture"></img>
-                <h5>Your Account</h5>
-                <ul>
-                    <li><a ui-sref="edit-password">Change Password</a></li>
-                    <li><a ui-sref="edit-profile">Edit Profile</a></li>
-                </ul>
+                <div ng-show="currentUser">
+                    <h5>Your Account</h5>
+                    <ul>
+                        <li><a ui-sref="edit-password">Change Password</a></li>
+                        <li><a ui-sref="edit-profile">Edit Profile</a></li>
+                    </ul>
+                </div>
                 <h5>{{profile.name}}</h5>
                 <ul class="socail-list">
                     <li><a ng-href="mailto:{{profile.email}}">{{profile.email}}</a></li>
@@ -25,6 +27,12 @@
                     <li><a ng-href="/~{{profile.username}}">@{{profile.username}}</a> on MCPR</li>
                 </ul>
             </div>
+        </div>
+        <div class="col s12 center" ng-show="error">
+            <h3>{{username}}?</h3>
+            <h5>Sorry, there is no user by that name.</h5>
+            <p>If you believe that this is a bug, please <a href="mailto:noah@prail.net">let us know</a>. </p>
+            <p>Thank you, and we apologize for the inconvenience.</p>
         </div>
     </div>
 </div>

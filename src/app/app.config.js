@@ -58,6 +58,14 @@ angular
                 controller: 'BukkitPluginCtrl'
             })
             /**
+             * User States
+             */
+            .state('user', {
+                url: '/~:username',
+                templateUrl: 'user/user.html',
+                controller: 'UserCtrl'
+            })
+            /**
              * Account States
              */
             .state('profile', {

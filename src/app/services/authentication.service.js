@@ -48,6 +48,18 @@ angular.module('app')
             return deferred.promise;
         };
 
+        var username = function () {
+            var deferred = $q.defer();
+            currentUser()
+                .then(function (res) {
+                    return deferred.resolve(res.data.username);
+                })
+                .catch(function (err) {
+                    return deferred.resolve(false);
+                });
+            return deferred.promise;
+        }
+
         var updateProfile = function (user) {
             var deferred = $q.defer();
             $http.put('/api/users/me/profile', user)
@@ -113,6 +125,7 @@ angular.module('app')
             isLoggedIn: isLoggedIn,
             currentUser: currentUser,
             updateProfile: updateProfile,
-            updatePassword: updatePassword
+            updatePassword: updatePassword,
+            username: username
         };
     });
