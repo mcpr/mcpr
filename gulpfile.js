@@ -38,7 +38,8 @@ var paths = {
             bowerFolder + 'showdown/dist/showdown.js',
             bowerFolder + 'ng-showdown/dist/ng-showdown.js',
             bowerFolder + 'moment/min/moment.min.js',
-            bowerFolder + 'angular-jwt/dist/angular-jwt.js'
+            bowerFolder + 'angular-jwt/dist/angular-jwt.js',
+            bowerFolder + 'angular-materializecss-autocomplete/angular-materializecss-autocomplete.js'
         ],
         custom: './src/js/**/*.js',
         dist: `${dist}/js/`
@@ -46,7 +47,7 @@ var paths = {
     css: {
         lib: [
             bowerFolder + 'materialize/dist/css/materialize.css',
-            bowerFolder + 'font-awesome/css/font-awesome.css',
+            bowerFolder + 'font-awesome/css/font-awesome.css'
         ],
         sass: './src/sass/**/*.scss',
         dist: `${dist}/css/`

@@ -176,7 +176,9 @@ exports.delete = function (req, res, next) {
 
 module.exports.showByUser = function (req, res) {
   Plugin
-    .find({author: req.params.username})
+    .find({
+      author: req.params.username
+    })
     .exec(function (err, plugins) {
       if (err) {
         return handleError(res, err)
@@ -186,6 +188,26 @@ module.exports.showByUser = function (req, res) {
       }
       return res.status(200).json(plugins)
     })
+}
+
+module.exports.search = function (req, res) {
+  var query = {}
+  query.title = new RegExp(req.body.title, 'i')
+
+  let pluginQuery = Plugin.find(query)
+  pluginQuery.select('_id')
+
+  pluginQuery.exec(function (err, results) {
+    if (err) {
+      handleError(res, err)
+    }
+    let out = {}
+    for (var i in results) {
+      var id = results[i]._id
+      out[id] = null
+    }
+    return res.status(200).send(results)
+  })
 }
 
 function handleError (res, err) {

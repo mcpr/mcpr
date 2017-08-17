@@ -3,15 +3,8 @@
         <div class="center">
             <h3>The Ultimate Minecraft Plugin Registry</h3>
 
-            <form class="col s12">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">search</i>
-                        <input id="icon_prefix" type="text" class="validate" ng-model="search">
-                        <label for="icon_prefix">Search</label>
-                    </div>
-                </div>
-            </form>
+            <auto-complete model="searchTxt" func="searchFunc" property="_id" icon-prefix="search" label="Search" onModelChanged="searchComplete"></auto-complete>
+            
             <br>
             <h4>Popular Plugins</h4>
             <hr>
@@ -32,7 +25,7 @@
             <div ng-show="noPlugins && loaded">
                 <h5>Sorry, there are no plugins...</h5>
             </div>
-            <div ng-repeat="plugin in plugins | filter:search">
+            <div ng-repeat="plugin in plugins | filter:searchTxt">
                 <div class="clearfix" ng-if="$index % 3 == 0"></div>
                 <div class="col s4">
                     <div class="card green darken-3 hoverable">

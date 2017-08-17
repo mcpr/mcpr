@@ -5,5 +5,6 @@ angular
         'ui.router',
         'ui.materialize',
         'ng-showdown',
-        'angular-jwt'
+        'angular-jwt', 
+        'angularMaterializeAutoComplete'
     ]);

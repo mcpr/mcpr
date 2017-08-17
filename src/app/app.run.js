@@ -7,8 +7,7 @@ angular
         authManager.checkAuthOnRefresh();
         authManager.redirectWhenUnauthenticated();
         $rootScope.$on('tokenHasExpired', function () {
-            console.log('Your session has expired!');
-            Materialize.toast('Your session has expired!', 4000);
+            Materialize.toast('Your session has expired!');
         });
 
         auth.username().then(function (username) {
