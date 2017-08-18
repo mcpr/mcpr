@@ -1,9 +1,9 @@
 {
-  "name": "mc-registry",
-  "description": "A Minecraft plugin/mod registry.",
+  "name": "mcpr",
+  "description": "The ultimate Minecraft plugin registry.",
   "main": "server.js",
   "authors": [
-    "Hexagon Minecraft"
+    "Filiosoft, LLC"
   ],
   "license": "MIT",
   "keywords": [

@@ -1,7 +1,7 @@
 {
   "name": "mcpr",
   "version": "0.0.1",
-  "description": "A Minecraft plugin/mod registry. ",
+  "description": "The ultimate Minecraft plugin registry. ",
   "main": "server.js",
   "scripts": {
     "prestart": "apidoc -i api/ -o public/docs/api",
@@ -25,7 +25,7 @@
     "mods",
     "mcpr"
   ],
-  "author": "Hexagon Minecraft",
+  "author": "Filiosoft, LLC",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/HexagonMinecraft/mc-registry/issues"
