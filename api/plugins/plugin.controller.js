@@ -196,9 +196,16 @@ module.exports.showByUser = function (req, res) {
     })
 }
 
+/**
+ * @api {post} /plugins/search Search For Plugins
+ * @apiName SearchPlugins
+ * @apiGroup Plugin
+ *
+ * @apiParam  {String} query  Keywords to search for
+ */
 module.exports.search = function (req, res) {
   var query = {}
-  query.title = new RegExp(req.body.title, 'i')
+  query.title = new RegExp(req.body.query, 'i')
 
   let pluginQuery = Plugin.find(query)
   pluginQuery.select('_id')
@@ -222,7 +229,8 @@ module.exports.search = function (req, res) {
  * @apiGroup PluginVersions
  *
  * @apiParam  {String} id       ID of the plugin
- * @apiParam  {String} version       Version number of the plugin
+ * @apiParam  {String} version  Version number of the plugin
+ * @apiParam  {String} jar      Plugin jar file `multipart/form-data`
  */
 exports.upload = function (req, res, next) {
   const version = req.params.version

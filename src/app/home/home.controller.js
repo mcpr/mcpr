@@ -16,7 +16,7 @@ angular.module('app')
 
         $scope.searchFunc = function (search) {
             return $http.post('/api/plugins/search', {
-                    title: search
+                    query: search
                 })
                 .then(function (res) {
                     return res.data;
