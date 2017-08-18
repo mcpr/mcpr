@@ -2,12 +2,13 @@
 
 angular
     .module('app')
-    .run(function (authManager, $rootScope, $transitions, auth) {
+    .run(function (authManager, $rootScope, $transitions, auth, $window) {
         console.log('Welcome to the JavaScript console of MCPR! \nAre you having issues? Please report them here: \nhttps://github.com/HexagonMinecraft/mc-registry/issues');
         authManager.checkAuthOnRefresh();
         authManager.redirectWhenUnauthenticated();
         $rootScope.$on('tokenHasExpired', function () {
             Materialize.toast('Your session has expired!');
+            $window.localStorage.removeItem('id_token');
         });
 
         auth.username().then(function (username) {

@@ -1,4 +1,10 @@
 const Plugin = require('./plugin.model')
+const config = require('../../config/config')
+const aws = require('aws-sdk')
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const s3 = new aws.S3()
+const path = require('path')
 
 exports.model = Plugin
 
@@ -210,8 +216,68 @@ module.exports.search = function (req, res) {
   })
 }
 
+/**
+ * @api {post} /plugins/:id/versions/:version/upload Upload Plugin Jar
+ * @apiName UploadPlugin
+ * @apiGroup PluginVersions
+ *
+ * @apiParam  {String} id       ID of the plugin
+ * @apiParam  {String} version       Version number of the plugin
+ */
 exports.upload = function (req, res, next) {
-  res.send('Successfully uploaded ' + req.files.length + ' files!')
+  const version = req.params.version
+  const pluginID = req.params.id
+  const bucket = config.s3Bucket
+
+  const uploader = multer({
+    fileFilter: function (req, file, cb) {
+      if (path.extname(file.originalname) !== '.jar') {
+        req.filterError = 'Only jars are allowed'
+        return cb(new Error('Only jars are allowed'))
+      }
+      if (file.mimetype !== 'application/java-archive') {
+        req.filterError = 'Wrong mimetype. Only jars are allowed.'
+        return cb(new Error('Wrong mimetype. Only jars are allowed.'))
+      }
+
+      cb(null, true)
+    },
+    storage: multerS3({
+      s3: s3,
+      bucket: bucket,
+      metadata: function (req, file, cb) {
+        cb(null, {
+          fieldName: file.fieldname
+        })
+      },
+      key: function (req, file, cb) {
+        console.log(file)
+        cb(null, `${pluginID}/${version}/${pluginID}.jar`)
+      }
+    })
+
+  }).single('jar')
+
+  // upload the file to tmp storage
+  uploader(req, res, function (err) {
+    if (req.filterError) {
+      return handleError(res, {
+        success: false,
+        message: req.filterError
+      })
+    }
+    if (err) {
+      return handleError(res, err)
+    }
+    const file = req.file
+
+    res.status(200).json({
+      success: true,
+      message: 'File uploaded successfully!',
+      file: file,
+      result: file.location
+    })
+  })
 }
 
 function handleError (res, err) {

@@ -4,8 +4,8 @@ node_js:
 script: 
   - yarn test
   - yarn run docs
-  - mkdir apidoc/tests
-  - cp tests/eslint-report.html apidoc/tests/
+  - mkdir public/docs/tests
+  - cp tests/eslint-report.html public/docs/tests/
 deploy:
   provider: pages
   skip_cleanup: true

@@ -2,7 +2,7 @@ const env = process.env
 const path = require('path')
 
 const config = {
-  dbName: env.DB_NAME || 'mc-registry',
+  dbName: env.DB_NAME || 'mcpr',
   dbAdress: env.DB_ADDRESS || 'localhost',
   dbPort: env.DB_PORT || '27017',
   dbUsername: env.DB_USER || '',
@@ -18,8 +18,8 @@ const config = {
     }
     return dbUrl
   },
-  rootPath: path.normalize(path.join(__dirname, '/../'))
+  rootPath: path.normalize(path.join(__dirname, '/../')),
+  s3Bucket: env.S3_BUCKET || 'download.mcpr.io'
 }
-console.log(config.rootPath)
 
 module.exports = config
