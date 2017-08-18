@@ -27,22 +27,34 @@ angular
             .state('home', {
                 url: '/',
                 templateUrl: 'home/home.html',
-                controller: 'HomeCtrl'
+                controller: 'HomeCtrl',
+                data: {
+                    name: 'Home'
+                }
             })
             .state('how-single', {
                 url: '/how/:id',
                 templateUrl: 'how/how.html',
-                controller: 'HowCtrl'
+                controller: 'HowCtrl',
+                data: {
+                    name: 'How'
+                }
             })
             .state('why', {
                 url: '/why',
                 templateUrl: 'why/why.html',
-                controller: 'WhyCtrl'
+                controller: 'WhyCtrl',
+                data: {
+                    name: 'Why'
+                }
             })
             .state('how', {
                 url: '/how',
                 templateUrl: 'how/how.html',
-                controller: 'HowCtrl'
+                controller: 'HowCtrl',
+                data: {
+                    name: 'How'
+                }
             })
             /**
              * Plugin States
@@ -73,7 +85,8 @@ angular
                 templateUrl: 'account/profile/profile.html',
                 controller: 'ProfileCtrl',
                 data: {
-                    requiresLogin: true
+                    requiresLogin: true,
+                    name: 'Profile'
                 }
             })
             .state('edit-profile', {
@@ -81,7 +94,8 @@ angular
                 templateUrl: 'account/edit-profile/edit-profile.html',
                 controller: 'EditProfileCtrl',
                 data: {
-                    requiresLogin: true
+                    requiresLogin: true,
+                    name: 'Edit Profile'
                 }
             })
             .state('edit-password', {
@@ -89,23 +103,33 @@ angular
                 templateUrl: 'account/edit-password/edit-password.html',
                 controller: 'EditPasswordCtrl',
                 data: {
-                    requiresLogin: true
+                    requiresLogin: true,
+                    name: 'Edit Password'
                 }
             })
             .state('login', {
                 url: '/login',
                 templateUrl: 'account/login/login.html',
-                controller: 'LoginCtrl'
+                controller: 'LoginCtrl',
+                data: {
+                    name: 'Login'
+                }
             })
             .state('signup', {
                 url: '/signup',
                 templateUrl: 'account/signup/signup.html',
-                controller: 'SignupCtrl'
+                controller: 'SignupCtrl',
+                data: {
+                    name: 'Signup'
+                }
             })
             .state('notfound', {
                 url: '/notfound',
                 templateUrl: 'notfound/notfound.html',
-                controller: 'NotFoundCtrl'
+                controller: 'NotFoundCtrl',
+                data: {
+                    name: 'Not Found!'
+                }
             });
 
         $urlRouterProvider.otherwise('/notfound');

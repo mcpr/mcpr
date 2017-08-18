@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('app')
-    .controller('UserCtrl', function ($scope, $http, $transitions, $transition$, $rootScope) {
+    .controller('UserCtrl', function ($scope, $http, $transitions, $transition$, $rootScope, setTitle) {
         $scope.username = $transition$.params().username;
+        setTitle('@' + $scope.username);
+
         $http.get('/api/users/' + $scope.username)
             .then(function (res) {
                 $scope.profile = res.data;

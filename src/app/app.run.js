@@ -22,21 +22,29 @@ angular
             $('.button-collapse').sideNav('hide');
         });
 
+        $transitions.onSuccess({
+            to: '*'
+        }, function (trans) {
+            var setTitle = trans.injector().get('setTitle');
+            var data = trans.router.stateService.current.data
+            if (data && data.name) {
+                setTitle(data.name);
+            }
+        });
         // make sure the user is authenticated
         $transitions.onStart({
             to: '*'
         }, function (trans) {
             var auth = trans.injector().get('auth');
             var data = trans.targetState()._identifier.data;
+            var stateService = trans.router.stateService;
 
-            if (data) {
-                if (data.requiresLogin) {
-                    console.log('Requires login');
-                    if (!auth.isLoggedIn()) {
-                        // User isn't authenticated. Redirect to login
-                        Materialize.toast('You must be logged in to view this page.', 4000);
-                        return trans.router.stateService.target('login');
-                    }
+            if (data && data.requiresLogin) {
+                console.log('Requires login');
+                if (!auth.isLoggedIn()) {
+                    // User isn't authenticated. Redirect to login
+                    Materialize.toast('You must be logged in to view this page.', 4000);
+                    return stateService.target('login');
                 }
             }
         });

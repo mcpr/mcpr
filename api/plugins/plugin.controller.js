@@ -210,6 +210,10 @@ module.exports.search = function (req, res) {
   })
 }
 
+exports.upload = function (req, res, next) {
+  res.send('Successfully uploaded ' + req.files.length + ' files!')
+}
+
 function handleError (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)
