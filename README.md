@@ -6,7 +6,7 @@ The ultimate Minecraft plugin registry.
 |Stage              |Status     |
 |-------------------|-----------|
 |[Alpha Development](https://github.com/mcpr/mcpr/milestone/1)  |Current    |
-|Public Beta        |Not Started|
+|Public Alpha       |Not Started|
 |[Beta Development](https://github.com/mcpr/mcpr/milestone/2)   |Not Started|
 
 ## Run Localy
@@ -21,6 +21,12 @@ Then change to the directory of the repo and install the dependencies.
 ```bash
 $ cd mcpr
 $ yarn install
+```
+
+Set configuration.
+```bash
+$ cp example.env .env
+$ vi .env
 ```
 
 Finally, run the Node server. 

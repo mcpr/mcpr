@@ -3,7 +3,7 @@ const path = require('path')
 
 const config = {
   dbName: env.DB_NAME || 'mcpr',
-  dbAdress: env.DB_ADDRESS || 'localhost',
+  dbAdress: env.DB_HOST || 'localhost',
   dbPort: env.DB_PORT || '27017',
   dbUsername: env.DB_USER || '',
   dbPassword: env.DB_PASS || '',
