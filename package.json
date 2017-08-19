@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HexagonMinecraft/mc-registry.git"
+    "url": "git+https://github.com/mcpr/mcpr.git"
   },
   "keywords": [
     "minecraft",
@@ -28,9 +28,9 @@
   "author": "Filiosoft, LLC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HexagonMinecraft/mc-registry/issues"
+    "url": "https://github.com/mcpr/mcpr/issues"
   },
-  "homepage": "https://github.com/HexagonMinecraft/mc-registry#readme",
+  "homepage": "https://registry.HexagonMinecraft.com",
   "dependencies": {
     "aws-sdk": "^2.100.0",
     "bcrypt": "^1.0.2",

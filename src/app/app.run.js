@@ -3,7 +3,7 @@
 angular
     .module('app')
     .run(function (authManager, $rootScope, $transitions, auth, $window) {
-        console.log('Welcome to the JavaScript console of MCPR! \nAre you having issues? Please report them here: \nhttps://github.com/HexagonMinecraft/mc-registry/issues');
+        console.log('Welcome to the JavaScript console of MCPR! \nAre you having issues? Please report them here: \nhttps://github.com/mcpr/mcpr/issues');
         authManager.checkAuthOnRefresh();
         authManager.redirectWhenUnauthenticated();
         $rootScope.$on('tokenHasExpired', function () {

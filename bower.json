@@ -12,7 +12,7 @@
     "registry",
     "mods"
   ],
-  "homepage": "https://github.com/HexagonMinecraft/mc-registry",
+  "homepage": "https://registry.HexagonMinecraft.com",
   "private": true,
   "ignore": [
     "**/.*",
