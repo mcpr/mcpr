@@ -41,7 +41,11 @@
                     <code>mc install <span ng-show="plugin.namespace">{{plugin.namespace}}/</span>{{plugin._id}}</code>
                     <br>
                     <a href="/how/{{plugin._id}}">How?</a>
+                    <br>
+                    <h6><b>Download:</b> <a ng-href="/api/v1/plugins/{{plugin._id}}/download" target="_self">{{plugin._id}}.jar</a></h6>
 
+                    <h5>Stats</h5>
+                    <h6><b>Downloads:</b> {{plugin.downloads}}</h6>
                     <h6><b>Latest Version:</b> {{plugin.latest_version}}</h6>
                     <h6><b>Last Release:</b> {{plugin.latest_version_date | moment}}</h6>
                     <div ng-if="plugin.source">

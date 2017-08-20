@@ -17,6 +17,10 @@ const after = function (req, res) {
     let plugins = req.plugins
     return res.json(plugins)
   }
+  if (req.download) {
+    let download = req.download
+    return res.json(download)
+  }
   if (req.bukkitPlugins) {
     return res.json(req.bukkitPlugins)
   }
@@ -41,6 +45,8 @@ router.get('/@bukkitdev', bukkitController.all, after)
 router.get('/:id', controller.show, after)
 router.put('/:id', controller.update, after)
 router.delete('/:id', controller.delete, after)
+router.get('/:id/download', controller.download)
+router.get('/:id/download/:version', controller.download)
 router.post('/:id/versions/:version/upload', controller.upload, after)
 
 module.exports = router

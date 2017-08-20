@@ -5,6 +5,7 @@ const multer = require('multer')
 const multerS3 = require('multer-s3')
 const s3 = new aws.S3()
 const path = require('path')
+const request = require('request')
 
 exports.model = Plugin
 
@@ -124,6 +125,48 @@ exports.show = function (req, res, next) {
     })
 }
 
+/**
+ * @api {get} /plugins/:id/download Download Plugin
+ * @apiName DownloadPlugin
+ * @apiGroup Plugin
+ * @apiParam {String} id ID of plugin
+ * @apiParam {String} [version] Version of plugin
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
+ */
+exports.download = function (req, res, next) {
+  Plugin
+    .findById(req.params.id)
+    .exec(function (err, plugin) {
+      if (err) {
+        return handleError(res, err)
+      }
+      if (!plugin) {
+        return handle404(res, req.params.id)
+      }
+      let pluginObject = plugin.toObject()
+      let filename
+      let file
+      let id = req.params.id
+      let version = req.params.version
+      if (version) {
+        filename = path.basename(`${req.params.id}-${version}.jar`)
+        file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${version}/${id}.jar`
+      } else {
+        file = `https://s3.amazonaws.com/${config.s3Bucket}/${pluginObject.latestVersionUrl}`
+        filename = path.basename(`${id}.jar`)
+      }
+      plugin.downloads += 1
+      plugin.save(function (err, response) {
+        if (err) {
+          return handleError(res, err)
+        }
+        res.setHeader('content-disposition', `attachment; filename=${filename}`)
+        request(file).pipe(res)
+      })
+    })
+}
 /**
  * @api {put} /plugins/:id Update Plugin
  * @apiName UpdatePlugin

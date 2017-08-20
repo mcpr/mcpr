@@ -15,6 +15,7 @@ const PluginSchema = new Schema({
   title: String,
   latest_version_date: Date,
   latest_version: String,
+  downloads: Number,
   source: String,
   sourceGithub: Boolean,
   flavors: [],
