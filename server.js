@@ -6,7 +6,7 @@ const os = require('os')
 // Setup ENV
 require('dotenv').config()
 
-require('./api/users/user.model')
+require('./api/v1/users/user.model')
 
 // Express config
 require('./config/express')(app)

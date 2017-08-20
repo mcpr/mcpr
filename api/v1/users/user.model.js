@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const config = require('../../config/config')
+const config = require('../../../config/config')
 const key = config.secert
-const hashEmail = require('../../lib/hashEmail')
+const hashEmail = require('../../../lib/hashEmail')
 
 const userSchema = new Schema({
   email: {
@@ -35,7 +35,7 @@ const userSchema = new Schema({
 
 userSchema.pre('save', function (next) {
   let user = this
-  const hashPassword = require('../../lib/hashPassword')
+  const hashPassword = require('../../../lib/hashPassword')
 
   if (user.isModified('email') || user.isNew) {
     let hashedEmail = hashEmail(user.email)

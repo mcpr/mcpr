@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('app')
-    .controller('HomeCtrl', function ($scope, $http) {
+    .controller('HomeCtrl', function ($scope, $http, config) {
         $scope.loaded = false;
-        $http.get('/api/plugins')
+        $http.get(config.apiUrl + '/plugins')
             .then(function (res) {
                 $scope.plugins = res.data;
                 $scope.loaded = true;
@@ -15,7 +15,7 @@ angular.module('app')
             });
 
         $scope.searchFunc = function (search) {
-            return $http.post('/api/plugins/search', {
+            return $http.post(config.apiUrl + '/plugins/search', {
                     query: search
                 })
                 .then(function (res) {

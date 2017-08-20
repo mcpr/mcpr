@@ -1,6 +1,6 @@
-const bukkitApi = require('../../lib/bukkitApi')
-const slugify = require('../../lib/slug')
-const convertModel = require('../../lib/bukkitToMcpr')
+const bukkitApi = require('../../../lib/bukkitApi')
+const slugify = require('../../../lib/slug')
+const convertModel = require('../../../lib/bukkitToMcpr')
 
 exports.show = function (req, res, next) {
   bukkitApi.getPlugin(req.params.id)

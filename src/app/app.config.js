@@ -133,4 +133,7 @@ angular
             });
 
         $urlRouterProvider.otherwise('/notfound');
+    })
+    .constant('config', {
+        apiUrl: '/api/v1'
     });

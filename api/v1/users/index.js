@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const jwt = require('express-jwt')
-const config = require('../../config/config')
+const config = require('../../../config/config')
 const auth = jwt({
   secret: config.secret,
   userProperty: 'payload'

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-    .service('auth', function ($http, $window, jwtHelper, $state, $q) {
+    .service('auth', function ($http, $window, jwtHelper, $state, $q, config) {
         var saveToken = function (token) {
             $window.localStorage['id_token'] = token;
         };
@@ -39,7 +39,7 @@ angular.module('app')
         var currentUser = function () {
             var deferred = $q.defer();
             if (isLoggedIn()) {
-                $http.get('/api/users/me/profile').then(function (res) {
+                $http.get(config.apiUrl + '/users/me/profile').then(function (res) {
                     return deferred.resolve(res);
                 }).catch(function (err) {
                     return deferred.reject(err);
@@ -62,7 +62,7 @@ angular.module('app')
 
         var updateProfile = function (user) {
             var deferred = $q.defer();
-            $http.put('/api/users/me/profile', user)
+            $http.put(config.apiUrl + '/users/me/profile', user)
                 .then(function (res) {
                     return deferred.resolve(res)
                 })
@@ -74,7 +74,7 @@ angular.module('app')
 
         var updatePassword = function (user) {
             var deferred = $q.defer();
-            $http.put('/api/users/me/password', user)
+            $http.put(config.apiUrl + '/users/me/password', user)
                 .then(function (res) {
                     return deferred.resolve(res)
                 })
@@ -87,7 +87,7 @@ angular.module('app')
         var login = function (user) {
             console.log('Logging in!');
             var deferred = $q.defer();
-            $http.post('/api/users/me/login', user, {
+            $http.post(config.apiUrl + '/users/me/login', user, {
                     skipAuthorization: true,
                 })
                 .then(function (res) {
@@ -106,7 +106,7 @@ angular.module('app')
         var signup = function (user) {
             console.log('Signing up!');
             var deferred = $q.defer();
-            $http.post('/api/users/me/signup', user, {
+            $http.post(config.apiUrl + '/users/me/signup', user, {
                     skipAuthorization: true,
                 })
                 .then(function (res) {
