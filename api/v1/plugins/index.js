@@ -1,5 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const jwt = require('express-jwt')
+const config = require('../../../config/config')
+const auth = jwt({
+  secret: config.secret,
+  userProperty: 'payload'
+})
 
 const controller = require('./plugin.controller')
 const bukkitController = require('./plugin-bukkit.controller')
@@ -36,15 +42,15 @@ const after = function (req, res) {
 
 router.get('/', controller.all, after)
 router.post('/search', controller.search)
-router.post('/', controller.create, after)
+router.post('/', auth, controller.create, after)
 
 // bukkitdev
 router.get('/@bukkitdev/:id', bukkitController.show, after)
 router.get('/@bukkitdev', bukkitController.all, after)
 
 router.get('/:id', controller.show, after)
-router.put('/:id', controller.update, after)
-router.delete('/:id', controller.delete, after)
+router.put('/:id', auth, controller.update, after)
+router.delete('/:id', auth, controller.delete, after)
 router.get('/:id/download', controller.download)
 router.get('/:id/download/:version', controller.download)
 router.post('/:id/versions/:version/upload', controller.upload, after)
