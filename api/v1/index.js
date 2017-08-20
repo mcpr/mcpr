@@ -26,11 +26,11 @@ module.exports = function (app) {
    * @apiName HealthCheck
    * @apiGroup Health
    *
-   * @apiSuccess {String} node_check       Status of the Node check.
-   * @apiSuccess {String} db_check       Status of the database connection.
+   * @apiSuccess {String} nodeCheck       Status of the Node check.
+   * @apiSuccess {String} dbCheck       Status of the database connection.
    *
    * @apiExample {curl} Example usage:
-   *     curl -i https://registry.hexagonminecraft.com/api/healthcheck
+   *     curl -i https://registry.hexagonminecraft.com/api/v1/healthcheck
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {

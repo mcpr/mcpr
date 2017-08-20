@@ -17,7 +17,7 @@ exports.model = Plugin
  * @apiSuccess {Array} plugins       List of plugins.
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/plugins
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins
  */
 exports.all = function (req, res, next) {
   Plugin
@@ -90,7 +90,7 @@ exports.create = function (req, res, next) {
  * @apiSuccess {Array} keywords       List of plugin keywords
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/plugins/dynmap
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins/dynmap
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -133,7 +133,7 @@ exports.show = function (req, res, next) {
  * @apiParam {String} [version] Version of plugin
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
+ *     curl -i -o dynmap.jar https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
  */
 exports.download = function (req, res, next) {
   Plugin
@@ -204,7 +204,7 @@ exports.update = function (req, res) {
  * @apiParam {String} id ID of plugin
  *
  * @apiExample {curl} Example usage:
- *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/plugins/dynmap
+ *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/v1/plugins/dynmap
  */
 exports.delete = function (req, res, next) {
   let pluginId = req.params.id
