@@ -2,7 +2,7 @@
 
 MCPR is the ultimate Minecraft plugin registry! It stands for Minecraft Plugin Registry (Yeah, a pretty boring name).
 
-MCPR is built on the MEAN stack (`Express 4, Angular 1, Node 8`).
+MCPR is built on the MEAN stack (`MongoDB 3, Express 4, Angular 1, Node 8`).
 
 ## Core Project Team
 

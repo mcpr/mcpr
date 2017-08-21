@@ -37,14 +37,14 @@ Finally, run the Node server.
 $ yarn start
 ```
 
-- Web App: [localhost:3000](http://localhost:3000)
-- Web API: [localhost:3000/api](http://localhost:3000/api)
+- Web App: [http://localhost:3000](http://localhost:3000)
+- Web API: [http://localhost:3000/api](http://localhost:3000/api)
 
 
 ### Hosted Registry
 
-- Web App: [registry.hexagonminecraft.com](https://registry.hexagonminecraft.com)
-- Web API: [registry.hexagonminecraft.com/api](https://registry.hexagonminecraft.com/api)
+- Web App: [https://registry.hexagonminecraft.com](https://registry.hexagonminecraft.com)
+- Web API: [https://registry.hexagonminecraft.com/api](https://registry.hexagonminecraft.com/api)
 
 ## Documentation
 You can find MCPR's documentation here:
