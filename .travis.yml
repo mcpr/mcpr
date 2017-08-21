@@ -7,8 +7,8 @@ before_script:
 script: 
   - yarn test
   - yarn run docs
-  - mkdir public/docs/api/tests
-  - cp tests/eslint-report.html public/docs/api/tests/
+  - mkdir public/docs/tests
+  - cp tests/eslint-report.html public/docs/tests/
 deploy:
   provider: pages
   skip_cleanup: true
