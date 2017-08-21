@@ -7,12 +7,12 @@ before_script:
 script: 
   - yarn test
   - yarn run docs
-  - mkdir public/docs/tests
-  - cp tests/eslint-report.html public/docs/tests/
+  - mkdir docs-site/tests
+  - cp tests/eslint-report.html docs-site/tests/
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: public/docs
+  local_dir: docs-site
   github_token: $GITHUB_TOKEN
   on:
     branch: master

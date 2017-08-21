@@ -38,8 +38,8 @@ jspm_packages
 .vscode
 tests
 public/build/
-public/docs/
 node_modules/
 bower_components/
 .env
 package-lock.json
+docs-site/
