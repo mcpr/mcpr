@@ -6,7 +6,16 @@ site_author: Filiosoft, LLC
 repo_url: https://github.com/mcpr/mcpr/
 site_dir: docs-site
 pages:
-    - Home: index.md
-    - API Endpoints: api/index.md
+    - About The Project:
+      - About MCPR: index.md
+      - Why MCPR: about/why.md
+      - Software Comparison: about/comparison.md
+      - GPG Signature: about/gpg.md
+    - API: 
+      - MCPR API: api/index.md
+      - Endpoints: api/endpoints.md
 markdown_extensions:
     - admonition:
+    - footnotes:
+extra_css:
+  - https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
