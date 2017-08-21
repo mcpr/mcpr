@@ -117,7 +117,7 @@ module.exports.login = function (req, res) {
             id: user._id,
             username: user.username
           }, config.secret, {
-            expiresIn: 10080 // in seconds
+            expiresIn: 5184000 // in seconds
           })
           res.json({
             success: true,

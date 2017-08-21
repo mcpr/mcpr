@@ -18,7 +18,7 @@ GET /plugins
 Example of a valid API request using cURL and authentication via header:
 
 ```
-curl --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ" "https://registry.hexagonminecraft.com/api/v1/plugins"
+curl --header "Authorization: Bearer YOUR_JWT_TOKEN" "https://registry.hexagonminecraft.com/api/v1/plugins"
 ```
 
 The API uses JSON to serialize data. You don't need to specify .json at the end of an API URL.
@@ -44,7 +44,7 @@ Example of using the JWT token in the header:
 
 
 ```
-curl --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ" "https://registry.hexagonminecraft.com/api/v1/plugins"
+curl --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ" "https://registry.hexagonminecraft.com/api/v1/users/me/profile"
 ```
 
 #### Find Your JWT Token
