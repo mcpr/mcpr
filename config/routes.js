@@ -2,7 +2,7 @@ const express = require('express')
 
 module.exports = function (app) {
   const router = express.Router()
-  router.get(/^(?!.*(docs))/, (req, res) => {
+  router.get(/^(?!.*(docs|api))/, (req, res) => {
     let url = req.originalUrl
     let pluginId = false
     console.log(req.originalUrl)

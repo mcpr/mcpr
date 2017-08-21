@@ -1,0 +1,12 @@
+site_name: MCPR Docs
+site_description: MCPR - The ultimate Minecraft plugin registry documentation!
+theme: material
+copyright: Copyright &copy; 2017 Filiosoft, LLC
+site_author: Filiosoft, LLC
+repo_url: https://github.com/mcpr/mcpr/
+site_dir: public/docs
+pages:
+    - Home: index.md
+    - API Endpoints: api/index.md
+markdown_extensions:
+    - admonition:

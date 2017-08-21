@@ -25,13 +25,20 @@ module.exports = function (app) {
   app.use(cookieParser())
   app.use(passport.initialize())
   app.use(passport.session())
-  app.use(express.static(config.rootPath + '/public'))
 
   // error handlers
   // Catch unauthorised errors
   app.use(function (err, req, res, next) {
     console.error(err.message)
     next(err)
+  })
+
+  // api 404 handler
+  app.use(function (err, req, res, next) {
+    if (err) {
+      console.log(err)
+    }
+    console.log('Yo')
   })
 
   app.use(function (err, req, res, next) {
@@ -43,6 +50,7 @@ module.exports = function (app) {
     }
   })
 
+  app.use(express.static(config.rootPath + '/public'))
   app.engine('handlebars', exphbs({
     defaultLayout: 'main'
   }))
