@@ -41,7 +41,7 @@ const after = function (req, res) {
 }
 
 router.get('/', controller.all, after)
-router.post('/search', controller.search)
+router.get('/search', controller.search)
 router.post('/', auth, controller.create, after)
 
 // bukkitdev

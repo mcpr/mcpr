@@ -15,9 +15,7 @@ angular.module('app')
             });
 
         $scope.searchFunc = function (search) {
-            return $http.post(config.apiUrl + '/plugins/search', {
-                    query: search
-                })
+            return $http.get(config.apiUrl + '/plugins/search?q=' + search)
                 .then(function (res) {
                     return res.data;
                 }).catch(function (err) {

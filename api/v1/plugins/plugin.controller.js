@@ -16,12 +16,25 @@ exports.model = Plugin
  *
  * @apiSuccess {Array} plugins       List of plugins.
  *
+ * @apiParam  {string}  [sort]  Return projects sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return projects ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
+ *
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins
  */
 exports.all = function (req, res, next) {
+  let perPage = Math.max(0, req.query.per_page) || 50
+  let page = Math.max(0, req.query.page)
+  let sort = req.query.sort || 'desc'
+  let orderBy = req.query.order_by || 'downloads'
+  let sortObj = {}
+  sortObj[orderBy] = sort
+
   Plugin
     .find({})
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort(sortObj)
     .exec(function (err, plugins) {
       if (err) {
         return handleError(res, err)
@@ -167,6 +180,7 @@ exports.download = function (req, res, next) {
       })
     })
 }
+
 /**
  * @api {put} /plugins/:id Update Plugin
  * @apiName UpdatePlugin
@@ -223,11 +237,34 @@ exports.delete = function (req, res, next) {
     })
 }
 
+/**
+ * @api {get} /:username/plugins Get User's Plugins
+ * @apiName GetUsersPlugins
+ * @apiGroup Plugin
+ *
+ * @apiSuccess {Array} plugins       List of plugins.
+ *
+ * @apiParam  {string}  [sort]  Return projects sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return projects ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/users/nprail/plugins
+ */
 module.exports.showByUser = function (req, res) {
+  let perPage = Math.max(0, req.query.per_page) || 50
+  let page = Math.max(0, req.query.page)
+  let sort = req.query.sort || 'desc'
+  let orderBy = req.query.order_by || 'downloads'
+  let sortObj = {}
+  sortObj[orderBy] = sort
+
   Plugin
     .find({
       author: req.params.username
     })
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort(sortObj)
     .exec(function (err, plugins) {
       if (err) {
         return handleError(res, err)
@@ -240,18 +277,20 @@ module.exports.showByUser = function (req, res) {
 }
 
 /**
- * @api {post} /plugins/search Search For Plugins
+ * @api {get} /plugins/search Search For Plugins
  * @apiName SearchPlugins
  * @apiGroup Plugin
  *
- * @apiParam  {String} query  Keywords to search for
+ * @apiParam  {String} q  Keyword to search for 
+ * @apiExample {curl} Example usage:
+ *     curl -X "GET" https://registry.hexagonminecraft.com/api/v1/plugins/search?q=dynmap
  */
 module.exports.search = function (req, res) {
   var query = {}
-  query.title = new RegExp(req.body.query, 'i')
+  query.title = new RegExp(req.query.q, 'i')
 
   let pluginQuery = Plugin.find(query)
-  pluginQuery.select('_id')
+  pluginQuery.select('_id short_description')
 
   pluginQuery.exec(function (err, results) {
     if (err) {
