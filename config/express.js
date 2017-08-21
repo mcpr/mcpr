@@ -27,28 +27,28 @@ module.exports = function (app) {
   app.use(passport.session())
 
   // error handlers
-  // Catch unauthorised errors
-  app.use(function (err, req, res, next) {
-    console.error(err.message)
-    next(err)
-  })
+  function error404Handler (err, req, res, next) {
+    console.log(err)
+    console.log('ERROR')
+  }
 
-  // api 404 handler
-  app.use(function (err, req, res, next) {
-    if (err) {
-      console.log(err)
-    }
-    console.log('Yo')
-  })
-
-  app.use(function (err, req, res, next) {
+  function unauthorisedError (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
       res.status(401)
       res.json({
         'message': err.name + ': ' + err.message
       })
     }
-  })
+  }
+
+  function catchAllError (err, req, res, next) {
+    console.error(err.message)
+    next(err)
+  }
+
+  app.use(catchAllError)
+  app.use(error404Handler)
+  app.use(unauthorisedError)
 
   app.use(express.static(config.rootPath + '/public'))
   app.engine('handlebars', exphbs({
