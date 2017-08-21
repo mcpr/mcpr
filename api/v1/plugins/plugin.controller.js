@@ -16,8 +16,8 @@ exports.model = Plugin
  *
  * @apiSuccess {Array} plugins       List of plugins.
  *
- * @apiParam  {string}  [sort]  Return projects sorted in `asc` or `desc` order. Default is `desc`
- * @apiParam  {string}  [order_by]  Return projects ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
+ * @apiParam  {string}  [sort]  Return plugins sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins
@@ -244,8 +244,8 @@ exports.delete = function (req, res, next) {
  *
  * @apiSuccess {Array} plugins       List of plugins.
  *
- * @apiParam  {string}  [sort]  Return projects sorted in `asc` or `desc` order. Default is `desc`
- * @apiParam  {string}  [order_by]  Return projects ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
+ * @apiParam  {string}  [sort]  Return plugins sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
  *     curl -i https://registry.hexagonminecraft.com/api/v1/users/nprail/plugins

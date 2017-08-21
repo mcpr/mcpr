@@ -48,8 +48,32 @@ module.exports.getUser = function (req, res) {
   })
 }
 
+/**
+ * @api {get} /users Request User List
+ * @apiName GetUsers
+ * @apiGroup Users
+ *
+ * @apiSuccess {Array} users       List of users.
+ *
+ * @apiParam  {string}  [sort]  Return users sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return userse ordered by `updatedAt`, `username`, `name`, or `email` fields. Default is `updatedAt`
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/users?sort=asc&order_by=username
+ */
 module.exports.showAll = function (req, res) {
-  let query = User.find()
+  let perPage = Math.max(0, req.query.per_page) || 50
+  let page = Math.max(0, req.query.page)
+  let sort = req.query.sort || 'desc'
+  let orderBy = req.query.order_by || 'updatedAt'
+  let sortObj = {}
+  sortObj[orderBy] = sort
+
+  let query = User
+    .find()
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort(sortObj)
 
   query.select('-password')
 
