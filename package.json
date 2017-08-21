@@ -11,7 +11,7 @@
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",
     "prepublish": "yarn run snyk-protect",
-    "docs": "mkdocs build --clean && apidoc -i api/ -o docs-site/api"
+    "docs": "mkdocs build --clean && apidoc -i api/ -o docs-site/api/endpoints"
   },
   "repository": {
     "type": "git",
