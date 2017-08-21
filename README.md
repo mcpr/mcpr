@@ -6,10 +6,12 @@ The ultimate Minecraft plugin registry.
 |Stage              |Status     |
 |-------------------|-----------|
 |[Alpha Development](https://github.com/mcpr/mcpr/milestone/1)  |Current    |
-|Public Alpha       |Not Started|
+|Public Alpha       |Current|
 |[Beta Development](https://github.com/mcpr/mcpr/milestone/2)   |Not Started|
+|Public Beta        |Not Started|
 
-## Run Localy
+## Getting Started
+### Run Localy
 _This requires MongoDB to be installed._
 
 First, clone the repository. 
@@ -39,7 +41,29 @@ $ yarn start
 - Web API: [localhost:3000/api](http://localhost:3000/api)
 
 
-## Hosted Registry
+### Hosted Registry
 
 - Web App: [registry.hexagonminecraft.com](https://registry.hexagonminecraft.com)
 - Web API: [registry.hexagonminecraft.com/api](https://registry.hexagonminecraft.com/api)
+
+## Documentation
+You can find MCPR's documentation here:
+
+[MCPR Docs](https://mcpr.github.io/mcpr)
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our [code of conduct](CODE_OF_CONDUCT.md), and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/mcpr/mcpr/tags). 
+
+## Authors
+
+* **Noah Prail** - *Project Lead* - [@nprail](https://github.com/nprail)
+
+See also the list of [contributors](https://github.com/mcpr/mcpr/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details

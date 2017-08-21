@@ -12,7 +12,7 @@ You can search and install plugins from BukkitDev and Spigot Resources with MCPR
 ## MCPR CLI
 MCPR has a CLI! With the CLI you can easily setup a Minecraft server and install plugins with only a few commands!
 
-[Get MCPR-CLI GitHub](https://mcpr.github.io/mcpr-cli)
+[Get MCPR-CLI](https://mcpr.github.io/mcpr-cli)
 
 ## Fully Open Source
 MCPR and MCPR-CLI are open source under the [MIT](https://github.com/mcpr/mcpr/blob/master/LICENSE) license.
