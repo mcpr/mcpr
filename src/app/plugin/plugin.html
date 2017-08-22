@@ -31,14 +31,27 @@
             <div class="col s12">
                 <ul tabs>
                     <li class="tab col s6"><a class="active" href="#plugin">Overview</a></li>
-                    <li class="tab col s6"><a href="#versions">Versions</a></li>
+                    <li class="tab col s6"><a href="#versions">Versions <small>({{versions.length}})</small></a></li>
                 </ul>
             </div>
             <div class="col m8" id="plugin">
                 <div markdown-to-html="plugin.readme"></div>
             </div>
             <div class="col m8" id="versions">
-                <table class="striped bordered responsive-table highlight">
+                <div ng-hide="versionsLoaded" class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+                <table ng-show="versionsLoaded" class="striped bordered responsive-table highlight">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -51,24 +64,36 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>R</td>
-                            <td>v2.5.0</td>
-                            <td>4.66 MB</td>
-                            <td>Jun 10, 2017</td>
-                            <td>1.8+</td>
-                            <td>10,061</td>
-                        </tr>
-                        <tr>
-                            <td>R</td>
-                            <td>v2.4.0</td>
-                            <td>3.96 MB</td>
-                            <td>Feb 11, 2017</td>
-                            <td>1.8+</td>
-                            <td>16,984</td>
+                        <tr ng-repeat="version in versions | orderBy: '-created' track by $index" ng-show="version.size">
+                            <td tooltipped data-position="top" data-delay="150" data-tooltip="{{version.type | releaseType}}">{{version.type}}</td>
+                            <td><a data-target='versionModal' ng-click="setModalVersion(version.version)" modal>v{{version.version}}</a></td>
+                            <td>{{version.size | bytes}}</td>
+                            <td>{{version.created | moment}}</td>
+                            <td>
+                                <code ng-repeat="gv in version.game_versions | reverse | limitTo: '1'">
+                                    {{gv}} 
+                                    <code ng-show="gv.length >= 1">+{{gv.length -1}}</code>
+                                </span>
+                            </td>
+                            <td>{{version.downloads}}</td>
                         </tr>
                     </tbody>
                 </table>
+                <div id="versionModal" class="modal">
+                    <div class="modal-content">
+                        <h4>{{modalVersion.version}} ({{modalVersion.type | releaseType}})</h4>
+                        <h5><b>Minecraft Versions:</b> <span ng-repeat="gv in modalVersion.game_versions track by $index">{{gv}}<span ng-hide="$last">, </span></span></h5>
+                        <h5><b>Download Size:</b> {{modalVersion.size | bytes}}</h5>
+                        <h5><b>Date Uploaded:</b> {{modalVersion.created | moment}}</h5>
+                        <h5><b>Downloads:</b> {{modalVersion.downloads}}</h5>
+                        <h5><b>Release Notes:</b></h5>
+                        <div markdown-to-html="modalVersion.release_notes"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/api/v1/versions/{{plugin._id}}/{{modalVersion.version}}/download" target="_self" class="modal-action waves-effect waves-green btn-flat">Download</a>
+                        <a class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
             </div>
             <div class="col m4">
                 <div class="card-panel green darken-3">

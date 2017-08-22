@@ -31,7 +31,8 @@
                     <div class="card green darken-3 hoverable">
                         <div class="card-content white-text">
                             <span class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
-                            <p>{{short_description}}</p>
+                            <p>{{plugin.short_description}}</p>
+                            <br>
                             <small><b><a href="/plugin/{{plugin._id}}">{{plugin.latest_version}}</a></b> published {{plugin.latest_version_date | moment}} by <b><a href="/~{{plugin.author}}">{{plugin.author}}</a></b></small>
                         </div>
                     </div>

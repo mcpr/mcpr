@@ -1,35 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="col l12" class="">
-            <h3>Why MCPR?</h3>
-            <hr>
-            <p>
-                You might ask, "why would we need ANOTHER plugin registry..." There are actually quite a few reasons.
-            </p>
-            <h4>Robust API</h4>
-            <p>MCPR has a robust API! The API will allow developers to integrate the registry into their plugins! For example,
-                <a href="https://dev.bukkit.org/projects/jpanel" target="_blank">JPanel</a> is a nice Minecraft control panel
-                plugin but you know what would make it even better? An interface that allows you to search and install plugins
-                without ever leaving the panel! How awesome would that be???</p>
-            <h6><a href="https://mcpr.github.io/mcpr/api" target="_self">API Docs</a></h6>
-
-            <h4>Plugins From BukkitDev and Spigot Resources</h4>
-            <p>You can search and install plugins from BukkitDev and Spigot Resources with MCPR! That makes MCPR the one place
-                where you can find almost all Bukkit/Spigot plugins! You can also get BukkitDev and Spigot Resources plugins
-                with the API. That means developers only have to intergrate with one API to get plugins from three sources!</p>
-
-            <h4>MCPR CLI</h4>
-            <p>MCPR has a CLI! With the CLI you can easily setup a Minecraft server and install plugins with only a few commands!</p>
-            <h6><a href="https://mcpr.github.io/mcpr-cli">Get MCPR-CLI</a></h6>
-
-            <h4>Fully Open Source</h4>
-            <p>MCPR and MCPR-CLI are open source under the <a href="https://github.com/mcpr/mcpr/blob/master/LICENSE"
-                    target="_blank">MIT</a> license.</p>
-
-            <h4>Backed by Filiosoft</h4>
-            <p>MCPR is an Official Side Project of <a href="https://filiosoft.com" target="_blank">Filiosoft</a>, a software
-                development startup. MCPR's initial development was mostly done by Filiosoft's developers and they continue
-                to work on MCPR. </p>
+            <div ng-hide="error" markdown-to-html="markdown"></div>
+            <div ng-show="error" markdown-to-html="error"></div>
         </div>
     </div>
 </div>

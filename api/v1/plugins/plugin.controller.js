@@ -1,9 +1,6 @@
 const Plugin = require('./plugin.model')
+const Version = require('../versions/versions.model')
 const config = require('../../../config/config')
-const aws = require('aws-sdk')
-const multer = require('multer')
-const multerS3 = require('multer-s3')
-const s3 = new aws.S3()
 const path = require('path')
 const request = require('request')
 
@@ -143,7 +140,6 @@ exports.show = function (req, res, next) {
  * @apiName DownloadPlugin
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
- * @apiParam {String} [version] Version of plugin
  *
  * @apiExample {curl} Example usage:
  *     curl -i -o dynmap.jar https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
@@ -158,26 +154,36 @@ exports.download = function (req, res, next) {
       if (!plugin) {
         return handle404(res, req.params.id)
       }
-      let pluginObject = plugin.toObject()
-      let filename
-      let file
       let id = req.params.id
-      let version = req.params.version
-      if (version) {
-        filename = path.basename(`${req.params.id}-${version}.jar`)
-        file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${version}/${id}.jar`
-      } else {
-        file = `https://s3.amazonaws.com/${config.s3Bucket}/${pluginObject.latestVersionUrl}`
-        filename = path.basename(`${id}.jar`)
-      }
-      plugin.downloads += 1
-      plugin.save(function (err, response) {
-        if (err) {
-          return handleError(res, err)
-        }
-        res.setHeader('content-disposition', `attachment; filename=${filename}`)
-        request(file).pipe(res)
-      })
+      let versionID = `${id}-${plugin.latest_version}`
+      Version
+        .findById(versionID)
+        .exec(function (err, version) {
+          if (err) {
+            return handleError(res, err)
+          }
+          if (!version) {
+            return handle404(res, plugin.latest_version)
+          }
+          let file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${plugin.latest_version}/${id}.jar`
+          let filename = path.basename(`${id}-${plugin.latest_version}.jar`)
+
+          plugin.downloads += 1
+          plugin.save(function (err, response) {
+            if (err) {
+              return handleError(res, err)
+            }
+
+            version.downloads += 1
+            version.save(function (err, response) {
+              if (err) {
+                return handleError(res, err)
+              }
+              res.setHeader('content-disposition', `attachment; filename=${filename}`)
+              request(file).pipe(res)
+            })
+          })
+        })
     })
 }
 
@@ -302,71 +308,6 @@ module.exports.search = function (req, res) {
       out[id] = null
     }
     return res.status(200).send(results)
-  })
-}
-
-/**
- * @api {post} /plugins/:id/versions/:version/upload Upload Plugin Jar
- * @apiName UploadPlugin
- * @apiGroup PluginVersions
- *
- * @apiParam  {String} id       ID of the plugin
- * @apiParam  {String} version  Version number of the plugin
- * @apiParam  {String} jar      Plugin jar file `multipart/form-data`
- */
-exports.upload = function (req, res, next) {
-  const version = req.params.version
-  const pluginID = req.params.id
-  const bucket = config.s3Bucket
-
-  const uploader = multer({
-    fileFilter: function (req, file, cb) {
-      if (path.extname(file.originalname) !== '.jar') {
-        req.filterError = 'Only jars are allowed'
-        return cb(new Error('Only jars are allowed'))
-      }
-      if (file.mimetype !== 'application/java-archive') {
-        req.filterError = 'Wrong mimetype. Only jars are allowed.'
-        return cb(new Error('Wrong mimetype. Only jars are allowed.'))
-      }
-
-      cb(null, true)
-    },
-    storage: multerS3({
-      s3: s3,
-      bucket: bucket,
-      metadata: function (req, file, cb) {
-        cb(null, {
-          fieldName: file.fieldname
-        })
-      },
-      key: function (req, file, cb) {
-        console.log(file)
-        cb(null, `${pluginID}/${version}/${pluginID}.jar`)
-      }
-    })
-
-  }).single('jar')
-
-  // upload the file to tmp storage
-  uploader(req, res, function (err) {
-    if (req.filterError) {
-      return handleError(res, {
-        success: false,
-        message: req.filterError
-      })
-    }
-    if (err) {
-      return handleError(res, err)
-    }
-    const file = req.file
-
-    res.status(200).json({
-      success: true,
-      message: 'File uploaded successfully!',
-      file: file,
-      result: file.location
-    })
   })
 }
 

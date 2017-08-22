@@ -9,6 +9,7 @@ const VersionSchema = new Schema({
   version: String,
   plugin: String,
   release_notes: String,
+  type: String,
   created: {
     type: Date,
     default: Date.now

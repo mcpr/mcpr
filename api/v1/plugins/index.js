@@ -52,7 +52,5 @@ router.get('/:id', controller.show, after)
 router.put('/:id', auth, controller.update, after)
 router.delete('/:id', auth, controller.delete, after)
 router.get('/:id/download', controller.download)
-router.get('/:id/download/:version', controller.download)
-router.post('/:id/versions/:version/upload', controller.upload, after)
 
 module.exports = router

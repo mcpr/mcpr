@@ -2,18 +2,20 @@
 
 angular
     .module('app')
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider, $uiViewScrollProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtOptionsProvider, $uiViewScrollProvider, $showdownProvider) {
         jwtOptionsProvider.config({
             tokenGetter: ['auth', '$window', function (auth, $window) {
                 return $window.localStorage['id_token'];
             }],
             unauthenticatedRedirector: ['$state', function ($state) {
                 $state.go('login');
-            }]
+            }],
+            whiteListedDomains: ['mcpr.io']
         });
         $httpProvider.interceptors.push('jwtInterceptor');
         $locationProvider.html5Mode(true);
         $uiViewScrollProvider.useAnchorScroll();
+        $showdownProvider.setOption('headerLevelStart', 3)
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get('$state');
