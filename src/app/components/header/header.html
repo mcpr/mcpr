@@ -2,14 +2,14 @@
     <div class="navbar-fixed">
         <ul id="dropdown-user" class="dropdown-content">
             <div ng-if="$root.isAuthenticated">
-                <li><a ui-sref="profile">Profile</a></li>
-                <li><a ui-sref="create">Create</a></li>
+                <li ui-sref-active="active"><a ui-sref="profile">Profile</a></li>
+                <li ui-sref-active="active"><a ui-sref="create">Create</a></li>
                 <li class="divider"></li>
                 <li><a ng-click="logout()">Logout</a></li>
             </div>
             <div ng-if="!$root.isAuthenticated">
-                <li><a ui-sref="login">Login</a></li>
-                <li><a ui-sref="signup">Signup</a></li>
+                <li ui-sref-active="active"><a ui-sref="login">Login</a></li>
+                <li ui-sref-active="active"><a ui-sref="signup">Signup</a></li>
             </div>
         </ul>
         <nav class="green darken-4" role="navigation">
@@ -23,7 +23,7 @@
                             <i class="material-icons right">arrow_drop_down</i>
                         </a>
                     </li>
-                    <li><a ui-sref="why">Why?</a></li>
+                    <li ui-sref-active="active"><a ui-sref="why">Why?</a></li>
                     <li><a href="https://mcpr.github.io/mcpr">Docs</a></li>
                     <li><a href="https://github.com/mcpr" target="_blank">GitHub</a></li>
                 </ul>

@@ -61,3 +61,16 @@ img {
 img[data-src] {
     opacity: 0;
 }
+
+.tabs .indicator {
+    background-color: #2e7d32!important;
+}
+
+.tabs .tab a.active,
+.tabs .tab a:hover {
+    color: #2e7d32!important;
+}
+
+.tabs .tab a {
+    color: #388e3c !important;
+}

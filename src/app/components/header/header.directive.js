@@ -7,9 +7,13 @@ angular.module('app')
             replace: true,
             scope: {
                 user: '='
-            }, 
-            templateUrl: 'layout/header.html',
-            controller: ['$scope', '$filter', 'auth', function ($scope, $filter, auth) {
+            },
+            templateUrl: 'components/header/header.html',
+            controller: ['$scope', 'auth', '$state', function ($scope, auth, $state) {
+                var navExtendedClass = 'nav-extended'
+                $scope.navExtended = false;
+                $scope.uiState = $state
+                
                 auth.currentUser().then(function (res) {
                     $scope.profile = res.data;
                 }).catch(function (err) {
