@@ -20,7 +20,7 @@ module.exports = function (app) {
    */
   apiRouter.use('/plugins', require('./plugins/index'))
   apiRouter.use('/users', require('./users/index'))
-
+  apiRouter.use('/versions', require('./versions'))
   /**
    * @api {get} /healthcheck Health Check
    * @apiName HealthCheck
