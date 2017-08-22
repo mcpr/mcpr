@@ -14,7 +14,7 @@ GET /plugins
 Example of a valid API request using cURL and authentication via header:
 
 ```
-curl --header "Authorization: Bearer YOUR_JWT_TOKEN" "https://registry.hexagonminecraft.com/api/v1/plugins"
+curl --header "Authorization: Bearer YOUR_JWT_TOKEN" "https://registry.hexagonminecraft.com/api/v1/users/me/profile"
 ```
 
 The API uses JSON to serialize data. You don't need to specify .json at the end of an API URL.
