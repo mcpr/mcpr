@@ -1,18 +1,21 @@
 language: node_js
 node_js:
-  - "node"
+- node
 before_script:
-  - pip install mkdocs
-  - pip install mkdocs-material
-script: 
-  - yarn test
-  - yarn run docs
-  - mkdir docs-site/tests
-  - cp tests/eslint-report.html docs-site/tests/
+- pip install mkdocs
+- pip install mkdocs-material
+script:
+- yarn test
+- yarn run docs
+- mkdir docs-site/tests
+- cp tests/eslint-report.html docs-site/tests/
 deploy:
   provider: pages
   skip_cleanup: true
   local_dir: docs-site
-  github_token: $GITHUB_TOKEN
+  github_token: "$GITHUB_TOKEN"
   on:
     branch: master
+notifications:
+  slack:
+    secure: Ymc5Pf1AlZL71Dm1p8VCZAhVNWCVU4X2GP7pMv+ti6b8puZMSQs2eU07Av6gVf//DX3xT2NDTf8zohZC6PQmaORZyfsaiPLt1DuJCLhJzeqZ0l0U85ZzTj/CMYlUGFXynfKDJIKxsWq3tTZLgewQ0bevWf7OQAZsakNjM+QcfDOjrMgwYKFlyGT92sn2YyJa3lk3/oFrxIHj4cYfkRUmVlLHzPPT0TnsDTmG1E+GYyrSjtg8C+1Z0iLtAGbGorGQJLaGfsgzZIaZ/RE0rxUH+HXWMPnEWyRC/DW8+tDSFOKeyO7wwSSa7XybytEnIhR85GQ86EfAfxKmDNfZGIF4/kUMA5AfECQn/ejUnXjOe2hK0jDuUwcKClcz2zDDiGlGUWMaZw6nNCavjzQc/kIATf7iEfn9UhXwbQAE6Jiq7sK81FCdr6IzL8Mv4ahIbVj9OdRiZ0E5ieLxldJyLwbS48IT/9nhaOPhS47+cCO/xO9hskY4kdgfkbIj0rRshm8Sgq8dsHBoU/x03bcGtabAxlIOti5+csECSY6+UpZzudIwCa4hw40tbV9TFRZKz4ucxsQjq+Ky16qrb1WkVqdvxzRmDJt6q/X9V9fwU9lIELolbbKfqt3f5LJsTuqQLDXyU+MpzIOk+j9wNMQh4GgdoG1ol7u+2QRJoez/D18gjrw=
