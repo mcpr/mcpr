@@ -3,6 +3,8 @@ All releases are signed with the GPG key below. All releases include a detached 
 
 Releases also include a SHA256 Checksum file which is also GPG signed and includes a detached key file to verify the integrity of your download.
 
+This public key can also be used to encrypt confidential issue reports such as vulnerability reports.
+
 ## GPG Public Key
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
