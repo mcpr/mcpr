@@ -33,6 +33,7 @@
     "moment": "^2.18.1",
     "font-awesome": "^4.7.0",
     "angular-jwt": "^0.1.9",
-    "angular-materializecss-autocomplete": "^0.0.3"
+    "angular-materializecss-autocomplete": "^0.0.3",
+    "simplemde": "^1.11.2"
   }
 }

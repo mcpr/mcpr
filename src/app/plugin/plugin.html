@@ -35,6 +35,11 @@
                 </ul>
             </div>
             <div class="col m8" id="plugin">
+                <div ng-show="isAuthor">
+                    <br>
+                    <a class="btn green darken-3" ui-sref='edit-plugin'>Edit Plugin</a>
+                    <a class="btn red" ui-sref='edit-plugin'>Delete Plugin</a>
+                </div>
                 <div markdown-to-html="plugin.readme"></div>
             </div>
             <div class="col m8" id="versions">
@@ -52,6 +57,10 @@
                     </div>
                 </div>
                 <table ng-show="versionsLoaded" class="striped bordered responsive-table highlight">
+                    <div ng-show="isAuthor">
+                        <br>
+                        <a class="btn green darken-3" ui-sref='add-release'>Add Release</a>
+                    </div>
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -82,7 +91,8 @@
                 <div id="versionModal" class="modal">
                     <div class="modal-content">
                         <h4>{{modalVersion.version}} ({{modalVersion.type | releaseType}})</h4>
-                        <h5><b>Minecraft Versions:</b> <span ng-repeat="gv in modalVersion.game_versions track by $index">{{gv}}<span ng-hide="$last">, </span></span></h5>
+                        <h5><b>Minecraft Versions:</b> <span ng-repeat="gv in modalVersion.game_versions track by $index">{{gv}}<span ng-hide="$last">, </span></span>
+                        </h5>
                         <h5><b>Download Size:</b> {{modalVersion.size | bytes}}</h5>
                         <h5><b>Date Uploaded:</b> {{modalVersion.created | moment}}</h5>
                         <h5><b>Downloads:</b> {{modalVersion.downloads}}</h5>
@@ -107,24 +117,14 @@
                         <a ng-href="/api/v1/plugins/{{plugin._id}}/download" target="_self">{{plugin._id}}.jar</a></h6>
 
                     <h5>Stats</h5>
+                    <h6><b>Author:</b> <a href="/~{{plugin.author}}">{{plugin.author}}</a></h6>
                     <h6><b>Downloads:</b> {{plugin.downloads}}</h6>
                     <h6><b>Latest Version:</b> {{plugin.latest_version}}</h6>
                     <h6><b>Last Release:</b> {{plugin.latest_version_date | moment}}</h6>
                     <div ng-if="plugin.source">
-                        <div ng-show="plugin.sourceGithub">
-                            <h6><b>Source:</b> <a href="https://github.com/{{plugin.source}}" target="_blank">github.com/{{plugin.source}}</a></h6>
-                        </div>
-                        <div ng-hide="plugin.sourceGithub">
-                            <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
-                        </div>
+                        <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
                     </div>
                     <h6 ng-show="plugin.license"><b>License:</b> {{plugin.license}}</h6>
-                    <div ng-show="plugin.flavors">
-                        <h6><b>Flavors:</b></h6>
-                        <div ng-repeat="flavor in plugin.flavors">
-                            <h6 class="flavor">{{flavor}}</h6>
-                        </div>
-                    </div>
                     <div ng-show="plugin.keywords">
                         <h5>Keywords</h5>
                         <div ng-repeat="keyword in plugin.keywords">

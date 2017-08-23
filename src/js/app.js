@@ -3,6 +3,8 @@ $(document).ready(function () {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
     $('.materialboxed').materialbox();
+    $('input#short_description').characterCounter();
+    $('select').material_select();
 });
 
 function addImgClass() {

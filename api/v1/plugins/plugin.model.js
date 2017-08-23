@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const slugify = require('../../../lib/slug')
 const Schema = mongoose.Schema
 
 const PluginSchema = new Schema({
@@ -17,13 +18,19 @@ const PluginSchema = new Schema({
   latest_version: String,
   downloads: Number,
   source: String,
-  sourceGithub: Boolean,
-  flavors: [],
   readme: String,
   license: String,
   keywords: []
 })
 
+PluginSchema.pre('save', function (next) {
+  let plugin = this
+  plugin._id = slugify(plugin.title)
+  if (!plugin.downloads) {
+    plugin.downloads = 0
+  }
+  return next()
+})
 const model = mongoose.model('Plugin', PluginSchema)
 
 model.schema

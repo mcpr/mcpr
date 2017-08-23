@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const semver = require('semver')
 const Schema = mongoose.Schema
 
 const VersionSchema = new Schema({
@@ -22,6 +23,14 @@ const VersionSchema = new Schema({
   game_versions: []
 })
 
+VersionSchema.pre('save', function (next) {
+  let version = this
+
+  if (!version.downloads) {
+    version.downloads = 0
+  }
+  return next()
+})
 const model = mongoose.model('Version', VersionSchema)
 
 model.schema
@@ -30,6 +39,9 @@ model.schema
 model.schema
   .path('version')
   .required('You need to have a version string')
+  .validate(function (value) {
+    return semver.valid(value)
+  }, 'Version must be a valid semver string!')
 model.schema
   .path('plugin')
   .required('This version must belong to a plugin')

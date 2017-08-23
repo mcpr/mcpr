@@ -53,10 +53,11 @@ exports.all = function (req, res, next) {
  * @apiName CreateVersion
  * @apiGroup Versions
  *
- * @apiParam {String} plugin       ID of the plugin this version belongs to
- * @apiParam {String} version       SemVer string of the version
- * @apiParam  {String} release_notes       A short description of the changes in this version
- * @apiParam  {Array} game_versions       List of supported Minecraft versions
+ * @apiParam {String} plugin          ID of the plugin this version belongs to
+ * @apiParam {String} version         SemVer string of the version
+ * @apiParam  {String} release_notes  A short description of the changes in this version
+ * @apiParam  {String} type           Type of the version. (Valid values are R, RC, B, and A)
+ * @apiParam  {Array} game_versions   List of supported Minecraft versions
  */
 exports.create = function (req, res, next) {
   let version = req.body
@@ -104,8 +105,9 @@ exports.create = function (req, res, next) {
  * @apiSuccess {String} version       SemVer string of the version
  * @apiSuccess {String} release_notes       A short description of the changes in this version
  * @apiSuccess {Integer} downloads       Number of downloads this version has
- * @apiSuccess {String} size       Size of the plugin in MB
+ * @apiSuccess {String} size       Size of the plugin in bytes
  * @apiSuccess {Date} created       The date on which the plugin was created
+ * @apiSuccess {String} type           Type of the version. (R for Release, RC for Release Candidate, B for Beta, and A for Alpha)
  * @apiSuccess {Array} game_versions       List of plugin keywords
  *
  * @apiExample {curl} Example usage:
@@ -117,7 +119,8 @@ exports.create = function (req, res, next) {
  *       "version": "2.4.0",
  *       "release_notes": "Just some changes",
  *       "downloads": 10543,
- *       "size": "4.66",
+ *       "size": "46547",
+ *       "type": "R",
  *       "game_versions": ["1.8", "1.9", "1.10", "1.11"],
  *       "created": "2017-06-12T22:55:07.759Z"
  *     }
@@ -311,10 +314,6 @@ exports.upload = function (req, res, next) {
       if (path.extname(file.originalname) !== '.jar') {
         req.filterError = 'Only jars are allowed'
         return cb(new Error('Only jars are allowed'))
-      }
-      if (file.mimetype !== 'application/java-archive') {
-        req.filterError = 'Wrong mimetype. Only jars are allowed.'
-        return cb(new Error('Wrong mimetype. Only jars are allowed.'))
       }
 
       cb(null, true)

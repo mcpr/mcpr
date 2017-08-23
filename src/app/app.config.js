@@ -91,6 +91,15 @@ angular
                     name: 'Profile'
                 }
             })
+            .state('create', {
+                url: '/create',
+                templateUrl: 'account/create/create.html',
+                controller: 'CreateCtrl',
+                data: {
+                    requiresLogin: true,
+                    name: 'Create Plugin'
+                }
+            })
             .state('edit-profile', {
                 url: '/me/edit',
                 templateUrl: 'account/edit-profile/edit-profile.html',

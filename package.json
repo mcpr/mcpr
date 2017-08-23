@@ -53,6 +53,7 @@
     "passport-jwt": "^3.0.0",
     "querymen": "^2.1.1",
     "request-promise": "^4.2.1",
+    "semver": "^5.4.1",
     "serve-favicon": "^2.4.3",
     "snyk": "^1.33.1"
   },

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-    .controller('PluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, config) {
+    .controller('PluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, config, $rootScope, auth) {
         var id = $transition$.params().id;
         $scope.modalVersion = {};
         $scope.setModalVersion = function (version) {
@@ -38,6 +38,18 @@ angular.module('app')
         function getSingleVersion(version) {
             $http.get(config.apiUrl + '/versions/' + id + '/' + version).then(function (res) {
                 $scope.modalVersion = res.data;
+            }).catch(function (err) {
+                console.log(err);
+                $scope.error = err;
+            });
+        }
+
+        if ($rootScope.isAuthenticated) {
+            auth.currentUser().then(function (res) {
+                $scope.profile = res.data;
+                $scope.isAuthor = function () {
+                    return $scope.plugin.author === $scope.profile.username;
+                }
             }).catch(function (err) {
                 console.log(err);
                 $scope.error = err;
