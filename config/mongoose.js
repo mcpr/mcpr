@@ -5,7 +5,8 @@ const mongoAddress = config.dbUrl()
 module.exports = function () {
   mongoose.connect(mongoAddress, {
     user: config.dbUsername,
-    pass: config.dbPassword
+    pass: config.dbPassword,
+    useMongoClient: true
   })
 
   const monDb = mongoose.connection
