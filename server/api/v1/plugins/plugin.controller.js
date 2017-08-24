@@ -3,7 +3,7 @@ const Plugin = mongoose.model('Plugin')
 const Version = mongoose.model('Version')
 const path = require('path')
 const request = require('request')
-
+const _ = require('lodash')
 exports.model = Plugin
 
 /**
@@ -20,13 +20,14 @@ exports.model = Plugin
  *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins
  */
 exports.all = function (req, res, next) {
+  const bukkitApi = require(req.config.rootPath + '/lib/bukkitApi')
+  const convertModel = require(req.config.rootPath + '/lib/bukkitToMcpr')
   let perPage = Math.max(0, req.query.per_page) || 50
   let page = Math.max(0, req.query.page)
   let sort = req.query.sort || 'desc'
   let orderBy = req.query.order_by || 'downloads'
   let sortObj = {}
   sortObj[orderBy] = sort
-
   Plugin
     .find({})
     .limit(perPage)
@@ -39,8 +40,28 @@ exports.all = function (req, res, next) {
       if (!plugins) {
         return handle404(res)
       }
-      req.plugins = plugins
-      next()
+      if (req.query.includeBukkitDev) {
+        bukkitApi.getAll()
+          .then((res) => {
+            let jsonRes = JSON.parse(res)
+            convertModel(jsonRes)
+              .then((bukkitPlugins) => {
+                req.plugins = _.merge(plugins, bukkitPlugins)
+                next()
+              })
+              .catch((err) => {
+                console.error(err)
+                return handleError(res, err)
+              })
+          })
+          .catch((err) => {
+            console.error(err)
+            return handleError(res, err)
+          })
+      } else {
+        req.plugins = plugins
+        next()
+      }
     })
 }
 

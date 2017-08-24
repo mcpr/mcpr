@@ -40,8 +40,6 @@
     "express-handlebars": "^3.0.0",
     "express-jwt": "^5.3.0",
     "express-session": "^1.15.3",
-    "global": "^4.3.2",
-    "handlebars": "^4.0.10",
     "helmet": "^3.6.1",
     "jsonwebtoken": "^7.4.1",
     "md5": "^2.2.1",
@@ -51,11 +49,9 @@
     "multer-s3": "^2.7.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.0",
-    "querymen": "^2.1.1",
     "request-promise": "^4.2.1",
     "semver": "^5.4.1",
-    "serve-favicon": "^2.4.3",
-    "snyk": "^1.33.1"
+    "serve-favicon": "^2.4.3"
   },
   "devDependencies": {
     "apidoc": "^0.17.6",
@@ -86,7 +82,8 @@
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "snyk": "^1.33.1"
   },
   "engines": {
     "node": "8.x.x"

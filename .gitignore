@@ -41,5 +41,4 @@ server/public/build/
 node_modules/
 bower_components/
 .env
-package-lock.json
 docs-site/
