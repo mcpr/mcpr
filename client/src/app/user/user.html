@@ -20,10 +20,10 @@
                 <h5>{{profile.name}}</h5>
                 <ul class="socail-list">
                     <li><a ng-href="mailto:{{profile.email}}">{{profile.email}}</a></li>
-                    <li ng-show="profile.website"><a ng-href="{{profile.website}}" target="_blank">{{profile.website | urlfilter}}</a></li>
-                    <li ng-show="profile.github"><a ng-href="https://github.com/{{profile.github}}" target="_blank">@{{profile.github}}</a> on GitHub</li>
-                    <li ng-show="profile.gitlab"><a ng-href="https://gitlab.com/{{profile.gitlab}}" target="_blank">@{{profile.gitlab}}</a> on GitLab</li>
-                    <li ng-show="profile.twitter"><a ng-href="https://twitter.com/{{profile.twitter}}" target="_blank">@{{profile.twitter}}</a> on Twitter</li>
+                    <li ng-show="profile.website"><a ng-href="{{profile.website}}" target="_blank" rel="noopener">{{profile.website | urlfilter}}</a></li>
+                    <li ng-show="profile.github"><a ng-href="https://github.com/{{profile.github}}" target="_blank" rel="noopener">@{{profile.github}}</a> on GitHub</li>
+                    <li ng-show="profile.gitlab"><a ng-href="https://gitlab.com/{{profile.gitlab}}" target="_blank" rel="noopener">@{{profile.gitlab}}</a> on GitLab</li>
+                    <li ng-show="profile.twitter"><a ng-href="https://twitter.com/{{profile.twitter}}" target="_blank" rel="noopener">@{{profile.twitter}}</a> on Twitter</li>
                     <li><a ng-href="/~{{profile.username}}">@{{profile.username}}</a> on MCPR</li>
                 </ul>
             </div>

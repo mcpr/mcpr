@@ -1,5 +1,5 @@
 <!DOCTYPE prefix="og: http://ogp.me/ns#" html>
-<html ng-app="app">
+<html ng-app="app" lang="en">
 
 <head>
     <!--Let browser know website is optimized for mobile-->
@@ -54,6 +54,11 @@
                 }
             })
         });
+        setTimeout(function(){
+            if ('serviceWorker' in navigator && !___browserSync___) {
+                navigator.serviceWorker.register('service-worker.js');
+            }
+        }, 1000)
     </script>
 </body>
 
