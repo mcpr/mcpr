@@ -24,7 +24,8 @@ const config = {
   port: process.env.PORT || 3000,
   s3Bucket: env.S3_BUCKET || 'download.mcpr.io',
   rootPath: path.normalize(path.join(__dirname, '/../')),
-  projectPath: path.normalize(path.join(__dirname, '/../../'))
+  projectPath: path.normalize(path.join(__dirname, '/../../')),
+  AIIK: env.APPINSIGHTS_INSTRUMENTATIONKEY
 }
 
 module.exports = config

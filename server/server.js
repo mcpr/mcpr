@@ -3,11 +3,17 @@ const app = express()
 const nEnv = app.get('env')
 const os = require('os')
 const passport = require('passport')
-
+const appInsights = require('applicationinsights')
 // Setup ENV
 require('dotenv').config()
 
 const config = require('./config/config')
+
+if (nEnv === 'production' && config.AIIK) {
+  appInsights.setup(config.AIIK)
+  appInsights.start()
+}
+
 require('./api/v1/plugins/plugin.model')(config)
 require('./api/v1/users/user.model')(config)
 require('./api/v1/versions/versions.model')(config)
