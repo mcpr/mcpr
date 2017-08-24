@@ -288,7 +288,7 @@ module.exports.showByUser = function (req, res) {
  * @apiName SearchPlugins
  * @apiGroup Plugin
  *
- * @apiParam  {String} q  Keyword to search for 
+ * @apiParam  {String} q  Keyword to search for
  * @apiExample {curl} Example usage:
  *     curl -X "GET" https://registry.hexagonminecraft.com/api/v1/plugins/search?q=dynmap
  */
