@@ -7,6 +7,7 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
 const passport = require('passport')
+const path = require('path')
 
 const config = require('./config')
 module.exports = function (app) {
@@ -26,9 +27,7 @@ module.exports = function (app) {
   app.use(passport.initialize())
   app.use(passport.session())
   app.use(function (req, res, next) {
-    // Assign the config to the req object
     req.config = config
-    // Call the next function in the pipeline (your controller actions).
     return next()
   })
 
@@ -57,8 +56,12 @@ module.exports = function (app) {
   app.use(unauthorisedError)
 
   app.use(express.static(config.rootPath + '/public'))
+
+  const viewsDir = path.normalize(config.rootPath + '/views')
+  app.set('views', viewsDir)
   app.engine('handlebars', exphbs({
-    defaultLayout: 'main'
+    defaultLayout: 'main',
+    layoutsDir: path.normalize(viewsDir + '/layouts')
   }))
   app.set('view engine', 'handlebars')
 }

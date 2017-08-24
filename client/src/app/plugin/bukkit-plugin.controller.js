@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-    .controller('BukkitPluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle,config) {
+    .controller('BukkitPluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, $rootScope, config) {
         var id = $transition$.params().id;
         setTitle('@bukkitdev/' + id);
 

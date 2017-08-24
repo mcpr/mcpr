@@ -23,7 +23,8 @@ const config = {
   secret: env.MCPR_KEY || '',
   port: process.env.PORT || 3000,
   s3Bucket: env.S3_BUCKET || 'download.mcpr.io',
-  rootPath: path.normalize(path.join(__dirname, '/../'))
+  rootPath: path.normalize(path.join(__dirname, '/../')),
+  projectPath: path.normalize(path.join(__dirname, '/../../'))
 }
 
 module.exports = config

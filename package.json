@@ -6,7 +6,7 @@
   "scripts": {
     "test": "gulp lint --fail && snyk test",
     "postinstall": "bower install --allow-root && gulp build",
-    "start": "node server.js",
+    "start": "node server/server.js",
     "dev": "gulp serve",
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",

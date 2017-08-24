@@ -23,8 +23,8 @@ const fs = require('fs')
 
 // config and paths
 const bowerFolder = './bower_components/';
-const public = './public'
-const src = './src'
+const public = './server/public'
+const src = './client/src'
 const dist = `${public}/build`;
 var paths = {
     js: {
@@ -42,7 +42,7 @@ var paths = {
             bowerFolder + 'angular-materializecss-autocomplete/angular-materializecss-autocomplete.js',
             bowerFolder + 'simplemde/dist/simplemde.min.js'
         ],
-        custom: './src/js/**/*.js',
+        custom: `${src}/js/**/*.js`,
         dist: `${dist}/js/`
     },
     css: {
@@ -51,23 +51,23 @@ var paths = {
             bowerFolder + 'font-awesome/css/font-awesome.css',
             bowerFolder + 'simplemde/dist/simplemde.min.css'
         ],
-        sass: './src/sass/**/*.scss',
+        sass: `${src}/sass/**/*.scss`,
         dist: `${dist}/css/`
     },
     fonts: {
         all: [
-            './src/fonts/**/*.*',
+            `${src}/fonts/**/*.*`,
             bowerFolder + 'materialize/dist/fonts/**/*.*',
             bowerFolder + 'font-awesome/fonts/**/*.*',
         ],
         dist: `${dist}/fonts/`
     },
     images: {
-        all: './src/images/*',
+        all: `${src}/images/*`,
         dist: `${dist}/images/`
     },
     app: {
-        templates: './src/app/**/*.html',
+        templates: `${src}/app/**/*.html`,
         js: [
             `${src}/app/app.module.js`,
             `${dist}/app/templates.js`,
@@ -78,10 +78,7 @@ var paths = {
     clean: [dist, './tests'],
     lint: {
         server: [
-            './api/**/*.js',
-            './config/**/*.js',
-            './lib/**/*.js',
-            './server.js'
+            './server/**/*.js',
         ]
     }
 }
@@ -89,7 +86,7 @@ var paths = {
 gulp.task('lint', ['clean:tests'], function () {
     const testDir = './tests/';
     const reportFile = path.join(__dirname, testDir, 'eslint-report.html');
-    const eslintConfig = path.join(__dirname, '.eslintrc.json');
+    const eslintConfig = path.join(__dirname, 'server/.eslintrc.json');
     if (argv.fail) {
         return gulp.src(paths.lint.server)
             .pipe(eslint(eslintConfig))
@@ -279,18 +276,23 @@ gulp.task('watch', function () {
     gulp.watch(paths.app.templates, ['app-min']);
 
     nodemon({
-        script: 'server.js',
-        ext: 'js html',
+        script: 'server/server.js',
+        ext: 'js handlebars',
         env: {
             'NODE_ENV': 'development'
-        }
+        },
+        ignore: [
+            'server/public/',
+            'node_modules/',
+            'client/'
+        ]
     });
 });
 
 gulp.task('serve', ['watch'], function () {
     browserSync.init(null, {
         proxy: 'http://localhost:3000',
-        files: ['public/**/*.*'],
+        files: ['server/public/**/*.*'],
         port: 7000,
         reloadDelay: 3000
     });

@@ -3,7 +3,7 @@ const apiRouter = express.Router()
 const mongoose = require('mongoose')
 
 module.exports = function (app, config) {
-  const pkg = require(config.rootPath + '/package.json')
+  const pkg = require(config.projectPath + '/package.json')
   /**
    * GET /api/v1
    */

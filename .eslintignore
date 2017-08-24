@@ -1,4 +1,4 @@
 gulpfile.js
-public/
-src/
+server/public/
+client/
 tests/
