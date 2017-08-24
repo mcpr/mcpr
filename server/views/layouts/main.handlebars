@@ -8,8 +8,7 @@
     <meta property="og:site_name" content="mcpr">
     <meta property="og:url" content="{{currentUrl}}" />
     <meta property="og:description" content="Minecraft Plugin Registry {{plugin.short_description}}">
-    <meta name="description" content="Minecraft Plugin Registry {{plugin.short_description}}"> 
-    {{#if pluginName}}
+    <meta name="description" content="Minecraft Plugin Registry {{plugin.short_description}}"> {{#if pluginName}}
     <meta property="og:title" content="{{pluginName}}" />
     <title>{{pluginName}} - mcpr</title>
     {{else}}
@@ -27,6 +26,12 @@
 </head>
 
 <body>
+    <noscript>
+        <div class="container center">
+            <h1>JavaScript Disabled</h1>
+            <h4>This page requires JavaScript. Please enable it. </h4>
+        </div>
+    </noscript>
     <div class="page-flexbox-wrapper">
         <div header></div>
         <main>
@@ -54,11 +59,12 @@
                 }
             })
         });
-        setTimeout(function(){
-            if(typeof ___browserSync___ === 'undefined'){
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js');
-            }}
+        setTimeout(function () {
+            if (typeof ___browserSync___ === 'undefined') {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('service-worker.js');
+                }            
+}
         }, 1000)
     </script>
 </body>
