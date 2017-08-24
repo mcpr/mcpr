@@ -10,7 +10,7 @@
     "dev": "gulp serve",
     "lint": "gulp lint",
     "snyk-protect": "snyk protect",
-    "prepublish": "yarn run snyk-protect",
+    "prepublish": "npm run snyk-protect",
     "docs": "mkdocs build --clean && apidoc -i server/api/ -o docs-site/api/endpoints"
   },
   "repository": {
