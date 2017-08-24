@@ -32,7 +32,7 @@
   "homepage": "https://registry.HexagonMinecraft.com",
   "dependencies": {
     "aws-sdk": "^2.100.0",
-    "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
