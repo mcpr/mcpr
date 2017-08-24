@@ -55,7 +55,14 @@ module.exports = function (app) {
   app.use(error404Handler)
   app.use(unauthorisedError)
 
-  app.use(express.static(config.rootPath + '/public'))
+  let maxAge = 0
+  if (app.get('env') === 'production') {
+    maxAge = 14400000
+  }
+
+  app.use(express.static(config.rootPath + '/public', {
+    maxAge: maxAge
+  }))
 
   const viewsDir = path.normalize(config.rootPath + '/views')
   app.set('views', viewsDir)
