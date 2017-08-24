@@ -1,6 +1,6 @@
-const Plugin = require('./plugin.model')
-const Version = require('../versions/versions.model')
-const config = require('../../../config/config')
+const mongoose = require('mongoose')
+const Plugin = mongoose.model('Plugin')
+const Version = mongoose.model('Version')
 const path = require('path')
 const request = require('request')
 
@@ -145,6 +145,7 @@ exports.show = function (req, res, next) {
  *     curl -i -o dynmap.jar https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
  */
 exports.download = function (req, res, next) {
+  const config = req.config
   Plugin
     .findById(req.params.id)
     .exec(function (err, plugin) {

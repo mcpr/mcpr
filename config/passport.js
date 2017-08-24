@@ -1,11 +1,11 @@
-var JwtStrategy = require('passport-jwt').Strategy
-var ExtractJwt = require('passport-jwt').ExtractJwt
-var User = require('../api/v1/users/user.model')
-var config = require('../config/config')
+const JwtStrategy = require('passport-jwt').Strategy
+const ExtractJwt = require('passport-jwt').ExtractJwt
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
 
 // Setup work and export for the JWT passport strategy
-module.exports = function (passport) {
-  var opts = {}
+module.exports = function (passport, config) {
+  let opts = {}
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
   opts.secretOrKey = config.secret
   passport.use(new JwtStrategy(opts, function (jwtPayload, done) {

@@ -1,6 +1,6 @@
-const Version = require('./versions.model')
-const Plugin = require('../plugins/plugin.model')
-const config = require('../../../config/config')
+const mongoose = require('mongoose')
+const Plugin = mongoose.model('Plugin')
+const Version = mongoose.model('Version')
 const aws = require('aws-sdk')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
@@ -153,6 +153,7 @@ exports.show = function (req, res, next) {
  */
 exports.download = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
+  const config = req.config
 
   return Plugin.findById(req.params.pluginID)
     .exec(function (err, plugin) {
@@ -304,6 +305,7 @@ module.exports.showByPlugin = function (req, res) {
  * @apiParam  {String} jar      Plugin jar file `multipart/form-data`
  */
 exports.upload = function (req, res, next) {
+  const config = req.config
   const version = req.params.versionID
   const pluginID = req.params.pluginID
   const bucket = config.s3Bucket

@@ -2,11 +2,15 @@ const express = require('express')
 const app = express()
 const nEnv = app.get('env')
 const os = require('os')
+const passport = require('passport')
 
 // Setup ENV
 require('dotenv').config()
 
-require('./api/v1/users/user.model')
+const config = require('./config/config')
+require('./api/v1/plugins/plugin.model')(config)
+require('./api/v1/users/user.model')(config)
+require('./api/v1/versions/versions.model')(config)
 
 // Express config
 require('./config/express')(app)
@@ -15,12 +19,10 @@ require('./config/express')(app)
 require('./config/mongoose')()
 
 // Passport config
-require('./config/passport')
+require('./config/passport')(passport, config)
 
 // Routes
 require('./config/routes')(app)
-
-const config = require('./config/config')
 
 app.listen(config.port)
 

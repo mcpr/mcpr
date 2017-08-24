@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
-const config = require('../../../config/config')
 
 module.exports.profileRead = function (req, res) {
   // If no user ID exists in the JWT return a 401
@@ -120,6 +119,7 @@ module.exports.register = function (req, res) {
 }
 
 module.exports.login = function (req, res) {
+  const config = req.config
   User.findOne({
     email: req.body.email
   }, function (err, user) {

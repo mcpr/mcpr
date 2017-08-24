@@ -1,4 +1,5 @@
 const express = require('express')
+const config = require('./config')
 
 module.exports = function (app) {
   const router = express.Router()
@@ -15,7 +16,7 @@ module.exports = function (app) {
     })
   })
 
-  require('../api/api')(app)
+  require(config.rootPath + '/api/api')(app, config)
 
   app.use('/', router)
 }

@@ -1,5 +1,5 @@
-module.exports = function (app) {
-  const v1Router = require('./v1')(app)
+module.exports = function (app, config) {
+  const v1Router = require('./v1')(app, config)
   /**
    * GET /api
    */

@@ -25,6 +25,12 @@ module.exports = function (app) {
   app.use(cookieParser())
   app.use(passport.initialize())
   app.use(passport.session())
+  app.use(function (req, res, next) {
+    // Assign the config to the req object
+    req.config = config
+    // Call the next function in the pipeline (your controller actions).
+    return next()
+  })
 
   // error handlers
   function error404Handler (err, req, res, next) {

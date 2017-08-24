@@ -1,9 +1,9 @@
-const pkg = require('../../package.json')
 const express = require('express')
 const apiRouter = express.Router()
 const mongoose = require('mongoose')
 
-module.exports = function (app) {
+module.exports = function (app, config) {
+  const pkg = require(config.rootPath + '/package.json')
   /**
    * GET /api/v1
    */
@@ -18,9 +18,10 @@ module.exports = function (app) {
   /**
    * GET /api/plugins
    */
-  apiRouter.use('/plugins', require('./plugins/index'))
-  apiRouter.use('/users', require('./users/index'))
-  apiRouter.use('/versions', require('./versions'))
+
+  apiRouter.use('/plugins', require('./plugins')(config))
+  apiRouter.use('/users', require('./users')(config))
+  apiRouter.use('/versions', require('./versions')(config))
   /**
    * @api {get} /healthcheck Health Check
    * @apiName HealthCheck
