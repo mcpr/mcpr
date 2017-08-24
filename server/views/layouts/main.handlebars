@@ -55,9 +55,10 @@
             })
         });
         setTimeout(function(){
-            if ('serviceWorker' in navigator && !___browserSync___) {
+            if(typeof ___browserSync___ === 'undefined'){
+            if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('service-worker.js');
-            }
+            }}
         }, 1000)
     </script>
 </body>
