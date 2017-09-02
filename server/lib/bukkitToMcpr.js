@@ -24,10 +24,10 @@ function convertModel (bukkit) {
                   })()
                 }
                 let plugin = {
-                  _id: jsonRes.slug,
+                  _id: bukkitPlugin.slug,
                   short_description: jsonRes.shortdescription,
                   title: jsonRes.title,
-                  author: jsonRes.author,
+                  author: jsonRes.authors[0].name,
                   latest_version_date: jsonRes.lastrelease,
                   latest_version: latestFiles.name,
                   latest_version_file: latestFiles,

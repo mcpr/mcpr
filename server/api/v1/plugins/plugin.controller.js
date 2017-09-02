@@ -3,7 +3,6 @@ const Plugin = mongoose.model('Plugin')
 const Version = mongoose.model('Version')
 const path = require('path')
 const request = require('request')
-const _ = require('lodash')
 exports.model = Plugin
 
 /**
@@ -46,7 +45,7 @@ exports.all = function (req, res, next) {
             let jsonRes = JSON.parse(res)
             convertModel(jsonRes)
               .then((bukkitPlugins) => {
-                req.plugins = _.merge(plugins, bukkitPlugins)
+                req.plugins = plugins.concat(bukkitPlugins)
                 next()
               })
               .catch((err) => {

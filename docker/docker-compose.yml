@@ -9,8 +9,6 @@ services:
     - 80:80
     - 443:443
     command: --conf /etc/Caddyfile -quic --log stdout
-    environment:
-     - CADDYHOME=/etc/caddy
     env_file:
      - .env
     volumes:

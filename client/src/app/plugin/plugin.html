@@ -29,10 +29,11 @@
             <h2>{{plugin.title}}</h2>
             <h5>{{plugin.short_description}}</h5>
             <div class="col s12">
-                <ul tabs>
+                <ul tabs ng-hide="plugin.external">
                     <li class="tab col s6"><a class="active" href="#plugin">Overview</a></li>
                     <li class="tab col s6"><a href="#versions">Versions <small>({{versions.length}})</small></a></li>
                 </ul>
+                <hr>
             </div>
             <div class="col m8" id="plugin">
                 <div ng-show="isAuthor">
@@ -117,10 +118,14 @@
                         <a ng-href="/api/v1/plugins/{{plugin._id}}/download" target="_self">{{plugin._id}}.jar</a></h6>
 
                     <h5>Stats</h5>
-                    <h6><b>Author:</b> <a href="/~{{plugin.author}}">{{plugin.author}}</a></h6>
+                    <h6><b>Author:</b> <a ng-hide="plugin.external" href="/~{{plugin.author}}">{{plugin.author}}</a></h6>
+                    <div ng-show="plugin.external" ng-repeat="author in plugin.author">
+                        <h6><a href="{{author.url}}" target="_blank" rel="noopener">{{author.name}}</a></h6>
+                    </div>
                     <h6><b>Downloads:</b> {{plugin.downloads}}</h6>
                     <h6><b>Latest Version:</b> {{plugin.latest_version}}</h6>
-                    <h6><b>Last Release:</b> {{plugin.latest_version_date | moment}}</h6>
+                    <h6 ng-show="plugin.external"><b>Last Release:</b> {{plugin.latest_version_date | momentUnix}}</h6>
+                    <h6 ng-hide="plugin.external"><b>Last Release:</b> {{plugin.latest_version_date | moment}}</h6>
                     <div ng-if="plugin.source">
                         <h6><b>Source:</b> <a href="{{plugin.source}}">{{plugin.source}}</a></h6>
                     </div>

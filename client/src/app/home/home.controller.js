@@ -3,7 +3,11 @@
 angular.module('app')
     .controller('HomeCtrl', function ($scope, $http, config) {
         $scope.loaded = false;
-        $http.get(config.apiUrl + '/plugins')
+        $scope.limit = 18;
+        $scope.loadMore = function () {
+            $scope.limit += 9;
+        }
+        $http.get(config.apiUrl + '/plugins?includeBukkitDev=true')
             .then(function (res) {
                 $scope.plugins = res.data;
                 $scope.loaded = true;
