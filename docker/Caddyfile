@@ -1,6 +1,8 @@
 {$MCPR_HOST} {
-        tls {$TLS_EMAIL} {
-                dns cloudflare
+        tls {$TLS_EMAIL}
+        
+        gzip {
+            not /api
         }
 
         log /var/log/caddy/caddy.log

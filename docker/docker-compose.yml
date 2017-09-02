@@ -4,17 +4,18 @@ services:
     restart: always
     image: abiosoft/caddy:latest
     depends_on:
-    - app # Ensures that caddy will relink if app container is restarted
-    command:
-    - -quic
+    - app
     ports:
     - 80:80
     - 443:443
+    command: --conf /etc/Caddyfile -quic --log stdout
+    environment:
+     - CADDYHOME=/etc/caddy
     env_file:
      - .env
     volumes:
-    - ./.caddy/certs:/root/.caddy # Your certificates will be stored here
-    - ./.caddy/logs:/var/log/caddy:Z # Caddy logs will be stored here
+    - ./.caddy/certs:/root/.caddy
+    - ./.caddy/logs:/var/log/caddy:Z
     - ./Caddyfile:/etc/Caddyfile
   app:
     restart: always
