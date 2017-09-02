@@ -16,7 +16,9 @@ const jwt = require('jsonwebtoken')
  * @apiSuccess {String} gitlab      Your GitLab username
  * @apiSuccess {String} website     Your website address
  * @apiSuccess {String} twitter     Your Twitter username
- *
+ * 
+ * @apiPermission authenticated
+ * 
  * @apiExample {curl} Example usage:
  *     curl --header "Authorization: Bearer YOUR_JWT_TOKEN" -i https://registry.hexagonminecraft.com/api/v1/users/me/profile
  * @apiSuccessExample {json} Success-Response:
@@ -274,6 +276,8 @@ module.exports.login = function (req, res) {
  * @apiParam {String} [website] Your website address
  * @apiParam {String} [twitter] Your Twitter username
  *
+ * @apiPermission authenticated
+ * 
  * @apiSuccess {Boolean} success     True or false success 
  * @apiSuccess {String} message     Success message
  *
@@ -318,6 +322,8 @@ module.exports.updateProfile = (req, res) => {
  * @apiParam {String} current   Your current password
  * @apiParam {String} new       Your new password
  *
+ * @apiPermission authenticated
+ * 
  * @apiSuccess {Boolean} success     True or false success 
  * @apiSuccess {String} message     Success message
  *

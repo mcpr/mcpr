@@ -69,6 +69,8 @@ exports.all = function (req, res, next) {
  * @apiName CreatePlugin
  * @apiGroup Plugin
  *
+ * @apiPermission authenticated
+ * 
  * @apiParam  {String} _id       ID of plugin
  * @apiParam  {String} short_description       A short description of the plugin
  * @apiParam  {String} author       The author's user ID
@@ -213,6 +215,8 @@ exports.download = function (req, res, next) {
  * @apiName UpdatePlugin
  * @apiGroup Plugin
  *
+ * @apiPermission authenticated
+ * 
  * @apiParam {String} id ID of plugin
  */
 exports.update = function (req, res) {
@@ -244,6 +248,8 @@ exports.update = function (req, res) {
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
  *
+ * @apiPermission authenticated
+ * 
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/v1/plugins/dynmap
  */

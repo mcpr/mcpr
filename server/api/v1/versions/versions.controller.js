@@ -53,6 +53,8 @@ exports.all = function (req, res, next) {
  * @apiName CreateVersion
  * @apiGroup Versions
  *
+ * @apiPermission authenticated
+ * 
  * @apiParam {String} plugin          ID of the plugin this version belongs to
  * @apiParam {String} version         SemVer string of the version
  * @apiParam  {String} release_notes  A short description of the changes in this version
@@ -202,6 +204,8 @@ exports.download = function (req, res, next) {
  * @apiName UpdateVersion
  * @apiGroup Versions
  *
+ * @apiPermission authenticated
+ * 
  * @apiParam {String} pluginID ID of plugin
  * @apiParam {String} versionID Version of plugin
  */
@@ -236,6 +240,8 @@ exports.update = function (req, res) {
  * @apiParam {String} pluginID ID of plugin
  * @apiParam {String} versionID Version of plugin
  *
+ * @apiPermission authenticated
+ * 
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/v1/versions/dynmap/2.4.0
  */
@@ -300,6 +306,8 @@ module.exports.showByPlugin = function (req, res) {
  * @apiName UploadVersion
  * @apiGroup Versions
  *
+ * @apiPermission authenticated
+ * 
  * @apiParam  {String} id       ID of the plugin
  * @apiParam  {String} version  Version number of the plugin
  * @apiParam  {String} jar      Plugin jar file `multipart/form-data`
