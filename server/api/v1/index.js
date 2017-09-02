@@ -14,6 +14,7 @@ module.exports = function (app, config) {
    * @apiSuccess {String} version   Version of API
    * @apiSuccess {String} homepage  Homepage of project
    *
+   * @apiSampleRequest https://registry.hexagonminecraft.com/api/v1
    * @apiExample {curl} Example usage:
    *     curl -i https://registry.hexagonminecraft.com/api/v1
    * @apiSuccessExample {json} Success-Response:
