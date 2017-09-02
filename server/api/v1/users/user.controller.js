@@ -2,6 +2,37 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
 
+/**
+ * @api {get} /users/me/profile Get Current User
+ * @apiName GetCurrentUser
+ * @apiGroup Users
+ *
+ * @apiSuccess {String} _id         Your user ID
+ * @apiSuccess {String} hashedEmail Your email address base64 hashed
+ * @apiSuccess {String} email       Your email address
+ * @apiSuccess {String} username    Your username
+ * @apiSuccess {String} name        Your name
+ * @apiSuccess {String} github      Your GitHub username
+ * @apiSuccess {String} gitlab      Your GitLab username
+ * @apiSuccess {String} website     Your website address
+ * @apiSuccess {String} twitter     Your Twitter username
+ *
+ * @apiExample {curl} Example usage:
+ *     curl --header "Authorization: Bearer YOUR_JWT_TOKEN" -i https://registry.hexagonminecraft.com/api/v1/users/me/profile
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "_id": "5995e9242165660018bb0a8a",
+ *       "hashedEmail": "f0c8830d585c2c3cfc1e7d310c3fe933",
+ *       "email": "noah@prail.net",
+ *       "username": "nprail",
+ *       "name": "Noah Prail",
+ *       "github": "nprail",
+ *       "gitlab": "nprail",
+ *       "website": "https://nprail.me",
+ *       "twitter": "noahprail"
+ *     }
+ */
 module.exports.profileRead = function (req, res) {
   // If no user ID exists in the JWT return a 401
   if (!req.payload.id) {
@@ -27,6 +58,38 @@ module.exports.profileRead = function (req, res) {
   }
 }
 
+/**
+ * @api {get} /users/:username Get User
+ * @apiName GetUser
+ * @apiGroup Users
+ * @apiParam {String} username Username of user
+ *
+ * @apiSuccess {String} _id         User's user ID
+ * @apiSuccess {String} hashedEmail User's email address base64 hashed
+ * @apiSuccess {String} email       User's email address
+ * @apiSuccess {String} username    User's username
+ * @apiSuccess {String} name        User's name
+ * @apiSuccess {String} github      User's GitHub username
+ * @apiSuccess {String} gitlab      User's GitLab username
+ * @apiSuccess {String} website     User's website address
+ * @apiSuccess {String} twitter     User's Twitter username
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i https://registry.hexagonminecraft.com/api/v1/users/nprail
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "_id": "5995e9242165660018bb0a8a",
+ *       "hashedEmail": "f0c8830d585c2c3cfc1e7d310c3fe933",
+ *       "email": "noah@prail.net",
+ *       "username": "nprail",
+ *       "name": "Noah Prail",
+ *       "github": "nprail",
+ *       "gitlab": "nprail",
+ *       "website": "https://nprail.me",
+ *       "twitter": "noahprail"
+ *     }
+ */
 module.exports.getUser = function (req, res) {
   let query = User.findOne({
     username: req.params.username
@@ -83,6 +146,28 @@ module.exports.showAll = function (req, res) {
   })
 }
 
+/**
+ * @api {post} /users/me/signup Signup
+ * @apiName PostSignup
+ * @apiGroup Users
+ * 
+ * @apiParam {String} username  Username of new user
+ * @apiParam {String} name      Name of new  user
+ * @apiParam {String} email     Email address of new  user
+ * @apiParam {String} password  Password of new  user
+ *
+ * @apiSuccess {Boolean} success     True or false success 
+ * @apiSuccess {String} message     Success message
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i -X "POST" https://registry.hexagonminecraft.com/api/v1/users/me/signup
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "success": true,
+ *       "message": "Successfully created new user."
+ *     }
+ */
 module.exports.register = function (req, res) {
   if (!req.body.email || !req.body.password) {
     res.json({
@@ -117,10 +202,30 @@ module.exports.register = function (req, res) {
   }
 }
 
+/**
+ * @api {post} /users/me/login Login
+ * @apiName PostLogin
+ * @apiGroup Users
+ * 
+ * @apiParam {String} username  Your username 
+ * @apiParam {String} password  Your password
+ *
+ * @apiSuccess {Boolean} success  True or false success 
+ * @apiSuccess {String} token     JWT login token
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i -X "POST" https://registry.hexagonminecraft.com/api/v1/users/me/login
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "success": true,
+ *       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ"
+ *     }
+ */
 module.exports.login = function (req, res) {
   const config = req.config
   User.findOne({
-    email: req.body.email
+    username: req.body.username
   }, function (err, user) {
     if (err) {
       handleError(res, err)
@@ -157,6 +262,30 @@ module.exports.login = function (req, res) {
   })
 }
 
+/**
+ * @api {put} /users/me/profile Update Profile
+ * @apiName PutProfile
+ * @apiGroup Users
+ * 
+ * @apiParam {String} _id       Your user ID 
+ * @apiParam {String} [name]    Your name
+ * @apiParam {String} [github]  Your GitHub username
+ * @apiParam {String} [gitlab]  Your GitLab username
+ * @apiParam {String} [website] Your website address
+ * @apiParam {String} [twitter] Your Twitter username
+ *
+ * @apiSuccess {Boolean} success     True or false success 
+ * @apiSuccess {String} message     Success message
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i -X "PUT" https://registry.hexagonminecraft.com/api/v1/users/me/profile
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "success": true,
+ *       "message": "Profile updated!"
+ *     }
+ */
 module.exports.updateProfile = (req, res) => {
   let user = req.body
   User.findById(user._id, function (err, doc) {
@@ -180,6 +309,27 @@ module.exports.updateProfile = (req, res) => {
   })
 }
 
+/**
+ * @api {put} /users/me/password Update Password
+ * @apiName PutPassword
+ * @apiGroup Users
+ * 
+ * @apiParam {String} _id       Your user ID 
+ * @apiParam {String} current   Your current password
+ * @apiParam {String} new       Your new password
+ *
+ * @apiSuccess {Boolean} success     True or false success 
+ * @apiSuccess {String} message     Success message
+ *
+ * @apiExample {curl} Example usage:
+ *     curl -i -X "PUT" https://registry.hexagonminecraft.com/api/v1/users/me/password
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "success": true,
+ *       "message": "Password updated!"
+ *     }
+ */
 module.exports.updatePassword = (req, res) => {
   let passwords = req.body
   console.log(passwords)

@@ -4,8 +4,25 @@ const mongoose = require('mongoose')
 
 module.exports = function (app, config) {
   const pkg = require(config.projectPath + '/package.json')
+
   /**
-   * GET /api/v1
+   * @api {get} / Version
+   * @apiName Version
+   * @apiGroup Main
+   *
+   * @apiSuccess {String} name      Name of API
+   * @apiSuccess {String} version   Version of API
+   * @apiSuccess {String} homepage  Homepage of project
+   *
+   * @apiExample {curl} Example usage:
+   *     curl -i https://registry.hexagonminecraft.com/api/v1
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "name": "MCPR API",
+   *       "version": "0.0.1",
+   *       "homepage": "https://mcpr.io"
+   *     }
    */
   apiRouter.get('/', (req, res) => {
     res.json({
@@ -16,16 +33,9 @@ module.exports = function (app, config) {
   })
 
   /**
-   * GET /api/plugins
-   */
-
-  apiRouter.use('/plugins', require('./plugins')(config))
-  apiRouter.use('/users', require('./users')(config))
-  apiRouter.use('/versions', require('./versions')(config))
-  /**
    * @api {get} /healthcheck Health Check
    * @apiName HealthCheck
-   * @apiGroup Health
+   * @apiGroup Main
    *
    * @apiSuccess {String} nodeCheck       Status of the Node check.
    * @apiSuccess {String} dbCheck       Status of the database connection.
@@ -67,6 +77,10 @@ module.exports = function (app, config) {
       }
     })
   })
+
+  apiRouter.use('/plugins', require('./plugins')(config))
+  apiRouter.use('/users', require('./users')(config))
+  apiRouter.use('/versions', require('./versions')(config))
 
   return apiRouter
 }

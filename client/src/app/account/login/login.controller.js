@@ -3,9 +3,7 @@
 angular.module('app')
     .controller('LoginCtrl', function ($scope, $http, $stateParams, auth, $state, $window) {
         $scope.user = {
-            name: 'Noah Prail',
             username: 'nprail',
-            email: 'noah@prail.net',
             password: 'fakepwd'
         };
         $scope.login = function (user) {

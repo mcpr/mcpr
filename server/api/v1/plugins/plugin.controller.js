@@ -265,12 +265,13 @@ exports.delete = function (req, res, next) {
 }
 
 /**
- * @api {get} /:username/plugins Get User's Plugins
+ * @api {get} /users/:username/plugins Get User's Plugins
  * @apiName GetUsersPlugins
  * @apiGroup Plugin
  *
  * @apiSuccess {Array} plugins       List of plugins.
  *
+ * @apiParam  {string}  username  Username to get owned plugins
  * @apiParam  {string}  [sort]  Return plugins sorted in `asc` or `desc` order. Default is `desc`
  * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
