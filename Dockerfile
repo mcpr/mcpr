@@ -4,11 +4,10 @@ MAINTAINER Filiosoft Open Source <opensource@filiosoft.com>
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock bower.json ./
-
-RUN yarn install
-
 COPY . .
+
+RUN ls
+RUN yarn install
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
