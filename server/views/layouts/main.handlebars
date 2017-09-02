@@ -62,9 +62,13 @@
         setTimeout(function () {
             if (typeof ___browserSync___ === 'undefined') {
                 if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('service-worker.js');
-                }            
-}
+                    navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then(function (res) {
+                        console.log(res)
+                    }).catch(function (err) { 
+                        console.log(err)
+                    });
+                }
+            }
         }, 1000)
     </script>
 </body>

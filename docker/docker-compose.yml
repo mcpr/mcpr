@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+  caddy:
+    restart: always
+    image: abiosoft/caddy:latest
+    depends_on:
+    - app # Ensures that caddy will relink if app container is restarted
+    command:
+    - -quic
+    ports:
+    - 80:80
+    - 443:443
+    env_file:
+     - .env
+    volumes:
+    - ./.caddy/certs:/root/.caddy # Your certificates will be stored here
+    - ./.caddy/logs:/var/log/caddy:Z # Caddy logs will be stored here
+    - ./Caddyfile:/etc/Caddyfile
+  app:
+    restart: always
+    image: mcpr/mcpr:latest    
+    ports:
+     - "3000:3000"
+    env_file:
+     - .env

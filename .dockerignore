@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+.vscode
+tests
+server/public/build/
+bower_components
+.env
+docs-site
+package-lock.json
