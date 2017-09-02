@@ -31,6 +31,7 @@ function convertModel (bukkit) {
                   latest_version_date: jsonRes.lastrelease,
                   latest_version: latestFiles.name,
                   latest_version_file: latestFiles,
+                  downloads: latestFiles.downloads,
                   readme: jsonRes.description,
                   keywords: keywords,
                   externalUrl: jsonRes.url,

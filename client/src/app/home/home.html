@@ -25,13 +25,17 @@
             <div ng-show="noPlugins && loaded">
                 <h5>Sorry, there are no plugins...</h5>
             </div>
-            <div ng-repeat="plugin in plugins | filter:searchTxt | limitTo: limit">
+            <div class="center row">
+                <a class="waves-effect waves-light btn" ng-click="showExternal()" ng-hide="externalShown">Show External Plugins</a>
+                <a class="waves-effect waves-light btn" ng-click="hideExternal()" ng-show="externalShown">Hide External Plugins</a>
+            </div>
+            <div ng-repeat="plugin in plugins | orderBy:'-downloads' | limitTo: limit | filter:searchTxt">
                 <div class="clearfix" ng-if="$index % 3 == 0"></div>
                 <div class="col s6 m4">
                     <div class="card green darken-3 hoverable">
                         <div class="card-content white-text">
                             <span ng-hide="plugin.namespace" class="card-title"><a href="/plugin/{{plugin._id}}">{{plugin.title}}</a></span>
-                            <span ng-show="plugin.namespace" class="card-title"><a href="/plugin/{{plugin.namespace}}/{{plugin._id}}">{{plugin.title}}</a></span>
+                            <span ng-show="plugin.namespace" class="card-title"><a href="/plugin/{{plugin.namespace}}/{{plugin._id}}">{{plugin.title}}</a> <small>(External)</small></span>
                             <p>{{plugin.short_description}}</p>
                             <br>
                             <small>
@@ -51,6 +55,6 @@
         </div>
     </div>
     <div class="center row">
-        <a class="waves-effect waves-light btn" ng-click="loadMore()">Load More</a>
+        <a class="waves-effect waves-light btn" ng-click="loadMore()" ng-show="showLoadMore">Load More</a>
     </div>
 </div>
