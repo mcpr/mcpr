@@ -100,6 +100,15 @@ angular
                     name: 'Create Plugin'
                 }
             })
+            .state('edit-plugin', {
+                url: '/plugin/:id/edit',
+                templateUrl: 'account/edit-plugin/edit-plugin.html',
+                controller: 'EditPluginCtrl',
+                data: {
+                    requiresLogin: true,
+                    name: 'Edit Plugin'
+                }
+            })
             .state('edit-profile', {
                 url: '/me/edit',
                 templateUrl: 'account/edit-profile/edit-profile.html',

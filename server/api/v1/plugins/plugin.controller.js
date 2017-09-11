@@ -16,7 +16,7 @@ exports.model = Plugin
  * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins
+ *     curl -i https://mcpr.hexagonminecraft.com/api/v1/plugins
  */
 exports.all = function (req, res, next) {
   const bukkitApi = require(req.config.rootPath + '/lib/bukkitApi')
@@ -76,11 +76,7 @@ exports.all = function (req, res, next) {
  * @apiParam  {String} author       The author's user ID
  * @apiParam  {Date} created="CurrentTime"       The date on which the plugin was created
  * @apiParam  {String} title       The title of the plugin
- * @apiParam  {Date} [latest_version_date]       The date on which the latest version was published
- * @apiParam  {String} [latest_version]       Version number of the latest version
  * @apiParam  {String} [source]       URL of the source code
- * @apiParam  {Boolean} [sourceGithub]       Specifies whether or not the plugin source is hosted on GitHub
- * @apiParam  {Array} [flavors]       List of supported Minecraft flavors
  * @apiParam  {String} [readme]       The README.md file
  * @apiParam  {String} license       The license of the plugin
  * @apiParam  {Array} [keywords]       List of plugin keywords
@@ -122,7 +118,7 @@ exports.create = function (req, res, next) {
  * @apiSuccess {Array} keywords       List of plugin keywords
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/plugins/dynmap
+ *     curl -i https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -164,7 +160,7 @@ exports.show = function (req, res, next) {
  * @apiParam {String} id ID of plugin
  *
  * @apiExample {curl} Example usage:
- *     curl -i -o dynmap.jar https://registry.hexagonminecraft.com/api/v1/plugins/dynmap/download
+ *     curl -i -o dynmap.jar https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap/download
  */
 exports.download = function (req, res, next) {
   const config = req.config
@@ -232,12 +228,20 @@ exports.update = function (req, res) {
       if (!plugin) {
         return handle404(res)
       }
+      if (req.payload.username !== plugin.author) {
+        return res.status(403).json({
+          name: 'Forbidden',
+          statusCode: 403,
+          message: 'This plugin does not belong to you'
+        })
+      }
+
       Plugin
         .update({
           '_id': req.params.id
         }, updatedPlugin)
         .exec(function () {
-          return res.status(204).end()
+          return res.status(200).json(updatedPlugin).end()
         })
     })
 }
@@ -251,22 +255,40 @@ exports.update = function (req, res) {
  * @apiPermission authenticated
  * 
  * @apiExample {curl} Example usage:
- *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/v1/plugins/dynmap
+ *     curl -X "DELETE" https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap
  */
 exports.delete = function (req, res, next) {
   let pluginId = req.params.id
   Plugin
-    .remove({
-      '_id': pluginId
-    })
-    .exec(function (err, num) {
+    .findById(pluginId)
+    .exec(function (err, plugin) {
       if (err) {
         return handleError(res, err)
       }
-      if (num === 0) {
-        return res.status(498).end()
+      if (!plugin) {
+        return handle404(res)
       }
-      next()
+      if (req.payload.username !== plugin.author) {
+        return res.status(403).json({
+          name: 'Forbidden',
+          statusCode: 403,
+          message: 'This plugin does not belong to you'
+        })
+      }
+
+      Plugin
+        .remove({
+          '_id': pluginId
+        })
+        .exec(function (err, num) {
+          if (err) {
+            return handleError(res, err)
+          }
+          if (num === 0) {
+            return res.status(498).end()
+          }
+          next()
+        })
     })
 }
 
@@ -282,7 +304,7 @@ exports.delete = function (req, res, next) {
  * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/users/nprail/plugins
+ *     curl -i https://mcpr.hexagonminecraft.com/api/v1/users/nprail/plugins
  */
 module.exports.showByUser = function (req, res) {
   let perPage = Math.max(0, req.query.per_page) || 50
@@ -317,7 +339,7 @@ module.exports.showByUser = function (req, res) {
  *
  * @apiParam  {String} q  Keyword to search for
  * @apiExample {curl} Example usage:
- *     curl -X "GET" https://registry.hexagonminecraft.com/api/v1/plugins/search?q=dynmap
+ *     curl -X "GET" https://mcpr.hexagonminecraft.com/api/v1/plugins/search?q=dynmap
  */
 module.exports.search = function (req, res) {
   var query = {}

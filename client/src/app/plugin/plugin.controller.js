@@ -16,6 +16,7 @@ angular.module('app')
                 addImgClass();
             });
             getVersions();
+            authData();
         }).catch(function (err) {
             console.log(err);
             if (err.status === 404) {
@@ -44,15 +45,17 @@ angular.module('app')
             });
         }
 
-        if ($rootScope.isAuthenticated) {
-            auth.currentUser().then(function (res) {
-                $scope.profile = res.data;
-                $scope.isAuthor = function () {
-                    return $scope.plugin.author === $scope.profile.username;
-                }
-            }).catch(function (err) {
-                console.log(err);
-                $scope.error = err;
-            });
+        function authData() {
+            if ($rootScope.isAuthenticated) {
+                auth.currentUser().then(function (res) {
+                    $scope.profile = res.data;
+                    $scope.isAuthor = function () {
+                        return $scope.plugin.author === $scope.profile.username;
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                    $scope.error = err;
+                });
+            }
         }
     });

@@ -36,10 +36,10 @@
                 <hr>
             </div>
             <div class="col m8" id="plugin">
-                <div ng-show="isAuthor">
+                <div ng-show="isAuthor()">
                     <br>
-                    <a class="btn green darken-3" ui-sref='edit-plugin'>Edit Plugin</a>
-                    <a class="btn red" ui-sref='edit-plugin'>Delete Plugin</a>
+                    <a class="btn green darken-3" ui-sref='edit-plugin({id: plugin._id})'>Edit Plugin</a>
+                    <a class="btn red" ui-sref='delete-plugin({id: plugin._id})'>Delete Plugin</a>
                 </div>
                 <div markdown-to-html="plugin.readme"></div>
             </div>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <table ng-show="versionsLoaded" class="striped bordered responsive-table highlight">
-                    <div ng-show="isAuthor">
+                    <div ng-show="isAuthor()">
                         <br>
                         <a class="btn green darken-3" ui-sref='add-release'>Add Release</a>
                     </div>
