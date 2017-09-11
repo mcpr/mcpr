@@ -2,7 +2,7 @@
 
 angular
     .module('app')
-    .run(function (authManager, $rootScope, $transitions, auth, $window) {
+    .run(function (authManager, $rootScope, $transitions, auth, $window, $location) {
         console.log('Welcome to the JavaScript console of MCPR! \nAre you having issues? Please report them here: \nhttps://github.com/mcpr/mcpr/issues');
         authManager.checkAuthOnRefresh();
         authManager.redirectWhenUnauthenticated();
@@ -28,6 +28,7 @@ angular
         }, function (trans) {
             var setTitle = trans.injector().get('setTitle');
             var data = trans.router.stateService.current.data
+            $window.ga('send', 'pageview', $location.path());
             if (data && data.name) {
                 setTitle(data.name);
             }

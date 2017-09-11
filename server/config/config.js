@@ -25,7 +25,8 @@ const config = {
   s3Bucket: env.S3_BUCKET || 'download.mcpr.io',
   rootPath: path.normalize(path.join(__dirname, '/../')),
   projectPath: path.normalize(path.join(__dirname, '/../../')),
-  AIIK: env.APPINSIGHTS_INSTRUMENTATIONKEY
+  AIIK: env.APPINSIGHTS_INSTRUMENTATIONKEY,
+  gaCode: env.GA_CODE
 }
 
 module.exports = config

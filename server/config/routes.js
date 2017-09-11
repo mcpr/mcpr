@@ -12,7 +12,8 @@ module.exports = function (app) {
     }
     res.render('app', {
       currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl,
-      pluginName: pluginId
+      pluginName: pluginId,
+      gaCode: config.gaCode
     })
   })
 
