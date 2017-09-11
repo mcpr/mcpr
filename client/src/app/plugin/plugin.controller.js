@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app')
-    .controller('PluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, config, $rootScope, auth) {
+    .controller('PluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, config, $rootScope, auth, $state) {
         var id = $transition$.params().id;
         $scope.modalVersion = {};
         $scope.setModalVersion = function (version) {
@@ -25,6 +25,28 @@ angular.module('app')
                 $scope.error = err;
             }
         });
+
+        $scope.delete = function (confirmation) {
+            console.log('Deleting ' + confirmation);
+            if (confirmation === $scope.plugin._id) {
+                $http.delete(config.apiUrl + '/plugins/' + id)
+                    .then(function (res) {
+                        $('#deleteModal').modal('close');
+                        Materialize.toast('Plugin deleted!', 4000);
+                        $state.go('home');
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        if (err.status === 404) {
+                            $scope.notfound = true;
+                        } else {
+                            $scope.error = err;
+                        }
+                    })
+            } else {
+                $scope.deleteError = 'The plugin ID does not match';
+            }
+        }
 
         function getVersions() {
             $http.get(config.apiUrl + '/versions/' + id).then(function (res) {

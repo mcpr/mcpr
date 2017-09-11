@@ -39,7 +39,28 @@
                 <div ng-show="isAuthor()">
                     <br>
                     <a class="btn green darken-3" ui-sref='edit-plugin({id: plugin._id})'>Edit Plugin</a>
-                    <a class="btn red" ui-sref='delete-plugin({id: plugin._id})'>Delete Plugin</a>
+                    <a class="btn red" data-target='deleteModal' modal>Delete Plugin</a>
+
+                    <div id="deleteModal" class="modal">
+                        <div class="modal-content">
+                            <h4>Delete Plugin?</h4>
+                            <p>Are you sure that you want to delete this plugin? <b>THIS IS AN IRREVERSIBLE ACTION.</b> All
+                                plugin data will be erased including versions and plugin jar files.</p>
+                            <p>Please type the ID of the plugin (<code>{{plugin._id}}</code>) below to confirm.</p>
+
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input ng-model="confirmation" id="id" type="text" class="validate">
+                                    <label for="id">Plugin ID</label>
+                                </div>
+                                <p ng-show="deleteError">{{deleteError}}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a ng-click="delete(confirmation)" class="modal-action waves-effect waves-red btn red">Confirm</a>
+                            <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        </div>
+                    </div>
                 </div>
                 <div markdown-to-html="plugin.readme"></div>
             </div>
