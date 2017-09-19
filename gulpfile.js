@@ -284,7 +284,8 @@ gulp.task('watch', function () {
         ignore: [
             'server/public/',
             'node_modules/',
-            'client/'
+            'client/',
+            'server/public/'
         ]
     });
 });
@@ -292,8 +293,11 @@ gulp.task('watch', function () {
 gulp.task('serve', ['watch'], function () {
     browserSync.init(null, {
         proxy: 'http://localhost:3000',
-        files: ['server/public/**/*.*'],
-        port: 7000,
-        reloadDelay: 3000
+        files: [
+            'server/public/build/fonts/**/*.*',
+            'server/public/build/**/*.min.*',
+            '!server/public/build/maps/**/*.*'
+        ],
+        port: 7000
     });
 });

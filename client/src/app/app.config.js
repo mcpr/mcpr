@@ -71,6 +71,15 @@ angular
                 templateUrl: 'plugin/plugin.html',
                 controller: 'BukkitPluginCtrl'
             })
+            .state('publish-release', {
+                url: '/plugin/:id/releases/new',
+                templateUrl: 'plugin/release/release.html',
+                controller: 'ReleaseCtrl',
+                data: {
+                    requiresLogin: true,
+                    name: 'Publish Release'
+                }
+            })
             /**
              * User States
              */
