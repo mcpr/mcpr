@@ -144,6 +144,14 @@ angular
                     name: 'Login'
                 }
             })
+            .state('verify', {
+                url: '/verify/:id/:verificationCode',
+                templateUrl: 'account/verify/verify.html',
+                controller: 'VerifyCtrl',
+                data: {
+                    name: 'Verify Email Address'
+                }
+            })
             .state('signup', {
                 url: '/signup',
                 templateUrl: 'account/signup/signup.html',

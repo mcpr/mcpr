@@ -37,7 +37,7 @@ module.exports = function (app) {
   }
 
   var date = new Date()
-  app.locals.deployVersion = date.getTime()
+  app.locals.deployVersion = Math.ceil(date.getTime() / 300000) * 300000
 
   app.use(express.static(config.rootPath + '/public', {
     maxAge: maxAge

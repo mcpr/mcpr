@@ -221,20 +221,24 @@ module.exports.verify = (req, res) => {
   let code = req.params.verificationCode
   User
 
-    .update({
+    .findOne({
       '_id': id,
       '__private.verificationCode': code
-    }, {
-      $set: {
-        isVerified: true
+    }, function (err, user) {
+      if (err) return handleError(res, err.name)
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'Bad request'
+        })
       }
-    })
-    .exec(function (err, num) {
-      if (err) return handleError(res, err)
-      if (num.n === 0) return res.status(498).end()
-      console.log(num)
-      return res.json({
-        message: 'Verified'
+      user.isVerified = true
+      user.save(function (err, updatedTank) {
+        if (err) return handleError(err.name)
+        console.log(user)
+        return res.json({
+          message: 'Verified'
+        })
       })
     })
 }
@@ -413,5 +417,8 @@ module.exports.updatePassword = (req, res) => {
 
 const handleError = function (res, err) {
   console.log('ERROR: ' + err)
-  return res.status(500).send(err)
+  return res.status(500).json({
+    success: false,
+    message: err
+  })
 }
