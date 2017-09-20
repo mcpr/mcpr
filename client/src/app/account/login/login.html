@@ -4,20 +4,23 @@
 
             <h3>Login</h3>
 
-            <form name="loginForm">
+            <form name="loginForm" novalidate>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="username" type="text" class="validate" ng-model="user.username">
+                        <input id="username" name="username" type="text" ng-model="user.username" ng-minlength="3" ng-maxlength="15" required ng-class="{'invalid': loginForm.username.$invalid && !loginForm.username.$pristine}">
                         <label for="username">Username</label>
+                        <p ng-show="loginForm.username.$error.minlength && !loginForm.username.$pristine" class="red-text">Username is too short.</p>
+                        <p ng-show="loginForm.username.$error.maxlength && !loginForm.username.$pristine" class="red-text">Username is too long.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" ng-model="user.password">
+                        <input id="password" name="password" type="password" ng-model="user.password" ng-minlength="6" required ng-class="{'invalid': loginForm.password.$invalid && !loginForm.password.$pristine}">
                         <label for="password">Password</label>
+                        <p ng-show="loginForm.password.$error.minlength && !loginForm.password.$pristine" class="red-text">Password is too short.</p>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light" type="submit" ng-click="login(user)">Login</button>
+                <button class="btn waves-effect waves-light" type="submit" ng-click="login(user)" ng-disabled="loginForm.$invalid">Login</button>
                 <a class="waves-effect waves-light btn" ui-sref="signup">Signup</a>
             </form>
         </div>

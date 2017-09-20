@@ -5,33 +5,38 @@
 
             </div>
             <h3>Signup</h3>
-            <!-- FORM VALIDATION NEEDED -->
-            <form name="signUpForm" ng-submit="signup(user)" ng-hide="success">
+            <form name="signUpForm" ng-submit="signup(user, signUpForm.$valid)" ng-hide="success" novalidate>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" type="text" class="validate" ng-model="user.name" required>
+                        <input id="name" name="name" type="text" ng-model="user.name" ng-minlength="5" required ng-class="{'invalid': signUpForm.name.$invalid && !signUpForm.name.$pristine}" >
                         <label for="name">Name</label>
+                        <p ng-show="signUpForm.name.$invalid && !signUpForm.name.$pristine" class="red-text">You name is required!</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate" ng-model="user.email" required>
+                        <input id="email" name="email" type="email" ng-model="user.email" ng-minlength="5" required ng-class="{'invalid': signUpForm.email.$invalid && !signUpForm.email.$pristine}">
                         <label for="email">Email</label>
+                        <p ng-show="signUpForm.email.$error.email && !signUpForm.email.$pristine" class="red-text">Valid email address is required!</p>
+                        <p ng-show="signUpForm.email.$invalid && !signUpForm.email.$pristine" class="red-text">Email is required!</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="username" type="text" class="validate" ng-model="user.username" required>
+                        <input id="username" name="username" type="text" ng-model="user.username" ng-minlength="3" ng-maxlength="15" required ng-class="{'invalid': signUpForm.username.$invalid && !signUpForm.username.$pristine}">
                         <label for="username">Username</label>
+                        <p ng-show="signUpForm.username.$error.minlength && !signUpForm.username.$pristine" class="red-text">Username is too short.</p>
+                        <p ng-show="signUpForm.username.$error.maxlength && !signUpForm.username.$pristine" class="red-text">Username is too long.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" ng-model="user.password" required>
+                        <input id="password" name="password" type="password" ng-model="user.password" ng-minlength="6" required ng-class="{'invalid': signUpForm.password.$invalid && !signUpForm.password.$pristine}">
                         <label for="password">Password</label>
+                        <p ng-show="signUpForm.password.$error.minlength && !signUpForm.password.$pristine" class="red-text">Password is too short.</p>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light" type="submit">Signup</button>
+                <button class="btn waves-effect waves-light" type="submit" ng-disabled="signUpForm.$invalid">Signup</button>
             </form>
             <div ng-show="success" class="card-panel green lighten-2 center-align">
                 <p>Success! Please check your email for the verification link!
