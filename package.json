@@ -31,7 +31,7 @@
   },
   "homepage": "https://registry.HexagonMinecraft.com",
   "dependencies": {
-    "applicationinsights": "^0.21.0",
+    "applicationinsights": "^0.22.0",
     "aws-sdk": "^2.100.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
