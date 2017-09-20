@@ -1,9 +1,10 @@
 language: node_js
 sudo: false
+dist: trusty
 node_js:
 - node
 install:
-- pip install --index-url=http://pypi.python.org/pypi/ --trusted-host pypi.python.org mkdocs mkdocs-material
+- pip install mkdocs mkdocs-material
 script:
 - yarn test
 - yarn run docs
