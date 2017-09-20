@@ -3,7 +3,7 @@ module.exports = function (config) {
   const slugify = require(config.rootPath + '/lib/slug')
   const convertModel = require(config.rootPath + '/lib/bukkitToMcpr')
 
-  function show (req, res, next) {
+  const show = function (req, res, next) {
     bukkitApi.getPlugin(req.params.id)
       .then((res) => {
         return bukkitApi.getPluginFiles(req.params.id)
@@ -45,7 +45,7 @@ module.exports = function (config) {
       })
   }
 
-  function showAll (req, res, next) {
+  const showAll = function (req, res, next) {
     bukkitApi.getAll()
       .then((res) => {
         let jsonRes = JSON.parse(res)
@@ -65,7 +65,7 @@ module.exports = function (config) {
       })
   }
 
-  function handleError (res, err) {
+  const handleError = function (res, err) {
     if (err.statusCode === 404) {
       return res.status(404).send({
         name: err.name,

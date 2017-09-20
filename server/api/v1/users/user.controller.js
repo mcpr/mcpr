@@ -204,6 +204,31 @@ module.exports.register = function (req, res) {
   }
 }
 
+module.exports.verify = (req, res) => {
+  // const config = req.config
+  console.log(req.params.verificationCode)
+  let id = req.params.id
+  let code = req.params.verificationCode
+  User
+
+    .update({
+      '_id': id,
+      '__private.verificationCode': code
+    }, {
+      $set: {
+        isVerified: true
+      }
+    })
+    .exec(function (err, num) {
+      if (err) return handleError(res, err)
+      if (num.n === 0) return res.status(498).end()
+      console.log(num)
+      return res.json({
+        message: 'Verified'
+      })
+    })
+}
+
 /**
  * @api {post} /users/me/login Login
  * @apiName PostLogin
@@ -234,11 +259,18 @@ module.exports.login = function (req, res) {
     }
 
     if (!user) {
-      res.send({
+      return res.status(404).send({
         success: false,
         message: 'Authentication failed. User not found.'
       })
+    } else if (!user.isVerified) {
+      return res.status(403).send({
+        success: false,
+        verified: false,
+        message: 'Your email address is not verified! Please check your email.'
+      })
     } else {
+      console.log(user)
       // Check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (isMatch && !err) {
@@ -369,7 +401,7 @@ module.exports.updatePassword = (req, res) => {
   })
 }
 
-function handleError (res, err) {
+const handleError = function (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)
 }

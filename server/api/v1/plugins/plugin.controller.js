@@ -361,12 +361,12 @@ module.exports.search = function (req, res) {
   })
 }
 
-function handleError (res, err) {
+const handleError = function (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)
 }
 
-function handle404 (res) {
+const handle404 = function (res) {
   res.status(404)
   res.json({
     name: 'NotFound',

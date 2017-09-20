@@ -17,6 +17,8 @@ angular.module('app')
                 .catch(function (err) {
                     if (err.status === 401) {
                         return Materialize.toast(err.data.message, 4000);
+                    } else if (err.status === 403) {
+                        return Materialize.toast(err.data.message, 4000);
                     }
                     Materialize.toast(err.statusText, 4000);
                 });

@@ -2,9 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const getRandomString = function () {
+  return require('crypto').randomBytes(16).toString('hex')
+}
 module.exports = function (config) {
   const key = config.secert
   const hashEmail = require(config.rootPath + '/lib/hashEmail')
+  const sendVerificationEmail = require(config.rootPath + '/lib/sendVerificationEmail')
 
   const userSchema = new Schema({
     email: {
@@ -25,18 +29,30 @@ module.exports = function (config) {
       type: String,
       required: true
     },
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
     hashedEmail: String,
     website: String,
     github: String,
     gitlab: String,
     twitter: String,
-    updatedAt: Date
+    updatedAt: Date,
+    __private: {
+      verificationCode: String,
+      unsubscribeCode: String
+    }
   })
 
   userSchema.pre('save', function (next) {
     let user = this
     const hashPassword = require(config.rootPath + '/lib/hashPassword')
 
+    if (user.isNew) {
+      user.__private.verificationCode = getRandomString()
+      sendVerificationEmail(user, config)
+    }
     if (user.isModified('email') || user.isNew) {
       let hashedEmail = hashEmail(user.email)
       user.hashedEmail = hashedEmail

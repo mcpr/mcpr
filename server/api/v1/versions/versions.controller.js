@@ -383,12 +383,12 @@ exports.upload = function (req, res, next) {
     })
 }
 
-function handleError (res, err) {
+const handleError = function (res, err) {
   console.log('ERROR: ' + err)
   return res.status(500).send(err)
 }
 
-function handle404 (res, err) {
+const handle404 = function (res, err) {
   res.status(404)
   if (err.message) {
     return res.json({

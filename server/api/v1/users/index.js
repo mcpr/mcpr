@@ -12,6 +12,7 @@ module.exports = function (config) {
 
   router.get('/', controller.showAll)
   router.post('/me/login', controller.login)
+  router.get('/me/verify/:id/:verificationCode', controller.verify)
   router.post('/me/signup', controller.register)
   router.get('/me/profile', auth, controller.profileRead)
   router.put('/me/profile', auth, controller.updateProfile)
