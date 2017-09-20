@@ -30,6 +30,9 @@ require('./config/passport')(passport, config)
 // Routes
 require('./config/routes')(app)
 
+// Error handler middleware
+require('./config/middleware')(app)
+
 app.listen(config.port)
 
 console.log(`Server Listening on port ${config.port}`)

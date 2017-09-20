@@ -31,30 +31,6 @@ module.exports = function (app) {
     return next()
   })
 
-  // error handlers
-  function error404Handler (err, req, res, next) {
-    console.log(err)
-    console.log('ERROR')
-  }
-
-  function unauthorisedError (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-      res.status(401)
-      res.json({
-        'message': err.name + ': ' + err.message
-      })
-    }
-  }
-
-  function catchAllError (err, req, res, next) {
-    console.error(err.message)
-    next(err)
-  }
-
-  app.use(catchAllError)
-  app.use(error404Handler)
-  app.use(unauthorisedError)
-
   let maxAge = 0
   if (app.get('env') === 'production') {
     maxAge = 14400000

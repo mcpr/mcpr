@@ -13,22 +13,33 @@ module.exports = function (app, config) {
    * @apiSuccess {String} name      Name of API
    * @apiSuccess {String} version   Version of API
    * @apiSuccess {String} homepage  Homepage of project
+   * @apiSuccess {Object} instance  Instance information
+   * @apiSuccess {String} instance.url  Instance base URL
+   * @apiSuccess {String} instance.api  Instance base API URL
    *
    * @apiExample {curl} Example usage:
-   *     curl -i https://registry.hexagonminecraft.com/api/v1
+   *     curl -i https://mcpr.hexagonminecraft.com/api/v1
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
    *       "name": "MCPR API",
    *       "version": "0.0.1",
-   *       "homepage": "https://mcpr.io"
+   *       "homepage": "https://mcpr.io",
+   *       "instance": {
+   *          "url": "https://mcpr.io",
+   *          "api": "https://mcpr.io/api/v1"
+   *       }
    *     }
    */
   apiRouter.get('/', (req, res) => {
     res.json({
       name: 'MCPR API',
       version: pkg.version,
-      homepage: pkg.homepage
+      homepage: pkg.homepage,
+      instance: {
+        url: config.externalUrl,
+        api: `${config.externalUrl}/api/v1`
+      }
     })
   })
 

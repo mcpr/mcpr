@@ -6,33 +6,39 @@
             </div>
             <h3>Signup</h3>
             <!-- FORM VALIDATION NEEDED -->
-            <form name="signUpForm" ng-submit="signup(user)">
+            <form name="signUpForm" ng-submit="signup(user)" ng-hide="success">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" type="text" class="validate" ng-model="user.name">
+                        <input id="name" type="text" class="validate" ng-model="user.name" required>
                         <label for="name">Name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate" ng-model="user.email">
+                        <input id="email" type="email" class="validate" ng-model="user.email" required>
                         <label for="email">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="username" type="text" class="validate" ng-model="user.username">
+                        <input id="username" type="text" class="validate" ng-model="user.username" required>
                         <label for="username">Username</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" ng-model="user.password">
+                        <input id="password" type="password" class="validate" ng-model="user.password" required>
                         <label for="password">Password</label>
                     </div>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit">Signup</button>
             </form>
+            <div ng-show="success" class="card-panel green lighten-2 center-align">
+                <p>Success! Please check your email for the verification link!
+                </p>
+                <p>Once you have verified your email address, click the button below to login!</p>
+                <a ui-sref="login" class="btn waves-effect waves-light">Login</a>
+            </div>
         </div>
     </div>
 </div>

@@ -8,7 +8,6 @@ const getRandomString = function () {
 module.exports = function (config) {
   const key = config.secert
   const hashEmail = require(config.rootPath + '/lib/hashEmail')
-  const sendVerificationEmail = require(config.rootPath + '/lib/sendVerificationEmail')
 
   const userSchema = new Schema({
     email: {
@@ -51,7 +50,6 @@ module.exports = function (config) {
 
     if (user.isNew) {
       user.__private.verificationCode = getRandomString()
-      sendVerificationEmail(user, config)
     }
     if (user.isModified('email') || user.isNew) {
       let hashedEmail = hashEmail(user.email)

@@ -45,6 +45,8 @@ module.exports.profileRead = function (req, res) {
     // Otherwise continue
     let query = User.findById(req.payload.id)
     query.select('-password')
+    query.select('-__private')
+    query.select('-__v')
 
     query.exec(function (err, user) {
       if (err) {
@@ -97,13 +99,16 @@ module.exports.getUser = function (req, res) {
     username: req.params.username
   })
   query.select('-password')
+  query.select('-__private')
+  query.select('-__v')
 
   query.exec(function (err, user) {
     if (err) {
       return handleError(res, err)
     }
     if (user === null) {
-      return handleError(res, {
+      return res.status(404).json({
+        success: false,
         message: 'The requested user doesn\'t seem to exist.'
       })
     }
@@ -139,6 +144,8 @@ module.exports.showAll = function (req, res) {
     .sort(sortObj)
 
   query.select('-password')
+  query.select('-__private')
+  query.select('-__v')
 
   query.exec(function (err, users) {
     if (err) {
@@ -170,7 +177,9 @@ module.exports.showAll = function (req, res) {
  *       "message": "Successfully created new user."
  *     }
  */
-module.exports.register = function (req, res) {
+module.exports.register = (req, res) => {
+  const config = req.config
+  const sendVerificationEmail = require(config.rootPath + '/lib/sendVerificationEmail')
   if (!req.body.email || !req.body.password) {
     res.json({
       success: false,
@@ -185,7 +194,7 @@ module.exports.register = function (req, res) {
     })
 
     // Attempt to save the user
-    newUser.save(function (err) {
+    newUser.save((err, user) => {
       if (err) {
         if (err.code === 11000) {
           return res.status(409).json({
@@ -196,7 +205,8 @@ module.exports.register = function (req, res) {
         console.log(err)
         return res.status(500).json(err)
       }
-      res.json({
+      sendVerificationEmail(user, config)
+      return res.json({
         success: true,
         message: 'Successfully created new user.'
       })

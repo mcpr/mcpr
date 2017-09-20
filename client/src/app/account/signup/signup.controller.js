@@ -11,19 +11,8 @@ angular.module('app')
         $scope.signup = function (user) {
             auth.signup(user)
                 .then(function (res) {
-                    auth.login(user)
-                        .then(function (res) {
-                            Materialize.toast('Login success!', 4000);
-                            $state.go('profile').then(function (result) {
-                                $window.location.reload();
-                            });
-                        })
-                        .catch(function (err) {
-                            if (err.status === 401) {
-                                return Materialize.toast(err.data.message, 4000);
-                            }
-                            Materialize.toast(err.statusText, 4000);
-                        });
+                    Materialize.toast('Signup success!', 4000);
+                    $scope.success = true;
                 })
                 .catch(function (err) {
                     if (err.status === 409) {

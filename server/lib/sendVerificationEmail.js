@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer')
 
 module.exports = (user, config) => {
-  console.log(config)
   let transporter = nodemailer.createTransport(config.smtp)
 
   // setup email data with unicode symbols
@@ -18,6 +17,6 @@ module.exports = (user, config) => {
     if (error) {
       return console.log(error)
     }
-    console.log('Message sent: %s', info.messageId)
+    console.log(`Message sent: ${info.messageId}`)
   })
 }

@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/mcpr/mcpr/issues"
   },
-  "homepage": "https://registry.HexagonMinecraft.com",
+  "homepage": "https://github.com/mcpr/mcpr",
   "dependencies": {
     "applicationinsights": "^0.22.0",
     "aws-sdk": "^2.100.0",
