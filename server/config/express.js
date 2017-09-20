@@ -36,6 +36,9 @@ module.exports = function (app) {
     maxAge = 14400000
   }
 
+  var date = new Date()
+  app.locals.deployVersion = date.getTime()
+
   app.use(express.static(config.rootPath + '/public', {
     maxAge: maxAge
   }))
