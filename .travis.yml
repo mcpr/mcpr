@@ -2,11 +2,11 @@ language: node_js
 sudo: false
 dist: trusty
 node_js:
+- node
 addons:
   apt:
     packages:
     - python
-- node
 install:
 - wget https://bootstrap.pypa.io/get-pip.py
 - python get-pip.py
