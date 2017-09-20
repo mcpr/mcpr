@@ -2,8 +2,14 @@ language: node_js
 sudo: false
 dist: trusty
 node_js:
+addons:
+  apt:
+    packages:
+    - python
 - node
 install:
+- wget https://bootstrap.pypa.io/get-pip.py
+- python get-pip.py
 - pip install mkdocs mkdocs-material
 script:
 - yarn test
