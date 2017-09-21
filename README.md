@@ -12,39 +12,26 @@ The ultimate Minecraft plugin registry.
 
 ## Getting Started
 ### Run Localy
-_This requires MongoDB to be installed._
-
 First, clone the repository. 
 ```bash
-$ git clone https://github.com/mcpr/mcpr.git
+git clone https://github.com/mcpr/mcpr.git && cd mcpr
 ```
-Then change to the directory of the repo and install the dependencies. 
+Then change to the `docker` directory and run with Docker!
 
 ```bash
-$ cd mcpr
-$ yarn install
-```
+cd docker
 
-Set configuration.
-```bash
-$ cp example.env .env
-$ vi .env
-```
-
-Finally, run the Node server. 
-
-```bash
-$ yarn start
+docker-compose up -d
 ```
 
 - Web App: [http://localhost:3000](http://localhost:3000)
-- Web API: [http://localhost:3000/api](http://localhost:3000/api)
+- REST API: [http://localhost:3000/api](http://localhost:3000/api)
 
 
 ### Hosted Registry
 
 - Web App: [https://mcpr.io](https://mcpr.io)
-- Web API: [https://mcpr.io/api](https://mcpr.io/api)
+- REST API: [https://mcpr.io/api](https://mcpr.io/api)
 
 ## Documentation
 You can find MCPR's documentation here:
