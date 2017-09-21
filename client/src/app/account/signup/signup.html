@@ -8,7 +8,7 @@
             <form name="signUpForm" ng-submit="signup(user, signUpForm.$valid)" ng-hide="success" novalidate>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="name" name="name" type="text" ng-model="user.name" ng-minlength="5" required ng-class="{'invalid': signUpForm.name.$invalid && !signUpForm.name.$pristine}" >
+                        <input id="name" name="name" type="text" ng-model="user.name" ng-minlength="5" required ng-class="{'invalid': signUpForm.name.$invalid && !signUpForm.name.$pristine}">
                         <label for="name">Name</label>
                         <p ng-show="signUpForm.name.$invalid && !signUpForm.name.$pristine" class="red-text">You name is required!</p>
                     </div>
@@ -37,6 +37,7 @@
                     </div>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit" ng-disabled="signUpForm.$invalid">Signup</button>
+                <p>By signing up you agree to our <a href="https://forum.mcpr.io/privacy">Privacy Policy</a> and <a data-target='disclaimerModal' modal>Disclaimer</a>.</p>
             </form>
             <div ng-show="success" class="card-panel green lighten-2 center-align">
                 <p>Success! Please check your email for the verification link!

@@ -5,10 +5,10 @@ The ultimate Minecraft plugin registry.
 ## Project Status
 |Stage              |Status     |
 |-------------------|-----------|
-|Alpha              |Current|
-|[Sprint One: MVP](https://github.com/mcpr/mcpr/milestone/1)  |Current|
-|Public Beta/MVP    |Not Started|
-|[Sprint Two: Polish](https://github.com/mcpr/mcpr/milestone/2)   |Not Started|
+|Alpha              |Complete|
+|[Sprint One: MVP](https://github.com/mcpr/mcpr/milestone/1)  |Complete|
+|Public Beta/MVP    |Current|
+|[Sprint Two: Polish](https://github.com/mcpr/mcpr/milestone/2)   |Current|
 
 ## Getting Started
 ### Run Localy

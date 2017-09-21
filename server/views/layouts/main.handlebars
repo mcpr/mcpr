@@ -7,13 +7,13 @@
     <meta name="theme-color" content="#2e7d32">
     <meta property="og:site_name" content="mcpr">
     <meta property="og:url" content="{{currentUrl}}" />
-    <meta property="og:description" content="Minecraft Plugin Registry {{plugin.short_description}}">
-    <meta name="description" content="Minecraft Plugin Registry {{plugin.short_description}}"> {{#if pluginName}}
+    <meta property="og:description" content="MCPR - {{plugin.short_description}}">
+    <meta name="description" content="MCPR - {{plugin.short_description}}"> {{#if pluginName}}
     <meta property="og:title" content="{{pluginName}}" />
     <title>{{pluginName}} - mcpr</title>
     {{else}}
     <meta property="og:title" content="MCPR" />
-    <title>MCPR Alpha</title>
+    <title>MCPR Beta</title>
     {{/if}}
     <base href="/">
     <link rel="manifest" href="manifest.json?v={{deployVersion}}">
@@ -23,7 +23,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="/build/css/lib.min.css?v={{deployVersion}}">
     <link rel="stylesheet" href="/build/css/app.min.css?v={{deployVersion}}">
-
+    {{#if gaCode}}
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{gaCode}}"></script>
     <script>
@@ -32,8 +32,8 @@
         gtag('js', new Date());
 
         gtag('config', '{{gaCode}}');
-
     </script>
+    {{/if}}
 </head>
 
 <body>
