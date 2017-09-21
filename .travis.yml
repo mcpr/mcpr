@@ -10,6 +10,7 @@ script:
 - yarn run docs
 - mkdir docs-site/tests
 - cp tests/eslint-report.html docs-site/tests/
+- echo "docs.mcpr.io" > docs-site/CNAME
 deploy:
   provider: pages
   skip_cleanup: true
