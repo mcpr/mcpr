@@ -16,7 +16,7 @@ exports.model = Plugin
  * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://mcpr.hexagonminecraft.com/api/v1/plugins
+ *     curl -i https://mcpr.io/api/v1/plugins
  */
 exports.all = function (req, res, next) {
   const bukkitApi = require(req.config.rootPath + '/lib/bukkitApi')
@@ -118,7 +118,7 @@ exports.create = function (req, res, next) {
  * @apiSuccess {Array} keywords       List of plugin keywords
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap
+ *     curl -i https://mcpr.io/api/v1/plugins/dynmap
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -160,7 +160,7 @@ exports.show = function (req, res, next) {
  * @apiParam {String} id ID of plugin
  *
  * @apiExample {curl} Example usage:
- *     curl -i -o dynmap.jar https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap/download
+ *     curl -i -o dynmap.jar https://mcpr.io/api/v1/plugins/dynmap/download
  */
 exports.download = function (req, res, next) {
   const config = req.config
@@ -255,7 +255,7 @@ exports.update = function (req, res) {
  * @apiPermission authenticated
  * 
  * @apiExample {curl} Example usage:
- *     curl -X "DELETE" https://mcpr.hexagonminecraft.com/api/v1/plugins/dynmap
+ *     curl -X "DELETE" https://mcpr.io/api/v1/plugins/dynmap
  */
 exports.delete = function (req, res, next) {
   let pluginId = req.params.id
@@ -304,7 +304,7 @@ exports.delete = function (req, res, next) {
  * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://mcpr.hexagonminecraft.com/api/v1/users/nprail/plugins
+ *     curl -i https://mcpr.io/api/v1/users/nprail/plugins
  */
 module.exports.showByUser = function (req, res) {
   let perPage = Math.max(0, req.query.per_page) || 50
@@ -339,7 +339,7 @@ module.exports.showByUser = function (req, res) {
  *
  * @apiParam  {String} q  Keyword to search for
  * @apiExample {curl} Example usage:
- *     curl -X "GET" https://mcpr.hexagonminecraft.com/api/v1/plugins/search?q=dynmap
+ *     curl -X "GET" https://mcpr.io/api/v1/plugins/search?q=dynmap
  */
 module.exports.search = function (req, res) {
   var query = {}

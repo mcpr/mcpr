@@ -20,7 +20,7 @@ const jwt = require('jsonwebtoken')
  * @apiPermission authenticated
  * 
  * @apiExample {curl} Example usage:
- *     curl --header "Authorization: Bearer YOUR_JWT_TOKEN" -i https://registry.hexagonminecraft.com/api/v1/users/me/profile
+ *     curl --header "Authorization: Bearer YOUR_JWT_TOKEN" -i https://mcpr.io/api/v1/users/me/profile
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -79,7 +79,7 @@ module.exports.profileRead = function (req, res) {
  * @apiSuccess {String} twitter     User's Twitter username
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/users/nprail
+ *     curl -i https://mcpr.io/api/v1/users/nprail
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -127,7 +127,7 @@ module.exports.getUser = function (req, res) {
  * @apiParam  {string}  [order_by]  Return userse ordered by `updatedAt`, `username`, `name`, or `email` fields. Default is `updatedAt`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/users?sort=asc&order_by=username
+ *     curl -i https://mcpr.io/api/v1/users?sort=asc&order_by=username
  */
 module.exports.showAll = function (req, res) {
   let perPage = Math.max(0, req.query.per_page) || 50
@@ -169,7 +169,7 @@ module.exports.showAll = function (req, res) {
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:
- *     curl -i -X "POST" https://registry.hexagonminecraft.com/api/v1/users/me/signup
+ *     curl -i -X "POST" https://mcpr.io/api/v1/users/me/signup
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -255,7 +255,7 @@ module.exports.verify = (req, res) => {
  * @apiSuccess {String} token     JWT login token
  *
  * @apiExample {curl} Example usage:
- *     curl -i -X "POST" https://registry.hexagonminecraft.com/api/v1/users/me/login
+ *     curl -i -X "POST" https://mcpr.io/api/v1/users/me/login
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -328,7 +328,7 @@ module.exports.login = function (req, res) {
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:
- *     curl -i -X "PUT" https://registry.hexagonminecraft.com/api/v1/users/me/profile
+ *     curl -i -X "PUT" https://mcpr.io/api/v1/users/me/profile
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -374,7 +374,7 @@ module.exports.updateProfile = (req, res) => {
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:
- *     curl -i -X "PUT" https://registry.hexagonminecraft.com/api/v1/users/me/password
+ *     curl -i -X "PUT" https://mcpr.io/api/v1/users/me/password
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {

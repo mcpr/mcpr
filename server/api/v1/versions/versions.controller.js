@@ -21,7 +21,7 @@ exports.model = Version
  * @apiParam  {string}  [order_by]  Return versions ordered by `downloads`, `version`, `plugin`, `size`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/verions
+ *     curl -i https://mcpr.io/api/v1/verions
  */
 exports.all = function (req, res, next) {
   let perPage = Math.max(0, req.query.per_page) || 50
@@ -113,7 +113,7 @@ exports.create = function (req, res, next) {
  * @apiSuccess {Array} game_versions       List of plugin keywords
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/versions/dynmap/2.4.0
+ *     curl -i https://mcpr.io/api/v1/versions/dynmap/2.4.0
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -151,7 +151,7 @@ exports.show = function (req, res, next) {
  * @apiParam {String} versionID Version of plugin
  *
  * @apiExample {curl} Example usage:
- *     curl -i -o dynmap.jar https://registry.hexagonminecraft.com/api/v1/versions/dynmap/2.4.0/download
+ *     curl -i -o dynmap.jar https://mcpr.io/api/v1/versions/dynmap/2.4.0/download
  */
 exports.download = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
@@ -243,7 +243,7 @@ exports.update = function (req, res) {
  * @apiPermission authenticated
  * 
  * @apiExample {curl} Example usage:
- *     curl -X "DELETE" https://registry.hexagonminecraft.com/api/v1/versions/dynmap/2.4.0
+ *     curl -X "DELETE" https://mcpr.io/api/v1/versions/dynmap/2.4.0
  */
 exports.delete = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
@@ -273,7 +273,7 @@ exports.delete = function (req, res, next) {
  * @apiParam  {string}  [order_by]  Return versions ordered by `downloads`, `version`, `plugin`, `size`, or `created` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://registry.hexagonminecraft.com/api/v1/versions/dynmap
+ *     curl -i https://mcpr.io/api/v1/versions/dynmap
  */
 module.exports.showByPlugin = function (req, res) {
   let perPage = Math.max(0, req.query.per_page) || 50

@@ -11,7 +11,7 @@ module.exports = function (app) {
       pluginId = url.replace('/plugin/', '')
     }
     res.render('app', {
-      currentUrl: 'https://registry.hexagonminecraft.com' + req.originalUrl,
+      currentUrl: 'https://mcpr.io' + req.originalUrl,
       pluginName: pluginId,
       gaCode: config.gaCode
     })

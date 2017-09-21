@@ -18,7 +18,7 @@ module.exports = function (app, config) {
    * @apiSuccess {String} instance.api  Instance base API URL
    *
    * @apiExample {curl} Example usage:
-   *     curl -i https://mcpr.hexagonminecraft.com/api/v1
+   *     curl -i https://mcpr.io/api/v1
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
@@ -52,7 +52,7 @@ module.exports = function (app, config) {
    * @apiSuccess {String} dbCheck       Status of the database connection.
    *
    * @apiExample {curl} Example usage:
-   *     curl -i https://registry.hexagonminecraft.com/api/v1/healthcheck
+   *     curl -i https://mcpr.io/api/v1/healthcheck
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {

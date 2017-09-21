@@ -6,7 +6,7 @@
 |Regular Updates|Yes|?|?|
 |Support|Email, Slack|Email, Ticket System, Forums|Email, Forums|
 |Responsive Design|Yes|Yes|Yes|
-|CLI|[Yes](https://mcpr.github.io/mcpr-cli)|No|No|
+|CLI|[Yes](https://cli.mcpr.io)|No|No|
 |SSL Encrypted|Yes|Yes|Yes|
 |Plugins From Top Registries[^1]|Yes|No|No|
 |Plugin Groups|[Planned](https://github.com/mcpr/mcpr/issues/15)|No|No|

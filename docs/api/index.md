@@ -14,7 +14,7 @@ GET /plugins
 Example of a valid API request using cURL and authentication via header:
 
 ```
-curl --header "Authorization: Bearer YOUR_JWT_TOKEN" "https://registry.hexagonminecraft.com/api/v1/users/me/profile"
+curl --header "Authorization: Bearer YOUR_JWT_TOKEN" "https://mcpr.io/api/v1/users/me/profile"
 ```
 
 The API uses JSON to serialize data. You don't need to specify .json at the end of an API URL.
@@ -40,13 +40,13 @@ Example of using the JWT token in the header:
 
 
 ```
-curl --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ" "https://registry.hexagonminecraft.com/api/v1/users/me/profile"
+curl --header "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ" "https://mcpr.io/api/v1/users/me/profile"
 ```
 
 ### Find Your JWT Token
 You can find your JWT token in your browsers local storage. 
 
-1. [Login to MCPR](https://registry.hexagonminecraft.com/login)
+1. [Login to MCPR](https://mcpr.io/login)
 2. Open your browser's Developer Tools (F12 on most OSes)
 3. Go to the Console tab
 4. Run the following in the console: `localStorage.getItem('id_token')`
@@ -72,8 +72,8 @@ Sometimes the returned result will span across many pages. When listing resource
 |`page`|Page number (default: 0)|
 |`per_page`|Number of items to list per page (default: `50`)|
 
-In the example below, we list 100 [plugins](https://mcpr.github.io/mcpr/api/#api-Plugin-GetPlugins) per page.
+In the example below, we list 100 [plugins](https://docs.mcpr.io/api/#api-Plugin-GetPlugins) per page.
 
 ```
-curl -i "https://registry.hexagonminecraft.com/api/v1/plugins?per_page=100"
+curl -i "https://mcpr.io/api/v1/plugins?per_page=100"
 ```

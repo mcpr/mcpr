@@ -4,7 +4,7 @@ You might ask, "why would we need **ANOTHER** plugin registry..." There are actu
 ## Robust API
 MCPR has a robust API! The API will allow developers to integrate the registry into their plugins! For example, JPanel is a nice Minecraft control panel plugin but you know what would make it even better? An interface that allows you to search and install plugins without ever leaving the panel! How awesome would that be???
 
-[API Docs](https://mcpr.github.io/mcpr/api)
+[API Docs](https://docs.mcpr.io/api)
 
 ## Plugins From BukkitDev and Spigot Resources
 You can search and install plugins from BukkitDev and Spigot Resources with MCPR! That makes MCPR the one place where you can find almost all Bukkit/Spigot plugins! You can also get BukkitDev and Spigot Resources plugins with the API. That means developers only have to intergrate with one API to get plugins from three sources!
@@ -12,7 +12,7 @@ You can search and install plugins from BukkitDev and Spigot Resources with MCPR
 ## MCPR CLI
 MCPR has a CLI! With the CLI you can easily setup a Minecraft server and install plugins with only a few commands!
 
-[Get MCPR-CLI](https://mcpr.github.io/mcpr-cli)
+[Get MCPR-CLI](https://cli.mcpr.io)
 
 ## Fully Open Source
 MCPR and MCPR-CLI are open source under the [MIT](https://github.com/mcpr/mcpr/blob/master/LICENSE) license.

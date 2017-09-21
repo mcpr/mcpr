@@ -94,9 +94,9 @@
   },
   "snyk": true,
   "apidoc": {
-    "title": "MCPR API Docs (Incomplete)",
-    "url": "https://registry.hexagonminecraft.com/api/v1",
-    "sampleUrl": "https://registry.hexagonminecraft.com/api/v1",
+    "title": "MCPR API Docs",
+    "url": "https://mcpr.io/api/v1",
+    "sampleUrl": "https://mcpr.io/api/v1",
     "template": {
       "withCompare": false
     }

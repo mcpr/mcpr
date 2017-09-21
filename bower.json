@@ -12,7 +12,7 @@
     "registry",
     "mods"
   ],
-  "homepage": "https://registry.HexagonMinecraft.com",
+  "homepage": "https://mcpr.io",
   "private": true,
   "ignore": [
     "**/.*",
