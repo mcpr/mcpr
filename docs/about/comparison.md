@@ -4,7 +4,7 @@
 |Robust API|Yes|No (Third Party)|No (Third Party)|
 |Open Source|Yes ([MIT](https://github.com/mcpr/mcpr/blob/master/LICENSE))|No|No|
 |Regular Updates|Yes|?|?|
-|Support|Email, Slack|Email, Ticket System, Forums|Email, Forums|
+|Support|Email, [Forums](https://forum.mcpr.io), Slack|Email, Ticket System, Forums|Email, Forums|
 |Responsive Design|Yes|Yes|Yes|
 |CLI|[Yes](https://cli.mcpr.io)|No|No|
 |SSL Encrypted|Yes|Yes|Yes|
