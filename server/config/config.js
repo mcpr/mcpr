@@ -44,6 +44,7 @@ const config = {
     }
   },
   smtpFrom: env.SMTP_FROM || '"MCPR" <noreply@mcpr.io>',
-  externalUrl: env.EXTERNAL_URL || 'https://mcpr.io'
+  externalUrl: env.EXTERNAL_URL || 'https://mcpr.io',
+  recaptchaKey: env.RECAPTCHA_KEY
 }
 module.exports = config

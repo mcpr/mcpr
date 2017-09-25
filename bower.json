@@ -34,6 +34,7 @@
     "font-awesome": "^4.7.0",
     "angular-jwt": "^0.1.9",
     "angular-materializecss-autocomplete": "^0.0.3",
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "angular-recaptcha": "^4.1.0"
   }
 }

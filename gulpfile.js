@@ -40,7 +40,8 @@ var paths = {
             bowerFolder + 'moment/min/moment.min.js',
             bowerFolder + 'angular-jwt/dist/angular-jwt.js',
             bowerFolder + 'angular-materializecss-autocomplete/angular-materializecss-autocomplete.js',
-            bowerFolder + 'simplemde/dist/simplemde.min.js'
+            bowerFolder + 'simplemde/dist/simplemde.min.js',
+            bowerFolder + 'angular-recaptcha/release/angular-recaptcha.min.js'
         ],
         custom: `${src}/js/**/*.js`,
         dist: `${dist}/js/`
@@ -292,7 +293,10 @@ gulp.task('watch', function () {
 
 gulp.task('serve', ['watch'], function () {
     browserSync.init(null, {
-        proxy: 'http://localhost:3000',
+        ui: {
+            port: 5001
+        },
+        proxy: 'http://localhost:5000',
         files: [
             'server/public/build/fonts/**/*.*',
             'server/public/build/**/*.min.*',

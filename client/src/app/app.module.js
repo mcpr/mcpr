@@ -6,5 +6,6 @@ angular
         'ui.materialize',
         'ng-showdown',
         'angular-jwt', 
-        'angularMaterializeAutoComplete'
+        'angularMaterializeAutoComplete',
+        'vcRecaptcha'
     ]);

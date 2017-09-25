@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
+const request = require('request-promise')
 
 /**
  * @api {get} /users/me/profile Get Current User
@@ -180,38 +181,57 @@ module.exports.showAll = function (req, res) {
 module.exports.register = (req, res) => {
   const config = req.config
   const sendVerificationEmail = require(config.rootPath + '/lib/sendVerificationEmail')
-  if (!req.body.email || !req.body.password) {
-    res.json({
-      success: false,
-      message: 'Please enter email and password.'
-    })
-  } else {
-    var newUser = new User({
-      email: req.body.email,
-      username: req.body.username,
-      name: req.body.name,
-      password: req.body.password
-    })
 
-    // Attempt to save the user
-    newUser.save((err, user) => {
-      if (err) {
-        if (err.code === 11000) {
-          return res.status(409).json({
-            success: false,
-            message: 'That email address or username already exists.'
+  request({
+    uri: `https://www.google.com/recaptcha/api/siteverify?secret=${config.recaptchaKey}&response=${req.body.recaptchaResponse}`,
+    method: 'POST'
+  }).then((resp) => {
+    var recaptchaRes = JSON.parse(resp)
+    console.log(recaptchaRes.success)
+    if (recaptchaRes.success) {
+      console.log(recaptchaRes.success)
+      if (!req.body.email || !req.body.password) {
+        res.json({
+          success: false,
+          message: 'Please enter email and password.'
+        })
+      } else {
+        var newUser = new User({
+          email: req.body.email,
+          username: req.body.username,
+          name: req.body.name,
+          password: req.body.password
+        })
+
+        // Attempt to save the user
+        newUser.save((err, user) => {
+          if (err) {
+            if (err.code === 11000) {
+              return res.status(409).json({
+                success: false,
+                message: 'That email address or username already exists.'
+              })
+            }
+            console.log(err)
+            return res.status(500).json(err)
+          }
+          sendVerificationEmail(user, config)
+          return res.json({
+            success: true,
+            message: 'Successfully created new user.'
           })
-        }
-        console.log(err)
-        return res.status(500).json(err)
+        })
       }
-      sendVerificationEmail(user, config)
-      return res.json({
-        success: true,
-        message: 'Successfully created new user.'
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: 'Recaptcha invalid'
       })
-    })
-  }
+    }
+  }).catch((err) => {
+    console.log(err)
+    return res.status(500).json(err)
+  })
 }
 
 module.exports.verify = (req, res) => {
