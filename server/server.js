@@ -6,6 +6,12 @@ const passport = require('passport')
 const appInsights = require('applicationinsights')
 // Setup ENV
 require('dotenv').config()
+const statusMonitor = require('express-status-monitor')({
+  title: 'MCPR Load'
+})
+app.use(statusMonitor)
+
+app.get('/status', statusMonitor.pageRoute)
 
 const config = require('./config/config')
 
