@@ -2,10 +2,7 @@
 
 angular.module('app')
     .controller('LoginCtrl', function ($scope, $http, $stateParams, auth, $state, $window) {
-        $scope.user = {
-            username: 'nprail',
-            password: 'fakepwd'
-        };
+        $scope.user = {};
         $scope.login = function (user) {
             auth.login(user)
                 .then(function (res) {

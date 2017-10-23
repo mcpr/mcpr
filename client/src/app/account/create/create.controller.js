@@ -142,26 +142,4 @@ angular.module('app')
                 });
             return deferred.promise;
         }
-        $scope.loadTestData = function () {
-            $scope.plugin = {
-                "title": "Test",
-                "short_description": "Just a test",
-                "source": "https://github.com/mcpr",
-                "readme": "# Test\nThis is just a test. ",
-                "license": "MIT",
-                "keywords": "test,awesomeness"
-            }
-            $scope.keywords = "test,awesomeness";
-            $scope.version = {
-                "version": "2.4.6",
-                "release_notes": "# Test\nThis is just a test. ",
-                "game_versions": [
-                    "1.8",
-                    "1.9",
-                    "1.10",
-                    "1.11",
-                    "1.12"
-                ]
-            }
-        }
     });

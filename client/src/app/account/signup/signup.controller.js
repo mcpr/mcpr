@@ -2,12 +2,7 @@
 
 angular.module('app')
     .controller('SignupCtrl', function ($scope, $http, auth, $state, $window) {
-        $scope.user = {
-            name: 'Noah Prail',
-            username: 'nprail2',
-            email: 'me@nprail.me',
-            password: 'fakepwd'
-        };
+        $scope.user = {};
         $scope.signup = function (user, isValid) {
             if (isValid) {
                 auth.signup(user)
