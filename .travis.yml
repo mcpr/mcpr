@@ -2,8 +2,7 @@ language: node_js
 node_js:
 - node
 before_install:
-- pyenv global system 3.5
-- pip3 install mkdocs mkdocs-material
+- pip install mkdocs mkdocs-material
 script:
 - yarn test
 - yarn run docs
