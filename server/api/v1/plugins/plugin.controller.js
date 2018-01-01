@@ -18,7 +18,7 @@ exports.model = Plugin
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/plugins
  */
-exports.all = function (req, res, next) {
+exports.all = (req, res, next) => {
   const bukkitApi = require(req.config.rootPath + '/lib/bukkitApi')
   const convertModel = require(req.config.rootPath + '/lib/bukkitToMcpr')
   let perPage = Math.max(0, req.query.per_page) || 50
@@ -32,7 +32,7 @@ exports.all = function (req, res, next) {
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
-    .exec(function (err, plugins) {
+    .exec((err, plugins) => {
       if (err) {
         return handleError(res, err)
       }
@@ -41,20 +41,18 @@ exports.all = function (req, res, next) {
       }
       if (req.query.includeBukkitDev) {
         bukkitApi.getAll()
-          .then((res) => {
-            let jsonRes = JSON.parse(res)
+          .then(resp => {
+            let jsonRes = JSON.parse(resp)
             convertModel(jsonRes)
-              .then((bukkitPlugins) => {
+              .then(bukkitPlugins => {
                 req.plugins = plugins.concat(bukkitPlugins)
                 next()
               })
-              .catch((err) => {
-                console.error(err)
+              .catch(err => {
                 return handleError(res, err)
               })
           })
-          .catch((err) => {
-            console.error(err)
+          .catch(err => {
             return handleError(res, err)
           })
       } else {
@@ -81,11 +79,11 @@ exports.all = function (req, res, next) {
  * @apiParam  {String} license       The license of the plugin
  * @apiParam  {Array} [keywords]       List of plugin keywords
  */
-exports.create = function (req, res, next) {
+exports.create = (req, res, next) => {
   let plugin = req.body
 
   return Plugin
-    .create(plugin, function (err, plugin) {
+    .create(plugin, (err, plugin) => {
       if (err) {
         return handleError(res, err)
       }
@@ -138,10 +136,10 @@ exports.create = function (req, res, next) {
  *       "created": "2017-06-12T22:55:07.759Z"
  *     }
  */
-exports.show = function (req, res, next) {
+exports.show = (req, res, next) => {
   Plugin
     .findById(req.params.id)
-    .exec(function (err, plugin) {
+    .exec((err, plugin) => {
       if (err) {
         return handleError(res, err)
       }
@@ -162,11 +160,11 @@ exports.show = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -i -o dynmap.jar https://mcpr.io/api/v1/plugins/dynmap/download
  */
-exports.download = function (req, res, next) {
+exports.download = (req, res, next) => {
   const config = req.config
   Plugin
     .findById(req.params.id)
-    .exec(function (err, plugin) {
+    .exec((err, plugin) => {
       if (err) {
         return handleError(res, err)
       }
@@ -177,7 +175,7 @@ exports.download = function (req, res, next) {
       let versionID = `${id}-${plugin.latest_version}`
       Version
         .findById(versionID)
-        .exec(function (err, version) {
+        .exec((err, version) => {
           if (err) {
             return handleError(res, err)
           }
@@ -188,13 +186,13 @@ exports.download = function (req, res, next) {
           let filename = path.basename(`${id}-${plugin.latest_version}.jar`)
 
           plugin.downloads += 1
-          plugin.save(function (err, response) {
+          plugin.save((err, response) => {
             if (err) {
               return handleError(res, err)
             }
 
             version.downloads += 1
-            version.save(function (err, response) {
+            version.save((err, response) => {
               if (err) {
                 return handleError(res, err)
               }
@@ -215,13 +213,13 @@ exports.download = function (req, res, next) {
  * 
  * @apiParam {String} id ID of plugin
  */
-exports.update = function (req, res) {
+exports.update = (req, res) => {
   var updatedPlugin = req.body
   updatedPlugin.updated = Date.now()
 
   Plugin
     .findById(req.params.id)
-    .exec(function (err, plugin) {
+    .exec((err, plugin) => {
       if (err) {
         return handleError(res, err)
       }
@@ -240,7 +238,7 @@ exports.update = function (req, res) {
         .update({
           '_id': req.params.id
         }, updatedPlugin)
-        .exec(function () {
+        .exec(() => {
           return res.status(200).json(updatedPlugin).end()
         })
     })
@@ -257,11 +255,11 @@ exports.update = function (req, res) {
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://mcpr.io/api/v1/plugins/dynmap
  */
-exports.delete = function (req, res, next) {
+exports.delete = (req, res, next) => {
   let pluginId = req.params.id
   Plugin
     .findById(pluginId)
-    .exec(function (err, plugin) {
+    .exec((err, plugin) => {
       if (err) {
         return handleError(res, err)
       }
@@ -280,7 +278,7 @@ exports.delete = function (req, res, next) {
         .remove({
           '_id': pluginId
         })
-        .exec(function (err, num) {
+        .exec((err, num) => {
           if (err) {
             return handleError(res, err)
           }
@@ -306,7 +304,7 @@ exports.delete = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/users/nprail/plugins
  */
-module.exports.showByUser = function (req, res) {
+module.exports.showByUser = (req, res) => {
   let perPage = Math.max(0, req.query.per_page) || 50
   let page = Math.max(0, req.query.page)
   let sort = req.query.sort || 'desc'
@@ -321,7 +319,7 @@ module.exports.showByUser = function (req, res) {
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
-    .exec(function (err, plugins) {
+    .exec((err, plugins) => {
       if (err) {
         return handleError(res, err)
       }
@@ -341,14 +339,14 @@ module.exports.showByUser = function (req, res) {
  * @apiExample {curl} Example usage:
  *     curl -X "GET" https://mcpr.io/api/v1/plugins/search?q=dynmap
  */
-module.exports.search = function (req, res) {
+module.exports.search = (req, res) => {
   var query = {}
   query.title = new RegExp(req.query.q, 'i')
 
   let pluginQuery = Plugin.find(query)
   pluginQuery.select('_id short_description')
 
-  pluginQuery.exec(function (err, results) {
+  pluginQuery.exec((err, results) => {
     if (err) {
       handleError(res, err)
     }
@@ -361,12 +359,18 @@ module.exports.search = function (req, res) {
   })
 }
 
-const handleError = function (res, err) {
+const handleError = (res, err, code) => {
   console.log('ERROR: ' + err)
-  return res.status(500).send(err)
+  let sCode = code || 500
+  return res
+    .status(sCode)
+    .json({
+      success: false,
+      message: err
+    })
 }
 
-const handle404 = function (res) {
+const handle404 = (res) => {
   res.status(404)
   res.json({
     name: 'NotFound',

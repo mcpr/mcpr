@@ -5,20 +5,19 @@ function convertModel (bukkit) {
   return new Promise(function (resolve, reject) {
     let plugins = []
     let itemsProcessed = 0
-    var i
-    for (i = 0; i < bukkit.length; i++) {
-      (function () {
+    for (let i = 0; i < bukkit.length; i++) {
+      (() => {
         let bukkitPlugin = bukkit[i]
         return bukkitApi.getPlugin(bukkitPlugin.slug)
-          .then((res) => {
+          .then(res => {
             let jsonRes = JSON.parse(res)
             return bukkitApi.getPluginFiles(bukkitPlugin.slug)
-              .then((files) => {
+              .then(files => {
                 let jsonFiles = JSON.parse(files)
                 let latestFiles = jsonFiles[0]
                 let keywords = []
-                for (var i = 0; i < bukkitPlugin.categories.length; i++) {
-                  (function () {
+                for (let i = 0; i < bukkitPlugin.categories.length; i++) {
+                  (() => {
                     let slug = slugify(bukkitPlugin.categories[i].name)
                     keywords.push(slug)
                   })()
