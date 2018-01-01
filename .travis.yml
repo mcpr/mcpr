@@ -3,6 +3,7 @@ node_js:
 - node
 group: deprecated-2017Q3
 before_install:
+- pyenv install 3.5
 - pyenv global system 3.5
 - pip3 install mkdocs mkdocs-material
 script:
