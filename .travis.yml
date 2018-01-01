@@ -1,10 +1,9 @@
 language: node_js
 node_js:
 - node
-group: deprecated-2017Q3
 before_install:
 - pyenv global system 3.5
-- pip3 install mkdocs==0.16.3 mkdocs-material
+- pip3 install mkdocs mkdocs-material
 script:
 - yarn test
 - yarn run docs

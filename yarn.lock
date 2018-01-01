@@ -65,7 +65,7 @@ after@0.8.1:
 
 after@0.8.2:
   version "0.8.2"
-  resolved "https://registry.npmjs.org/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
+  resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
 
 ajv-keywords@^1.0.0:
   version "1.5.1"
@@ -255,6 +255,10 @@ arraybuffer.slice@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.6.tgz#f33b2159f0532a3f3107a272c0ccfbd1ad2979ca"
 
+arraybuffer.slice@~0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz#3bbc4275dd584cc1b10809b89d4e8b63a69e7675"
+
 arrify@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
@@ -290,6 +294,10 @@ async-each@^1.0.0:
 async-foreach@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/async-foreach/-/async-foreach-0.1.3.tgz#36121f845c0578172de419a97dbeb1d16ec34542"
+
+async-limiter@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
 
 async@1.5.2, async@^1.2.1, async@^1.4.0, async@^1.5.0, async@~1.5:
   version "1.5.2"
@@ -370,7 +378,7 @@ base64id@0.1.0:
 
 base64id@1.0.0:
   version "1.0.0"
-  resolved "https://registry.npmjs.org/base64id/-/base64id-1.0.0.tgz#47688cb99bb6804f0e06d3e763b1c32e57d8e6b6"
+  resolved "https://registry.yarnpkg.com/base64id/-/base64id-1.0.0.tgz#47688cb99bb6804f0e06d3e763b1c32e57d8e6b6"
 
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"
@@ -469,10 +477,6 @@ block-stream@*:
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
   dependencies:
     inherits "~2.0.0"
-
-bluebird@2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
 
 bluebird@^3.5.0:
   version "3.5.0"
@@ -1551,8 +1555,8 @@ engine.io-client@1.8.0:
     yeast "0.1.2"
 
 engine.io-client@~3.1.0:
-  version "3.1.3"
-  resolved "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.1.3.tgz#d705e48985dfe8b54a98c9f77052b8b08258be05"
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-3.1.4.tgz#4fcf1370b47163bd2ce9be2733972430350d4ea1"
   dependencies:
     component-emitter "1.2.1"
     component-inherit "0.0.3"
@@ -1562,7 +1566,7 @@ engine.io-client@~3.1.0:
     indexof "0.0.1"
     parseqs "0.0.5"
     parseuri "0.0.5"
-    ws "~2.3.1"
+    ws "~3.3.1"
     xmlhttprequest-ssl "~1.5.4"
     yeast "0.1.2"
 
@@ -1578,11 +1582,11 @@ engine.io-parser@1.3.1:
     wtf-8 "1.0.0"
 
 engine.io-parser@~2.1.0, engine.io-parser@~2.1.1:
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/engine.io-parser/-/engine.io-parser-2.1.1.tgz#e0fb3f0e0462f7f58bb77c1a52e9f5a7e26e4668"
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/engine.io-parser/-/engine.io-parser-2.1.2.tgz#4c0f4cff79aaeecbbdcfdea66a823c6085409196"
   dependencies:
     after "0.8.2"
-    arraybuffer.slice "0.0.6"
+    arraybuffer.slice "~0.0.7"
     base64-arraybuffer "0.1.5"
     blob "0.0.4"
     has-binary2 "~1.0.2"
@@ -1599,15 +1603,15 @@ engine.io@1.8.0:
     ws "1.1.1"
 
 engine.io@~3.1.0:
-  version "3.1.3"
-  resolved "https://registry.npmjs.org/engine.io/-/engine.io-3.1.3.tgz#7aecf71bf8a310f9fa21461999c4fcc035f8a877"
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-3.1.4.tgz#3d0211b70a552ce841ffc7da8627b301a9a4162e"
   dependencies:
     accepts "1.3.3"
     base64id "1.0.0"
     cookie "0.3.1"
     debug "~2.6.9"
     engine.io-parser "~2.1.0"
-    ws "~2.3.1"
+    ws "~3.3.1"
   optionalDependencies:
     uws "~0.14.4"
 
@@ -1964,9 +1968,9 @@ express-session@^1.15.6:
     uid-safe "~2.1.5"
     utils-merge "1.0.1"
 
-express-status-monitor@^1.0.1:
+express-status-monitor@1.0.1:
   version "1.0.1"
-  resolved "https://registry.npmjs.org/express-status-monitor/-/express-status-monitor-1.0.1.tgz#311288347b7aabfeaec0a01547e55c77652bb298"
+  resolved "https://registry.yarnpkg.com/express-status-monitor/-/express-status-monitor-1.0.1.tgz#311288347b7aabfeaec0a01547e55c77652bb298"
   dependencies:
     debug "^2.6.9"
     on-headers "^1.0.1"
@@ -2932,7 +2936,7 @@ has-ansi@^2.0.0:
 
 has-binary2@~1.0.2:
   version "1.0.2"
-  resolved "https://registry.npmjs.org/has-binary2/-/has-binary2-1.0.2.tgz#e83dba49f0b9be4d026d27365350d9f03f54be98"
+  resolved "https://registry.yarnpkg.com/has-binary2/-/has-binary2-1.0.2.tgz#e83dba49f0b9be4d026d27365350d9f03f54be98"
   dependencies:
     isarray "2.0.1"
 
@@ -3512,7 +3516,7 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
 
 isarray@2.0.1:
   version "2.0.1"
-  resolved "https://registry.npmjs.org/isarray/-/isarray-2.0.1.tgz#a37d94ed9cda2d59865c9f76fe596ee1f338741e"
+  resolved "https://registry.yarnpkg.com/isarray/-/isarray-2.0.1.tgz#a37d94ed9cda2d59865c9f76fe596ee1f338741e"
 
 isemail@1.x.x:
   version "1.2.0"
@@ -4321,9 +4325,9 @@ mongodb@2.2.31:
     mongodb-core "2.1.15"
     readable-stream "2.2.7"
 
-mongoose@^4.11.7:
-  version "4.11.9"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.9.tgz#58f89a72e75674d9bcdfa4e65ebe1b49b4477637"
+mongoose@4.11.14:
+  version "4.11.14"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.14.tgz#b85402aaf28c5c3e45c8ef93fe69544eaa5d00f3"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
@@ -4332,7 +4336,7 @@ mongoose@^4.11.7:
     mongodb "2.2.31"
     mpath "0.3.0"
     mpromise "0.5.5"
-    mquery "2.3.1"
+    mquery "2.3.2"
     ms "2.0.0"
     muri "1.2.2"
     regexp-clone "0.0.1"
@@ -4356,13 +4360,13 @@ mpromise@0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mpromise/-/mpromise-0.5.5.tgz#f5b24259d763acc2257b0a0c8c6d866fd51732e6"
 
-mquery@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/mquery/-/mquery-2.3.1.tgz#9ab36749714800ff0bb53a681ce4bc4d5f07c87b"
+mquery@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/mquery/-/mquery-2.3.2.tgz#e2c60ad117cf080f2efb1ecdd144e7bbffbfca11"
   dependencies:
-    bluebird "2.10.2"
-    debug "2.6.8"
-    regexp-clone "0.0.1"
+    bluebird "^3.5.0"
+    debug "^2.6.9"
+    regexp-clone "^0.0.1"
     sliced "0.0.5"
 
 ms@0.7.1:
@@ -4627,7 +4631,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@*, object-assign@^4, object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@~4.1.1:
+object-assign@*, object-assign@^4, object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -4926,7 +4930,7 @@ parseurl@~1.3.2:
   version "1.3.2"
   resolved "https://registry.npmjs.org/parseurl/-/parseurl-1.3.2.tgz#fc289d4ed8993119460c156253262cdc8de65bf3"
 
-passport-jwt@^3.0.0:
+passport-jwt@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-3.0.0.tgz#7d9e4ff0fa0522108540ce1fcfa83bbd8faa29c9"
   dependencies:
@@ -5021,8 +5025,8 @@ performance-now@^0.2.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
 pidusage@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.npmjs.org/pidusage/-/pidusage-1.1.6.tgz#d708d8e38cc7ccfaa191fb6adac1fd674a4be184"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/pidusage/-/pidusage-1.2.0.tgz#65ee96ace4e08a4cd3f9240996c85b367171ee92"
 
 pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
@@ -5325,7 +5329,7 @@ regex-cache@^0.4.2:
     is-equal-shallow "^0.1.3"
     is-primitive "^2.0.0"
 
-regexp-clone@0.0.1:
+regexp-clone@0.0.1, regexp-clone@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/regexp-clone/-/regexp-clone-0.0.1.tgz#a7c2e09891fdbf38fbb10d376fb73003e68ac589"
 
@@ -5559,10 +5563,6 @@ rx@4.1.0, rx@^4.1.0:
 safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
-
-safe-buffer@~5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
 
 sass-graph@^2.1.1:
   version "2.2.4"
@@ -5933,7 +5933,7 @@ socket.io-adapter@0.5.0:
 
 socket.io-adapter@~1.1.0:
   version "1.1.1"
-  resolved "https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-1.1.1.tgz#2a805e8a14d6372124dd9159ad4502f8cb07f06b"
+  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-1.1.1.tgz#2a805e8a14d6372124dd9159ad4502f8cb07f06b"
 
 socket.io-client@1.6.0:
   version "1.6.0"
@@ -5951,9 +5951,9 @@ socket.io-client@1.6.0:
     socket.io-parser "2.3.1"
     to-array "0.1.4"
 
-socket.io-client@~2.0.2:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.0.3.tgz#6caf4aff9f85b19fd91b6ce13d69adb564f8873b"
+socket.io-client@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-2.0.4.tgz#0918a552406dc5e540b380dcd97afc4a64332f8e"
   dependencies:
     backo2 "1.0.2"
     base64-arraybuffer "0.1.5"
@@ -5980,7 +5980,7 @@ socket.io-parser@2.3.1:
 
 socket.io-parser@~3.1.1:
   version "3.1.2"
-  resolved "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.1.2.tgz#dbc2282151fc4faebbe40aeedc0772eba619f7f2"
+  resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-3.1.2.tgz#dbc2282151fc4faebbe40aeedc0772eba619f7f2"
   dependencies:
     component-emitter "1.2.1"
     debug "~2.6.4"
@@ -6000,14 +6000,13 @@ socket.io@1.6.0:
     socket.io-parser "2.3.1"
 
 socket.io@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/socket.io/-/socket.io-2.0.3.tgz#4359f06a24933ae6bd087798af78c680eae345e3"
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-2.0.4.tgz#c1a4590ceff87ecf13c72652f046f716b29e6014"
   dependencies:
     debug "~2.6.6"
     engine.io "~3.1.0"
-    object-assign "~4.1.1"
     socket.io-adapter "~1.1.0"
-    socket.io-client "~2.0.2"
+    socket.io-client "2.0.4"
     socket.io-parser "~3.1.1"
 
 source-map-resolve@^0.3.0:
@@ -6572,8 +6571,8 @@ ultron@1.0.x:
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
 
 ultron@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/ultron/-/ultron-1.1.0.tgz#b07a2e6a541a815fc6a34ccd4533baec307ca864"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
 
 unc-path-regex@^0.1.0:
   version "0.1.2"
@@ -6697,7 +6696,7 @@ uuid@^3.0.0, uuid@^3.0.1:
 
 uws@~0.14.4:
   version "0.14.5"
-  resolved "https://registry.npmjs.org/uws/-/uws-0.14.5.tgz#67aaf33c46b2a587a5f6666d00f7691328f149dc"
+  resolved "https://registry.yarnpkg.com/uws/-/uws-0.14.5.tgz#67aaf33c46b2a587a5f6666d00f7691328f149dc"
 
 v8flags@^2.0.2:
   version "2.1.1"
@@ -6933,11 +6932,12 @@ ws@1.1.1:
     options ">=0.0.5"
     ultron "1.0.x"
 
-ws@~2.3.1:
-  version "2.3.1"
-  resolved "https://registry.npmjs.org/ws/-/ws-2.3.1.tgz#6b94b3e447cb6a363f785eaf94af6359e8e81c80"
+ws@~3.3.1:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-3.3.3.tgz#f1cf84fe2d5e901ebce94efaece785f187a228f2"
   dependencies:
-    safe-buffer "~5.0.1"
+    async-limiter "~1.0.0"
+    safe-buffer "~5.1.0"
     ultron "~1.1.0"
 
 wtf-8@1.0.0:
@@ -6973,7 +6973,7 @@ xmlhttprequest-ssl@1.5.3:
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.4"
-  resolved "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.4.tgz#04f560915724b389088715cc0ed7813e9677bf57"
+  resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.4.tgz#04f560915724b389088715cc0ed7813e9677bf57"
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
   version "4.0.1"

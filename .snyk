@@ -1,6 +1,11 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.7.1
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'npm:crypto-browserify:20140722':
+    - aws-sdk > crypto-browserify:
+        reason: None given
+        expires: '2018-01-31T01:29:01.573Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:ms:20170412':
@@ -9,3 +14,11 @@ patch:
   'npm:debug:20170905':
     - mongoose > mquery > debug:
         patched: '2017-09-28T20:50:39.782Z'
+      node-pre-gyp > tar-pack > debug:
+        patched: '2018-01-01T01:28:13.027Z'
+  'npm:moment:20170905':
+    - express-jwt > jsonwebtoken > joi > moment:
+        patched: '2018-01-01T01:28:13.027Z'
+  'npm:tough-cookie:20170905':
+    - node-pre-gyp > request > tough-cookie:
+        patched: '2018-01-01T01:28:13.027Z'
