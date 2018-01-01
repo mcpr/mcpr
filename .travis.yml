@@ -4,9 +4,7 @@ node_js:
 group: deprecated-2017Q3
 before_install:
 - pyenv versions
-- pyenv install --list
-- pyenv install 3.5.4
-- pyenv global system 3.5
+- pyenv global system 3.6
 - pip3 install mkdocs mkdocs-material
 script:
 - yarn test
