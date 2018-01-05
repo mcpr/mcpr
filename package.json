@@ -88,7 +88,7 @@
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
     "nodemon": "^1.11.0",
-    "snyk": "^1.33.1"
+    "snyk": "^1.65.1"
   },
   "snyk": true,
   "apidoc": {
