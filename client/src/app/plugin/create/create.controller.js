@@ -33,11 +33,11 @@ angular.module('app')
         });
 
         // create a plugin, create a version, and upload it.
-        $scope.create = function (plugin) {
+        $scope.create = function () {
             $scope.plugin.readme = simplemde.value();
             $scope.plugin.author = $scope.profile.username;
             $scope.plugin.keywords = $scope.keywords.split(',');
-
+            console.log($scope.plugin)
             // create the plugin
             createPlugin()
                 .then(function (pRes) {
