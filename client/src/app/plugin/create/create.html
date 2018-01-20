@@ -43,14 +43,13 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select ng-model="version.license" material-select watch>
+                    <label>License</label>
+                    <select ng-value="plugin.license" ng-model="plugin.license" material-select watch>
                       <option ng-repeat="license in licenses" value="{{license.spdx_id}}">{{license.spdx_id}}</option>
                       <option value="Custom">Custom</option>
                     </select>
-                    <label>License</label>
                 </div>
             </div>
-            <br><hr><br>
             <div class="row">
                 <div class="file-field input-field col s12">
                     <div class="btn">
@@ -85,6 +84,7 @@
                     <label>Tested Minecraft Versions</label>
                 </div>
             </div>
+            <br><hr><br>
             <button class="btn waves-effect waves-light" type="submit" ng-click="create(plugin)">Create</button>
             <button class="btn waves-effect waves-light" type="submit" ng-click="loadTestData()">Load Test Data</button>
         </form>

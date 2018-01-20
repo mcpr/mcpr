@@ -304,7 +304,6 @@ module.exports.login = function (req, res) {
         message: 'Your email address is not verified! Please check your email.'
       })
     } else {
-      console.log(user)
       // Check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (isMatch && !err) {
@@ -404,7 +403,6 @@ module.exports.updateProfile = (req, res) => {
  */
 module.exports.updatePassword = (req, res) => {
   let passwords = req.body
-  console.log(passwords)
 
   User.findById(passwords.userID, function (err, user) {
     if (err) {

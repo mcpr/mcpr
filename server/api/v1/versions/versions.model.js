@@ -5,8 +5,7 @@ const Schema = mongoose.Schema
 module.exports = function (config) {
   const VersionSchema = new Schema({
     _id: {
-      type: String,
-      unique: true
+      type: String
     },
     version: String,
     plugin: String,

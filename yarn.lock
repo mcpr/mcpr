@@ -523,9 +523,9 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.5.0:
+bluebird@3.5.0, bluebird@^3.5.0:
   version "3.5.0"
-  resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
 body-parser@1.18.2, body-parser@^1.18.2:
   version "1.18.2"
@@ -659,10 +659,6 @@ buffer-from@^0.1.1:
   resolved "https://registry.npmjs.org/buffer-from/-/buffer-from-0.1.1.tgz#57b18b1da0a19ec06f33837a5275a242351bd75e"
   dependencies:
     is-array-buffer-x "^1.0.13"
-
-buffer-shims@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
 buffer-to-vinyl@^1.0.0:
   version "1.1.0"
@@ -1762,10 +1758,6 @@ es6-iterator@2, es6-iterator@^2.0.1:
     d "1"
     es5-ext "^0.10.14"
     es6-symbol "^3.1"
-
-es6-promise@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.2.1.tgz#ec56233868032909207170c39448e24449dd1fc4"
 
 es6-promise@^3.0.2, es6-promise@^3.1.2:
   version "3.3.1"
@@ -3196,10 +3188,6 @@ homedir-polyfill@^1.0.0, homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-hooks-fixed@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-2.0.0.tgz#a01d894d52ac7f6599bbb1f63dfc9c411df70cba"
-
 hosted-git-info@^2.1.4:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
@@ -3953,9 +3941,9 @@ jws@^3.1.4:
     jwa "^1.1.4"
     safe-buffer "^5.0.1"
 
-kareem@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.5.0.tgz#e3e4101d9dcfde299769daf4b4db64d895d17448"
+kareem@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.0.1.tgz#f17f77e9032f64aa402b334f91fb4407fe4c042c"
 
 kind-of@^1.1.0:
   version "1.1.0"
@@ -4182,6 +4170,10 @@ lodash.escape@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-3.2.0.tgz#995ee0dc18c1b48cc92effae71a10aab5b487698"
   dependencies:
     lodash._root "^3.0.0"
+
+lodash.get@4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
 lodash.includes@^4.3.0:
   version "4.3.0"
@@ -4589,35 +4581,36 @@ moment@2.x.x:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
-mongodb-core@2.1.15:
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.15.tgz#841f53b87ffff4c7458189c35c8ae827e1169764"
+mongodb-core@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.1.tgz#ff6dc36ee96ff596953d80a6840d6731bc92efed"
   dependencies:
     bson "~1.0.4"
-    require_optional "~1.0.0"
+    require_optional "^1.0.1"
 
-mongodb@2.2.31:
-  version "2.2.31"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.31.tgz#1940445c661e19217bb3bf8245d9854aaef548db"
+mongodb@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.1.tgz#278ee8006257ec22798594a6259546825d6de1b2"
   dependencies:
-    es6-promise "3.2.1"
-    mongodb-core "2.1.15"
-    readable-stream "2.2.7"
+    mongodb-core "3.0.1"
 
-mongoose@4.11.14:
-  version "4.11.14"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.11.14.tgz#b85402aaf28c5c3e45c8ef93fe69544eaa5d00f3"
+mongoose-legacy-pluralize@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.1.tgz#31ae25db45c30f1448c0f93f52769e903367c701"
+
+mongoose@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.0.0.tgz#85e92fd72d718b21b3d55a62b09434da37354b5a"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
-    hooks-fixed "2.0.0"
-    kareem "1.5.0"
-    mongodb "2.2.31"
+    kareem "2.0.1"
+    lodash.get "4.4.2"
+    mongodb "3.0.1"
+    mongoose-legacy-pluralize "1.0.1"
     mpath "0.3.0"
-    mpromise "0.5.5"
-    mquery "2.3.2"
+    mquery "3.0.0-rc0"
     ms "2.0.0"
-    muri "1.2.2"
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
@@ -4635,17 +4628,13 @@ mpath@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.3.0.tgz#7a58f789e9b5fd3c94520634157960f26bd5ef44"
 
-mpromise@0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/mpromise/-/mpromise-0.5.5.tgz#f5b24259d763acc2257b0a0c8c6d866fd51732e6"
-
-mquery@2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/mquery/-/mquery-2.3.2.tgz#e2c60ad117cf080f2efb1ecdd144e7bbffbfca11"
+mquery@3.0.0-rc0:
+  version "3.0.0-rc0"
+  resolved "https://registry.yarnpkg.com/mquery/-/mquery-3.0.0-rc0.tgz#05ec656e92f079828bedf4202e60fb8eaacb9f47"
   dependencies:
-    bluebird "^3.5.0"
-    debug "^2.6.9"
-    regexp-clone "^0.0.1"
+    bluebird "3.5.0"
+    debug "2.6.9"
+    regexp-clone "0.0.1"
     sliced "0.0.5"
 
 ms@0.7.1:
@@ -4693,10 +4682,6 @@ multipipe@^0.1.2:
   resolved "https://registry.yarnpkg.com/multipipe/-/multipipe-0.1.2.tgz#2a8f2ddf70eed564dff2d57f1e1a137d9f05078b"
   dependencies:
     duplexer2 "0.0.2"
-
-muri@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/muri/-/muri-1.2.2.tgz#63198132650db08a04cc79ccd00dd389afd2631c"
 
 mute-stream@0.0.6:
   version "0.0.6"
@@ -5621,18 +5606,6 @@ readable-stream@1.1.x, "readable-stream@>=1.1.13-1 <1.2.0-0", readable-stream@~1
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@2.2.7:
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.7.tgz#07057acbe2467b22042d36f98c5ad507054e95b1"
-  dependencies:
-    buffer-shims "~1.0.0"
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "~1.0.0"
-    process-nextick-args "~1.0.6"
-    string_decoder "~1.0.0"
-    util-deprecate "~1.0.1"
-
 "readable-stream@>=1.0.33-1 <1.1.0-0":
   version "1.0.34"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
@@ -5687,7 +5660,7 @@ regex-cache@^0.4.2:
     is-equal-shallow "^0.1.3"
     is-primitive "^2.0.0"
 
-regexp-clone@0.0.1, regexp-clone@^0.0.1:
+regexp-clone@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/regexp-clone/-/regexp-clone-0.0.1.tgz#a7c2e09891fdbf38fbb10d376fb73003e68ac589"
 
@@ -5813,7 +5786,7 @@ require-uncached@^1.0.3:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
 
-require_optional@~1.0.0:
+require_optional@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require_optional/-/require_optional-1.0.1.tgz#4cf35a4247f64ca3df8c2ef208cc494b1ca8fc2e"
   dependencies:
@@ -6569,7 +6542,7 @@ string_decoder@~0.10.x:
   version "0.10.31"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
 
-string_decoder@~1.0.0, string_decoder@~1.0.3:
+string_decoder@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
   dependencies:

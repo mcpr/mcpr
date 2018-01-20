@@ -6,8 +6,7 @@ module.exports = function (config) {
 
   const PluginSchema = new Schema({
     _id: {
-      type: String,
-      unique: true
+      type: String
     },
     short_description: String,
     author: String,
