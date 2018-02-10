@@ -280,7 +280,7 @@ gulp.task('watch', function () {
         script: 'server/server.js',
         ext: 'js handlebars',
         env: {
-            'NODE_ENV': 'production'
+            'NODE_ENV': 'development'
         },
         ignore: [
             'server/public/',

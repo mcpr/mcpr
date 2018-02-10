@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
 const config = require('./config')
-const mongoAddress = config.dbUrl()
 
-module.exports = function () {
-  mongoose.connect(mongoAddress, {
-    user: config.dbUsername,
-    pass: config.dbPassword
-  })
+module.exports = () => {
+  mongoose.connect(config.dbUrl)
+  mongoose.Promise = Promise
 
   const monDb = mongoose.connection
   monDb.on('error', console.error.bind(console, 'Connection Error:'))
