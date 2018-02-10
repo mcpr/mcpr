@@ -3,7 +3,7 @@
 angular.module('app')
     .controller('HomeCtrl', function ($scope, $http, config) {
         $scope.loaded = false;
-        $scope.externalShown = false;
+        $scope.externalShown = true;
         $scope.limit = 18;
         $scope.loadMore = function () {
             $scope.limit += 9;
@@ -16,8 +16,10 @@ angular.module('app')
                     $scope.plugins = res.data;
                     $scope.loaded = true;
                     $scope.externalShown = true;
-                    if (res.data === {}) {
-                        $scope.noPlugins;
+                    if (res.data.length === 0) {
+                        $scope.noPlugins = true;
+                    } else {
+                        $scope.noPlugins = false;
                     }
                     checkLoadMore()
                 }).catch(function (err) {
@@ -30,15 +32,17 @@ angular.module('app')
                     $scope.plugins = res.data;
                     $scope.loaded = true;
                     $scope.externalShown = false;
-                    if (res.data === {}) {
-                        $scope.noPlugins;
+                    if (res.data.length === 0) {
+                        $scope.noPlugins = true;
+                    } else {
+                        $scope.noPlugins = false;
                     }
                     checkLoadMore()
                 }).catch(function (err) {
                     console.log(err);
                 });
         }
-        $http.get(config.apiUrl + '/plugins')
+        $http.get(config.apiUrl + '/plugins?includeBukkitDev=true')
             .then(function (res) {
                 $scope.plugins = res.data;
                 $scope.loaded = true;

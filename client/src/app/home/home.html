@@ -25,7 +25,7 @@
             <div ng-show="noPlugins && loaded">
                 <h5>Sorry, there are no plugins...</h5>
             </div>
-            <div class="center row">
+            <div class="center row" ng-show="loaded">
                 <a class="waves-effect waves-light btn" ng-click="showExternal()" ng-hide="externalShown">Show External Plugins</a>
                 <a class="waves-effect waves-light btn" ng-click="hideExternal()" ng-show="externalShown">Hide External Plugins</a>
             </div>
