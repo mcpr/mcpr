@@ -30,12 +30,15 @@ module.exports = function (app) {
     req.config = config
     return next()
   })
-
-  let maxAge = 0
+  let maxAge
   if (app.get('env') === 'production') {
     maxAge = 14400000
+    app.locals.assetBase = config.cdnUrl ? config.cdnUrl : '/build'
+  } else {
+    maxAge = 0
+    app.locals.assetBase = '/build'
   }
-
+  console.log(app.locals.assetBase)
   var date = new Date()
   app.locals.deployVersion = date.getTime()
 
