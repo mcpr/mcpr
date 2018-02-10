@@ -8,7 +8,7 @@ angular.module('app')
                 .then(function (res) {
                     Materialize.toast('Login success!', 4000);
                     $state.go('profile').then(function (result) {
-                        $window.location.reload();
+                        // $window.location.reload();
                     });
                 })
                 .catch(function (err) {
