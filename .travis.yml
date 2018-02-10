@@ -11,12 +11,19 @@ script:
 - yarn run docs
 - mkdir docs-site/tests
 - cp tests/eslint-report.html docs-site/tests/
-- echo "docs.mcpr.io" > docs-site/CNAME
 deploy:
-  provider: pages
+  - provider: pages
   skip_cleanup: true
   local_dir: docs-site
   github_token: "$GITHUB_TOKEN"
+  on:
+    branch: master
+  - provider: s3
+  access_key_id: "$AWS_KEY_ID"
+  secret_access_key: "$AWS_KEY"
+  bucket: "cdn.mcpr.io"
+  skip_cleanup: true
+  local_dir: server/public/build
   on:
     branch: master
 notifications:
