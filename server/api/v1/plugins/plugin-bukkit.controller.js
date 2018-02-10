@@ -1,3 +1,6 @@
+const request = require('request')
+const path = require('path')
+
 module.exports = function (config) {
   const bukkitApi = require(config.rootPath + '/lib/bukkitApi')
   const slugify = require(config.rootPath + '/lib/slug')
@@ -45,6 +48,23 @@ module.exports = function (config) {
       })
   }
 
+  const download = (req, res) => {
+    bukkitApi.getPlugin(req.params.id)
+      .then((resp) => {
+        const plugin = JSON.parse(resp)
+        const filename = path.basename(`${req.params.id}.jar`)
+
+        res.setHeader('content-disposition', `attachment; filename=${filename}`)
+        request(plugin.download).pipe(res)
+      })
+      .catch((err) => {
+        return handleError(res, err)
+      })
+      .catch((err) => {
+        return handleError(res, err)
+      })
+  }
+
   const showAll = function (req, res, next) {
     bukkitApi.getAll()
       .then((res) => {
@@ -78,6 +98,7 @@ module.exports = function (config) {
 
   return {
     show: show,
-    all: showAll
+    all: showAll,
+    download
   }
 }

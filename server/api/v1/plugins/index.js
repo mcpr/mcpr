@@ -46,6 +46,7 @@ module.exports = function (config) {
 
   // bukkitdev
   router.get('/@bukkitdev/:id', bukkitController.show, after)
+  router.get('/@bukkitdev/:id/download', bukkitController.download)
   router.get('/@bukkitdev', bukkitController.all, after)
 
   router.get('/:id', controller.show, after)

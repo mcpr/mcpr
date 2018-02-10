@@ -4,6 +4,8 @@ angular.module('app')
     .controller('BukkitPluginCtrl', function ($scope, $http, $transition$, $timeout, setTitle, $rootScope, config) {
         var id = $transition$.params().id;
         setTitle('@bukkitdev/' + id);
+        
+        $scope.downloadUrl = config.apiUrl + '/plugins/@bukkitdev/' + id + '/download';
 
         $http.get(config.apiUrl + '/plugins/@bukkitdev/' + id).then(function (res) {
             $scope.plugin = res.data;

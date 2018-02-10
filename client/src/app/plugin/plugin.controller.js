@@ -9,6 +9,8 @@ angular.module('app')
         }
         setTitle(id);
 
+        $scope.downloadUrl = config.apiUrl + '/plugins/' + id + '/download';
+
         $http.get(config.apiUrl + '/plugins/' + id).then(function (res) {
             $scope.plugin = res.data;
             $scope.loaded = true;

@@ -136,7 +136,7 @@
                     <br>
                     <h6>
                         <i class="material-icons download-icon">file_download</i>
-                        <a ng-href="/api/v1/plugins/{{plugin._id}}/download" target="_self">{{plugin._id}}.jar</a></h6>
+                        <a ng-href="{{downloadUrl}}" target="_self">{{plugin._id}}.jar</a></h6>
 
                     <h5>Stats</h5>
                     <h6><b>Author:</b> <a ng-hide="plugin.external" href="/~{{plugin.author}}">{{plugin.author}}</a></h6>
