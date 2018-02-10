@@ -25,6 +25,7 @@ deploy:
     skip_cleanup: true
     local_dir: server/public/build
     region: us-east-2
+    cache_control: "max-age=2592000"
     on:
       branch: master
 notifications:
