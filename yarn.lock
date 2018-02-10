@@ -203,9 +203,9 @@ append-field@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/append-field/-/append-field-0.1.0.tgz#6ddc58fa083c7bc545d3c5995b2830cc2366d44a"
 
-applicationinsights@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.npmjs.org/applicationinsights/-/applicationinsights-0.22.0.tgz#b96e7926d0e311b3fdc68dbcd35d7232616d138e"
+applicationinsights@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/applicationinsights/-/applicationinsights-1.0.1.tgz#53446b830fe8d5d619eee2a278b31d3d25030927"
   dependencies:
     diagnostic-channel "0.2.0"
     diagnostic-channel-publishers "0.2.1"
@@ -375,7 +375,7 @@ attempt-x@^1.1.0, attempt-x@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/attempt-x/-/attempt-x-1.1.1.tgz#fba64e96ce03c3e0bd92c92622061c4df387cb76"
 
-aws-sdk@2.192.0:
+aws-sdk@^2.192.0:
   version "2.192.0"
   resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.192.0.tgz#4170d9086bd1f07e7517cc47bad37d12676ec52a"
   dependencies:
@@ -2082,9 +2082,9 @@ express-handlebars@^3.0.0:
     object.assign "^4.0.3"
     promise "^7.0.0"
 
-express-jwt@5.3.0:
+express-jwt@^5.3.0:
   version "5.3.0"
-  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-5.3.0.tgz#3d90cd65802e6336252f19e6a3df3e149e0c5ea0"
+  resolved "https://registry.npmjs.org/express-jwt/-/express-jwt-5.3.0.tgz#3d90cd65802e6336252f19e6a3df3e149e0c5ea0"
   dependencies:
     async "^1.5.0"
     express-unless "^0.3.0"
@@ -2105,9 +2105,9 @@ express-session@^1.15.6:
     uid-safe "~2.1.5"
     utils-merge "1.0.1"
 
-express-status-monitor@1.0.1:
+express-status-monitor@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/express-status-monitor/-/express-status-monitor-1.0.1.tgz#311288347b7aabfeaec0a01547e55c77652bb298"
+  resolved "https://registry.npmjs.org/express-status-monitor/-/express-status-monitor-1.0.1.tgz#311288347b7aabfeaec0a01547e55c77652bb298"
   dependencies:
     debug "^2.6.9"
     on-headers "^1.0.1"
@@ -5336,9 +5336,9 @@ parseurl@~1.3.2:
   version "1.3.2"
   resolved "https://registry.npmjs.org/parseurl/-/parseurl-1.3.2.tgz#fc289d4ed8993119460c156253262cdc8de65bf3"
 
-passport-jwt@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-3.0.0.tgz#7d9e4ff0fa0522108540ce1fcfa83bbd8faa29c9"
+passport-jwt@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/passport-jwt/-/passport-jwt-3.0.1.tgz#e4f7276dad8bd251d43c6fc38883130b963272f6"
   dependencies:
     jsonwebtoken "^7.0.0"
     passport-strategy "^1.0.0"
@@ -5816,14 +5816,14 @@ request-promise-core@1.1.1:
   dependencies:
     lodash "^4.13.1"
 
-request-promise@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/request-promise/-/request-promise-4.2.1.tgz#7eec56c89317a822cbfea99b039ce543c2e15f67"
+request-promise@^4.2.1:
+  version "4.2.2"
+  resolved "https://registry.npmjs.org/request-promise/-/request-promise-4.2.2.tgz#d1ea46d654a6ee4f8ee6a4fea1018c22911904b4"
   dependencies:
     bluebird "^3.5.0"
     request-promise-core "1.1.1"
     stealthy-require "^1.1.0"
-    tough-cookie ">=2.3.0"
+    tough-cookie ">=2.3.3"
 
 request@2, request@2.81.0, request@^2.79.0, request@^2.81.0:
   version "2.81.0"
@@ -7044,7 +7044,7 @@ touch@1.0.0:
   dependencies:
     nopt "~1.0.10"
 
-tough-cookie@>=2.3.0, tough-cookie@~2.3.3:
+tough-cookie@>=2.3.3, tough-cookie@~2.3.3:
   version "2.3.3"
   resolved "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.3.tgz#0b618a5565b6dea90bf3425d04d55edc475a7561"
   dependencies:

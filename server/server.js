@@ -16,8 +16,7 @@ app.get('/status', statusMonitor.pageRoute)
 const config = require('./config/config')
 
 if (nEnv === 'production' && config.AIIK) {
-  appInsights.setup(config.AIIK)
-  appInsights.start()
+  appInsights.setup(config.AIIK).start()
 }
 
 require('./api/v1/plugins/plugin.model')(config)

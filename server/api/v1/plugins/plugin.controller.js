@@ -43,10 +43,10 @@ exports.all = (req, res, next) => {
         bukkitApi.getAll()
           .then(resp => {
             let jsonRes = JSON.parse(resp)
-            convertModel(jsonRes)
+            return convertModel(jsonRes)
               .then(bukkitPlugins => {
                 req.plugins = plugins.concat(bukkitPlugins)
-                next()
+                return next()
               })
               .catch(err => {
                 return handleError(res, err)
