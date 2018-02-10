@@ -54,7 +54,6 @@
     "nodemailer": "^4.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.0",
-    "prerender-node": "^2.7.4",
     "request": "^2.83.0",
     "request-promise": "^4.2.1",
     "semver": "^5.4.1",

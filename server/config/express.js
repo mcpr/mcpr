@@ -26,7 +26,6 @@ module.exports = function (app) {
   app.use(cookieParser())
   app.use(passport.initialize())
   app.use(passport.session())
-  app.use(require('prerender-node').set('prerenderToken', config.prerenderToken))
   app.use(function (req, res, next) {
     req.config = config
     return next()
