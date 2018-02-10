@@ -8,6 +8,6 @@ module.exports = () => {
   const monDb = mongoose.connection
   monDb.on('error', console.error.bind(console, 'Connection Error:'))
   monDb.once('open', function () {
-    console.log('Connected Successfully to DB: ' + config.dbName)
+    console.log('Connected Successfully to DB: ' + monDb.db.s.databaseName)
   })
 }
