@@ -24,6 +24,7 @@ deploy:
     bucket: "cdn.mcpr.io"
     skip_cleanup: true
     local_dir: server/public/build
+    region: us-east-2
     on:
       branch: master
 notifications:
