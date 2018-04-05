@@ -10,6 +10,19 @@ ignore:
     - passport-jwt > jsonwebtoken > joi > moment:
         reason: None given
         expires: '2018-01-31T01:40:33.745Z'
+  'npm:hoek:20180212':
+    - express-jwt > jsonwebtoken > joi > hoek:
+        reason: None given
+        expires: '2018-05-05T18:32:45.185Z'
+    - passport-jwt > jsonwebtoken > joi > hoek:
+        reason: None given
+        expires: '2018-05-05T18:32:45.185Z'
+    - express-jwt > jsonwebtoken > joi > topo > hoek:
+        reason: None given
+        expires: '2018-05-05T18:32:45.185Z'
+    - passport-jwt > jsonwebtoken > joi > topo > hoek:
+        reason: None given
+        expires: '2018-05-05T18:32:45.185Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:ms:20170412':
