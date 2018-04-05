@@ -83,7 +83,7 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^4.0.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
