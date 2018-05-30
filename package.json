@@ -4,13 +4,11 @@
   "description": "The ultimate Minecraft plugin registry. ",
   "main": "server.js",
   "scripts": {
-    "test": "gulp lint --fail && snyk test",
+    "test": "gulp lint --fail && npm audit",
     "postinstall": "bower install --allow-root && gulp build",
     "start": "node server/server.js",
     "dev": "gulp serve",
     "lint": "gulp lint",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect",
     "docs": "mkdocs build --clean && apidoc -i server/api/ -o docs-site/api/endpoints"
   },
   "repository": {
@@ -88,10 +86,8 @@
     "gulp-uglify": "^3.0.0",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
-    "nodemon": "^1.11.0",
-    "snyk": "^1.69.7"
+    "nodemon": "^1.11.0"
   },
-  "snyk": true,
   "apidoc": {
     "title": "MCPR API Docs",
     "url": "https://mcpr.io/api/v1",

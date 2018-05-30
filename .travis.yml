@@ -1,16 +1,18 @@
 language: node_js
 node_js:
-- node
+- "8"
 group: deprecated-2017Q3
 before_install:
 - pyenv versions
 - pyenv global system 3.6
 - pip3 install mkdocs mkdocs-material
+before_script:
+  - npm i -g npm@6.1.0
 script:
-- npm test
-- npm run docs
-- mkdir docs-site/tests
-- cp tests/eslint-report.html docs-site/tests/
+  - npm test
+  - npm run docs
+  - mkdir docs-site/tests
+  - cp tests/eslint-report.html docs-site/tests/
 deploy:
   - provider: pages
     skip_cleanup: true
