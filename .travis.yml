@@ -7,8 +7,8 @@ before_install:
 - pyenv global system 3.6
 - pip3 install mkdocs mkdocs-material
 script:
-- yarn test
-- yarn run docs
+- npm test
+- npm run docs
 - mkdir docs-site/tests
 - cp tests/eslint-report.html docs-site/tests/
 deploy:
