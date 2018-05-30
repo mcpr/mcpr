@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const nEnv = app.get('env')
 const os = require('os')
-const passport = require('passport')
 const appInsights = require('applicationinsights')
 // Setup ENV
 require('dotenv').config()
@@ -28,9 +27,6 @@ require('./config/express')(app)
 
 // Mongoose config
 require('./config/mongoose')()
-
-// Passport config
-require('./config/passport')(passport, config)
 
 // Routes
 require('./config/routes')(app)

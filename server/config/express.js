@@ -6,7 +6,6 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
-const passport = require('passport')
 const path = require('path')
 
 const config = require('./config')
@@ -24,8 +23,6 @@ module.exports = function (app) {
   }))
   app.use(bodyParser.json())
   app.use(cookieParser())
-  app.use(passport.initialize())
-  app.use(passport.session())
   app.use(function (req, res, next) {
     req.config = config
     return next()

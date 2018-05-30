@@ -17,9 +17,9 @@ const request = require('request-promise')
  * @apiSuccess {String} gitlab      Your GitLab username
  * @apiSuccess {String} website     Your website address
  * @apiSuccess {String} twitter     Your Twitter username
- * 
+ *
  * @apiPermission authenticated
- * 
+ *
  * @apiExample {curl} Example usage:
  *     curl --header "Authorization: Bearer YOUR_JWT_TOKEN" -i https://mcpr.io/api/v1/users/me/profile
  * @apiSuccessExample {json} Success-Response:
@@ -160,13 +160,13 @@ module.exports.showAll = function (req, res) {
  * @api {post} /users/me/signup Signup
  * @apiName PostSignup
  * @apiGroup Users
- * 
+ *
  * @apiParam {String} username  Username of new user
  * @apiParam {String} name      Name of new  user
  * @apiParam {String} email     Email address of new  user
  * @apiParam {String} password  Password of new  user
  *
- * @apiSuccess {Boolean} success     True or false success 
+ * @apiSuccess {Boolean} success     True or false success
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:
@@ -267,11 +267,11 @@ module.exports.verify = (req, res) => {
  * @api {post} /users/me/login Login
  * @apiName PostLogin
  * @apiGroup Users
- * 
- * @apiParam {String} username  Your username 
+ *
+ * @apiParam {String} username  Your username
  * @apiParam {String} password  Your password
  *
- * @apiSuccess {Boolean} success  True or false success 
+ * @apiSuccess {Boolean} success  True or false success
  * @apiSuccess {String} token     JWT login token
  *
  * @apiExample {curl} Example usage:
@@ -333,8 +333,8 @@ module.exports.login = function (req, res) {
  * @api {put} /users/me/profile Update Profile
  * @apiName PutProfile
  * @apiGroup Users
- * 
- * @apiParam {String} _id       Your user ID 
+ *
+ * @apiParam {String} _id       Your user ID
  * @apiParam {String} [name]    Your name
  * @apiParam {String} [github]  Your GitHub username
  * @apiParam {String} [gitlab]  Your GitLab username
@@ -342,8 +342,8 @@ module.exports.login = function (req, res) {
  * @apiParam {String} [twitter] Your Twitter username
  *
  * @apiPermission authenticated
- * 
- * @apiSuccess {Boolean} success     True or false success 
+ *
+ * @apiSuccess {Boolean} success     True or false success
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:
@@ -382,14 +382,14 @@ module.exports.updateProfile = (req, res) => {
  * @api {put} /users/me/password Update Password
  * @apiName PutPassword
  * @apiGroup Users
- * 
- * @apiParam {String} _id       Your user ID 
+ *
+ * @apiParam {String} _id       Your user ID
  * @apiParam {String} current   Your current password
  * @apiParam {String} new       Your new password
  *
  * @apiPermission authenticated
- * 
- * @apiSuccess {Boolean} success     True or false success 
+ *
+ * @apiSuccess {Boolean} success     True or false success
  * @apiSuccess {String} message     Success message
  *
  * @apiExample {curl} Example usage:

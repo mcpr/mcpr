@@ -68,7 +68,7 @@ exports.all = (req, res, next) => {
  * @apiGroup Plugin
  *
  * @apiPermission authenticated
- * 
+ *
  * @apiParam  {String} _id       ID of plugin
  * @apiParam  {String} short_description       A short description of the plugin
  * @apiParam  {String} author       The author's user ID
@@ -210,7 +210,7 @@ exports.download = (req, res, next) => {
  * @apiGroup Plugin
  *
  * @apiPermission authenticated
- * 
+ *
  * @apiParam {String} id ID of plugin
  */
 exports.update = (req, res) => {
@@ -251,7 +251,7 @@ exports.update = (req, res) => {
  * @apiParam {String} id ID of plugin
  *
  * @apiPermission authenticated
- * 
+ *
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://mcpr.io/api/v1/plugins/dynmap
  */
