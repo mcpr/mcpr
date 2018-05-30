@@ -6,4 +6,3 @@ server/public/build/
 bower_components
 .env
 docs-site
-package-lock.json
