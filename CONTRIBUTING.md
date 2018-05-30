@@ -27,7 +27,6 @@
 
 Thanks!
 
-The Filiosoft Team
-
+Noah Prail
 
 _This CONTRIBUTING.md file was adapted from the [Rails CONTRIBUTING.md](https://github.com/rails/rails/blob/master/CONTRIBUTING.md)_

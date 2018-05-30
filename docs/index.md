@@ -2,19 +2,20 @@
 
 MCPR is the ultimate Minecraft plugin registry! It stands for Minecraft Plugin Registry (Yeah, a pretty boring name).
 
-MCPR is built on the MEAN stack (`MongoDB 3, Express 4, Angular 1, Node 8`).
+MCPR is built on the MEAN stack (`MongoDB, Express, Angular.js, Node`).
 
 ## Core Project Team
 
-|Name|Role|Links|
-|----|----|------|
-|Noah Prail|Project Lead|<a href="https://github.com/nprail"><i class="fa fa-github" aria-hidden="true"></i></a> <a href="https://nprail.me"><span class="md-icon">link</span></a>|
+| Name       | Role         | Links                                                                                                                                                     |
+| ---------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Noah Prail | Project Lead | <a href="https://github.com/nprail"><i class="fa fa-github" aria-hidden="true"></i></a> <a href="https://nprail.me"><span class="md-icon">link</span></a> |
 
 ## [License](https://github.com/mcpr/mcpr/blob/master/LICENSE)
+
 ```
 MIT License
 
-Copyright (c) 2017 Filiosoft, LLC
+Copyright (c) 2018 Noah Prail
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -2,16 +2,9 @@
   "name": "mcpr",
   "description": "The ultimate Minecraft plugin registry.",
   "main": "server.js",
-  "authors": [
-    "Filiosoft, LLC"
-  ],
+  "authors": ["Noah Prail"],
   "license": "MIT",
-  "keywords": [
-    "minecraft",
-    "plugins",
-    "registry",
-    "mods"
-  ],
+  "keywords": ["minecraft", "plugins", "registry", "mods"],
   "homepage": "https://mcpr.io",
   "private": true,
   "ignore": [

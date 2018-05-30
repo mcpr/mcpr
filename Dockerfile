@@ -1,6 +1,6 @@
 FROM node:8
 
-MAINTAINER Filiosoft Open Source <opensource@filiosoft.com>
+MAINTAINER Noah Prail <noah@prail.net>
 
 WORKDIR /usr/src/app
 

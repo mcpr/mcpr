@@ -9,20 +9,15 @@
     "start": "node server/server.js",
     "dev": "gulp serve",
     "lint": "gulp lint",
-    "docs": "mkdocs build --clean && apidoc -i server/api/ -o docs-site/api/endpoints"
+    "docs":
+      "mkdocs build --clean && apidoc -i server/api/ -o docs-site/api/endpoints"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mcpr/mcpr.git"
   },
-  "keywords": [
-    "minecraft",
-    "plugins",
-    "registry",
-    "mods",
-    "mcpr"
-  ],
-  "author": "Filiosoft, LLC",
+  "keywords": ["minecraft", "plugins", "registry", "mods", "mcpr"],
+  "author": "Noah Prail <noah@prail.net>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mcpr/mcpr/issues"
