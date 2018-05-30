@@ -133,9 +133,15 @@ const jsCustom = () => {
   return gulp
     .src(paths.js.custom)
     .pipe(sourcemaps.init())
-    .pipe(concat('custom.min.js'))
+    .pipe(concat('custom.js'))
+    .pipe(gulp.dest(paths.js.dist))
     .pipe(uglify())
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(
+      rename({
+        extname: '.min.js'
+      })
+    )
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(paths.js.dist))
 }
 jsCustom.displayName = 'js-custom'
@@ -146,9 +152,15 @@ const jsLib = () => {
   return gulp
     .src(paths.js.lib)
     .pipe(sourcemaps.init())
-    .pipe(concat('lib.min.js'))
+    .pipe(concat('lib.js'))
+    .pipe(gulp.dest(paths.js.dist))
     .pipe(uglify())
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(
+      rename({
+        extname: '.min.js'
+      })
+    )
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(paths.js.dist))
 }
 jsLib.displayName = 'js-lib'
@@ -170,7 +182,7 @@ const sassTask = () => {
         extname: '.min.css'
       })
     )
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(paths.css.dist))
 }
 sassTask.displayName = 'sass'
@@ -193,7 +205,7 @@ const cssLib = () => {
       })
     )
     .pipe(rename('lib.min.css'))
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(paths.css.dist))
 }
 cssLib.displayName = 'css-lib'
@@ -233,10 +245,16 @@ const jsApp = () => {
   return gulp
     .src(paths.app.js)
     .pipe(sourcemaps.init())
-    .pipe(concat('app.min.js'))
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest(paths.app.dist))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(
+      rename({
+        extname: '.min.js'
+      })
+    )
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest(paths.app.dist))
 }
 jsApp.displayName = 'js-app'

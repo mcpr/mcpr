@@ -8,7 +8,7 @@ angular.module('app')
             scope: {
                 user: '='
             },
-            templateUrl: 'components/footer/footer.html',
+            templateUrl: '/components/footer/footer.html',
             controller: ['$scope', function ($scope) {
                 [].forEach.call(document.querySelectorAll('img[data-src]'), function (img) {
                     img.setAttribute('src', img.getAttribute('data-src'));
