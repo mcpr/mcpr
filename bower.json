@@ -2,9 +2,16 @@
   "name": "mcpr",
   "description": "The ultimate Minecraft plugin registry.",
   "main": "server.js",
-  "authors": ["Noah Prail"],
+  "authors": [
+    "Noah Prail"
+  ],
   "license": "MIT",
-  "keywords": ["minecraft", "plugins", "registry", "mods"],
+  "keywords": [
+    "minecraft",
+    "plugins",
+    "registry",
+    "mods"
+  ],
   "homepage": "https://mcpr.io",
   "private": true,
   "ignore": [
@@ -17,7 +24,7 @@
   ],
   "dependencies": {
     "materialize": "0.97.8",
-    "angular": "^1.6.4",
+    "angular": "^1.7.0",
     "angular-ui-router": "^1.0.4",
     "angular-materialize": "^0.2.2",
     "ng-showdown": "^1.1.0",

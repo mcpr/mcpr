@@ -3,7 +3,6 @@ const bukkitApiBase = 'https://dbo.aternos.org'
 
 function get (endpoint) {
   let url = bukkitApiBase + endpoint
-  console.log('REQUESTING BUKKIT URL:', url)
   return request(url)
 }
 
