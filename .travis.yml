@@ -1,34 +1,39 @@
 language: node_js
 node_js:
-- "8"
+- '8'
 group: deprecated-2017Q3
 before_install:
-  - pyenv versions
-  - pyenv global system 3.6
-  - pip3 install mkdocs mkdocs-material
-  - npm i -g npm@6.1.0
+- pyenv versions
+- pyenv global system 3.6
+- pip3 install mkdocs mkdocs-material
+- npm i -g npm@6.1.0 greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
 script:
-  - npm test
-  - npm run docs
-  - mkdir docs-site/tests
-  - cp tests/eslint-report.html docs-site/tests/
+- npm test
+- npm run docs
+- mkdir docs-site/tests
+- cp tests/eslint-report.html docs-site/tests/
+after_script: greenkeeper-lockfile-upload
 deploy:
-  - provider: pages
-    skip_cleanup: true
-    local_dir: docs-site
-    github_token: "$GITHUB_TOKEN"
-    on:
-      branch: master
-  - provider: s3
-    access_key_id: "$AWS_KEY_ID"
-    secret_access_key: "$AWS_KEY"
-    bucket: "cdn.mcpr.io"
-    skip_cleanup: true
-    local_dir: server/public/build
-    region: us-east-2
-    cache_control: "max-age=2592000"
-    on:
-      branch: master
+- provider: pages
+  skip_cleanup: true
+  local_dir: docs-site
+  github_token: "$GITHUB_TOKEN"
+  on:
+    branch: master
+- provider: s3
+  access_key_id: "$AWS_KEY_ID"
+  secret_access_key: "$AWS_KEY"
+  bucket: cdn.mcpr.io
+  skip_cleanup: true
+  local_dir: server/public/build
+  region: us-east-2
+  cache_control: max-age=2592000
+  on:
+    branch: master
 notifications:
   slack:
     secure: Ymc5Pf1AlZL71Dm1p8VCZAhVNWCVU4X2GP7pMv+ti6b8puZMSQs2eU07Av6gVf//DX3xT2NDTf8zohZC6PQmaORZyfsaiPLt1DuJCLhJzeqZ0l0U85ZzTj/CMYlUGFXynfKDJIKxsWq3tTZLgewQ0bevWf7OQAZsakNjM+QcfDOjrMgwYKFlyGT92sn2YyJa3lk3/oFrxIHj4cYfkRUmVlLHzPPT0TnsDTmG1E+GYyrSjtg8C+1Z0iLtAGbGorGQJLaGfsgzZIaZ/RE0rxUH+HXWMPnEWyRC/DW8+tDSFOKeyO7wwSSa7XybytEnIhR85GQ86EfAfxKmDNfZGIF4/kUMA5AfECQn/ejUnXjOe2hK0jDuUwcKClcz2zDDiGlGUWMaZw6nNCavjzQc/kIATf7iEfn9UhXwbQAE6Jiq7sK81FCdr6IzL8Mv4ahIbVj9OdRiZ0E5ieLxldJyLwbS48IT/9nhaOPhS47+cCO/xO9hskY4kdgfkbIj0rRshm8Sgq8dsHBoU/x03bcGtabAxlIOti5+csECSY6+UpZzudIwCa4hw40tbV9TFRZKz4ucxsQjq+Ky16qrb1WkVqdvxzRmDJt6q/X9V9fwU9lIELolbbKfqt3f5LJsTuqQLDXyU+MpzIOk+j9wNMQh4GgdoG1ol7u+2QRJoez/D18gjrw=
+env:
+  global:
+    secure: k3QVTWWN3nmR52iKlfDresw4QeEc4KBn9z3j5485jJtrg1+yUm2qefa0rrKbF7NUQXXyRVXI0bqMZ7ZOSw6R3PWi/HLxPpXjCUh/2IFt/AwUzMVz4hO/rPeFi+CMD0ZEfL8lt1CKCw/irIL7mtdFHvpzjB+2YcnBIxzuZaXPWhJKI5eoiHtzISItQu5r9ZuU4X8GrnKyZdQr1TnvtbjLt41h/AIYRun97FtBrOvSI7lx4QmNCwSQHMhrOGZ0ZKC83o4hYpETk2guSvfFYAPmc+NnV0cu9z+AWaHfXAqWzWzQiCKk0VrbNetpwf4LwbanDNYqO4PlUP15OVmUhBZcJNAuJXtoqjOhO0N313uCdu2Qz4NNoa3vUYfcSAKNuEkc/aPm4ahj3Kc1rrA5cuReBzkrQqDnvUVFNfQMdUcdHagYN8oyPP9VkT0LNDO9qYB88dGFzvKNUxB2xGQeFo5yWe8ldiSmxCNUPerulKnHMbJ9ZgI1vZtmVnObvaYIfVa9bX2KAqSoapsRmyDzR88+OQzqIrx6K1siGfSuWx3XBpWo+wC9anFnx6eOH7w3ceD/BgAhkkIuaCCM4jHu5Z631JTlU1aXsShzNyO4IXv8TPgT2eVXjZ0jZRHtHimLBQCvBh1D5BmHTbN0/Gijp27blKuanIiZSW27aPl2VCZ3lg4=
