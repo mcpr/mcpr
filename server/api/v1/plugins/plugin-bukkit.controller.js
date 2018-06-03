@@ -1,5 +1,5 @@
-const request = require('request')
 const path = require('path')
+const axios = require('axios')
 
 module.exports = function (config) {
   const bukkitApi = require(config.rootPath + '/lib/bukkitApi')
@@ -7,79 +7,82 @@ module.exports = function (config) {
   const convertModel = require(config.rootPath + '/lib/bukkitToMcpr')
 
   const show = function (req, res, next) {
-    bukkitApi.getPlugin(req.params.id)
-      .then((res) => {
-        return bukkitApi.getPluginFiles(req.params.id)
-          .then((files) => {
-            let jsonFiles = JSON.parse(files)
-            let latestFiles = jsonFiles[0]
-            let jsonRes = JSON.parse(res)
+    bukkitApi
+      .getPlugin(req.params.id)
+      .then(resp => {
+        return bukkitApi
+          .getPluginFiles(req.params.id)
+          .then(files => {
+            let latestFiles = files[0]
             let keywords = []
-            let lt = jsonRes.categories.length
+            let lt = resp.categories.length
             for (var i = 0; i < lt; i++) {
-              (function () {
-                let slug = slugify(jsonRes.categories[i].name)
+              ;(function () {
+                let slug = slugify(resp.categories[i].name)
                 keywords.push(slug)
               })()
             }
             let plugin = {
               _id: req.params.id,
-              short_description: jsonRes.shortdescription,
-              title: jsonRes.title,
-              author: jsonRes.authors,
-              latest_version_date: jsonRes.lastrelease,
+              short_description: resp.shortdescription,
+              title: resp.title,
+              author: resp.authors,
+              latest_version_date: resp.lastrelease,
               latest_version: latestFiles.name,
               latest_version_file: latestFiles,
-              readme: jsonRes.description,
+              readme: resp.description,
               keywords: keywords,
-              externalUrl: jsonRes.url,
+              externalUrl: resp.url,
               external: true,
               namespace: '@bukkitdev'
             }
             req.bukkitPlugin = plugin
             next()
           })
-          .catch((err) => {
+          .catch(err => {
             return handleError(res, err)
           })
       })
-      .catch((err) => {
+      .catch(err => {
         return handleError(res, err)
       })
   }
 
-  const download = (req, res) => {
-    bukkitApi.getPlugin(req.params.id)
-      .then((resp) => {
-        const plugin = JSON.parse(resp)
-        const filename = path.basename(`${req.params.id}.jar`)
+  const download = async (req, res) => {
+    try {
+      const plugin = await bukkitApi.getPlugin(req.params.id)
+      const filename = path.basename(`${req.params.id}.jar`)
 
-        res.setHeader('content-disposition', `attachment; filename=${filename}`)
-        request(plugin.download).pipe(res)
+      res.setHeader('content-disposition', `attachment; filename=${filename}`)
+
+      // request(plugin.download).pipe(res)
+      const download = await axios.get(plugin.download, {
+        responseType: 'stream'
       })
-      .catch((err) => {
-        return handleError(res, err)
-      })
-      .catch((err) => {
-        return handleError(res, err)
-      })
+
+      // console.log(res.data)
+      download.data.on('end', () => res.end())
+      download.data.pipe(res)
+    } catch (err) {
+      return handleError(res, err)
+    }
   }
 
   const showAll = function (req, res, next) {
-    bukkitApi.getAll()
-      .then((res) => {
-        let jsonRes = JSON.parse(res)
-        convertModel(jsonRes)
-          .then((plugins) => {
+    bukkitApi
+      .getAll()
+      .then(res => {
+        convertModel(res)
+          .then(plugins => {
             req.bukkitPlugins = plugins
             next()
           })
-          .catch((err) => {
+          .catch(err => {
             console.error(err)
             return handleError(res, err)
           })
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err)
         return handleError(res, err)
       })
@@ -87,11 +90,14 @@ module.exports = function (config) {
 
   const handleError = function (res, err) {
     if (err.statusCode === 404) {
-      return res.status(404).send({
-        name: err.name,
-        statusCode: err.statusCode,
-        message: err.message
-      }).end()
+      return res
+        .status(404)
+        .send({
+          name: err.name,
+          statusCode: err.statusCode,
+          message: err.message
+        })
+        .end()
     }
     return res.status(500).send(err)
   }

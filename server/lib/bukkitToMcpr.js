@@ -6,34 +6,34 @@ function convertModel (bukkit) {
     let plugins = []
     let itemsProcessed = 0
     for (let i = 0; i < bukkit.length; i++) {
-      (() => {
+      ;(() => {
         let bukkitPlugin = bukkit[i]
-        return bukkitApi.getPlugin(bukkitPlugin.slug)
+        return bukkitApi
+          .getPlugin(bukkitPlugin.slug)
           .then(res => {
-            let jsonRes = JSON.parse(res)
-            return bukkitApi.getPluginFiles(bukkitPlugin.slug)
+            return bukkitApi
+              .getPluginFiles(bukkitPlugin.slug)
               .then(files => {
-                let jsonFiles = JSON.parse(files)
-                let latestFiles = jsonFiles[0]
+                let latestFiles = files[0]
                 let keywords = []
                 for (let i = 0; i < bukkitPlugin.categories.length; i++) {
-                  (() => {
+                  ;(() => {
                     let slug = slugify(bukkitPlugin.categories[i].name)
                     keywords.push(slug)
                   })()
                 }
                 let plugin = {
                   _id: bukkitPlugin.slug,
-                  short_description: jsonRes.shortdescription,
-                  title: jsonRes.title,
-                  author: jsonRes.authors[0].name,
-                  latest_version_date: jsonRes.lastrelease,
+                  short_description: res.shortdescription,
+                  title: res.title,
+                  author: res.authors[0].name,
+                  latest_version_date: res.lastrelease,
                   latest_version: latestFiles.name,
                   latest_version_file: latestFiles,
                   downloads: latestFiles.downloads,
-                  readme: jsonRes.description,
+                  readme: res.description,
                   keywords: keywords,
-                  externalUrl: jsonRes.url,
+                  externalUrl: res.url,
                   external: true,
                   namespace: '@bukkitdev'
                 }
@@ -43,11 +43,11 @@ function convertModel (bukkit) {
                   return resolve(plugins)
                 }
               })
-              .catch((err) => {
+              .catch(err => {
                 reject(err)
               })
           })
-          .catch((err) => {
+          .catch(err => {
             reject(err)
           })
       })()

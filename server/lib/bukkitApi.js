@@ -1,9 +1,10 @@
-var request = require('request-promise')
+const axios = require('axios')
 const bukkitApiBase = 'https://dbo.aternos.org'
 
-function get (endpoint) {
+async function get (endpoint) {
   let url = bukkitApiBase + endpoint
-  return request(url)
+  const resp = await axios.get(url)
+  return resp.data
 }
 
 function getPlugin (pluginId) {

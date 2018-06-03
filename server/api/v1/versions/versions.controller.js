@@ -6,7 +6,7 @@ const multer = require('multer')
 const multerS3 = require('multer-s3')
 const s3 = new aws.S3()
 const path = require('path')
-const request = require('request')
+const axios = require('axios')
 
 exports.model = Version
 
@@ -31,8 +31,7 @@ exports.all = function (req, res, next) {
   let sortObj = {}
   sortObj[orderBy] = sort
 
-  Version
-    .find({})
+  Version.find({})
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
@@ -64,36 +63,34 @@ exports.all = function (req, res, next) {
 exports.create = function (req, res, next) {
   let version = req.body
   version._id = `${version.plugin}-${version.version}`
-  return Plugin.findById(version.plugin)
-    .exec(function (err, plugin) {
+  return Plugin.findById(version.plugin).exec(function (err, plugin) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res, {
+        message: 'The plugin you tried to create a version for does not exist'
+      })
+    }
+
+    return Version.create(version, function (err, version) {
       if (err) {
         return handleError(res, err)
       }
-      if (!plugin) {
-        return handle404(res, {
-          message: 'The plugin you tried to create a version for does not exist'
-        })
+      if (!version) {
+        return handle404(res)
       }
-
-      return Version
-        .create(version, function (err, version) {
-          if (err) {
-            return handleError(res, err)
-          }
-          if (!version) {
-            return handle404(res)
-          }
-          plugin.latest_version = version.version
-          plugin.latest_version_date = Date.now()
-          plugin.save(function (err, response) {
-            if (err) {
-              return handleError(res, err)
-            }
-            req.version = version
-            next()
-          })
-        })
+      plugin.latest_version = version.version
+      plugin.latest_version_date = Date.now()
+      plugin.save(function (err, response) {
+        if (err) {
+          return handleError(res, err)
+        }
+        req.version = version
+        next()
+      })
     })
+  })
 }
 
 /**
@@ -129,18 +126,16 @@ exports.create = function (req, res, next) {
  */
 exports.show = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
-  Version
-    .findById(id)
-    .exec(function (err, version) {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!version) {
-        return handle404(res, id)
-      }
-      req.version = version
-      next()
-    })
+  Version.findById(id).exec(function (err, version) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!version) {
+      return handle404(res, id)
+    }
+    req.version = version
+    next()
+  })
 }
 
 /**
@@ -157,46 +152,59 @@ exports.download = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
   const config = req.config
 
-  return Plugin.findById(req.params.pluginID)
-    .exec(function (err, plugin) {
+  return Plugin.findById(req.params.pluginID).exec(function (err, plugin) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res, {
+        message:
+          'The plugin you tried to download a version from does not exist'
+      })
+    }
+
+    Version.findById(id).exec(function (err, version) {
       if (err) {
         return handleError(res, err)
       }
-      if (!plugin) {
-        return handle404(res, {
-          message: 'The plugin you tried to download a version from does not exist'
-        })
+      if (!version) {
+        return handle404(res, id)
       }
-
-      Version
-        .findById(id)
-        .exec(function (err, version) {
+      let filename
+      let file
+      filename = path.basename(
+        `${req.params.pluginID}-${req.params.versionID}.jar`
+      )
+      file = `https://s3.amazonaws.com/${config.s3Bucket}/${
+        req.params.pluginID
+      }/${req.params.versionID}/${req.params.pluginID}.jar`
+      version.downloads += 1
+      plugin.downloads += 1
+      plugin.save(function (err, response) {
+        if (err) {
+          return handleError(res, err)
+        }
+        version.save(function (err, response) {
           if (err) {
             return handleError(res, err)
           }
-          if (!version) {
-            return handle404(res, id)
-          }
-          let filename
-          let file
-          filename = path.basename(`${req.params.pluginID}-${req.params.versionID}.jar`)
-          file = `https://s3.amazonaws.com/${config.s3Bucket}/${req.params.pluginID}/${req.params.versionID}/${req.params.pluginID}.jar`
-          version.downloads += 1
-          plugin.downloads += 1
-          plugin.save(function (err, response) {
-            if (err) {
-              return handleError(res, err)
-            }
-            version.save(function (err, response) {
-              if (err) {
-                return handleError(res, err)
-              }
-              res.setHeader('content-disposition', `attachment; filename=${filename}`)
-              request(file).pipe(res)
+          res.setHeader(
+            'content-disposition',
+            `attachment; filename=${filename}`
+          )
+          axios
+            .get(file, {
+              responseType: 'stream'
             })
-          })
+            .then(download => {
+              download.data.on('end', () => res.end())
+              download.data.pipe(res)
+            })
+            .catch(err => handleError(res, err))
         })
+      })
     })
+  })
 }
 
 /**
@@ -214,23 +222,22 @@ exports.update = function (req, res) {
   var updatedVersion = req.body
   updatedVersion.updated = Date.now()
 
-  Version
-    .findById(id)
-    .exec(function (err, plugin) {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugin) {
-        return handle404(res)
-      }
-      Version
-        .update({
-          '_id': id
-        }, updatedVersion)
-        .exec(function () {
-          return res.status(204).end()
-        })
+  Version.findById(id).exec(function (err, plugin) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res)
+    }
+    Version.update(
+      {
+        _id: id
+      },
+      updatedVersion
+    ).exec(function () {
+      return res.status(204).end()
     })
+  })
 }
 
 /**
@@ -247,19 +254,17 @@ exports.update = function (req, res) {
  */
 exports.delete = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
-  Version
-    .remove({
-      '_id': id
-    })
-    .exec(function (err, num) {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (num === 0) {
-        return res.status(498).end()
-      }
-      next()
-    })
+  Version.remove({
+    _id: id
+  }).exec(function (err, num) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (num === 0) {
+      return res.status(498).end()
+    }
+    next()
+  })
 }
 
 /**
@@ -283,10 +288,9 @@ module.exports.showByPlugin = function (req, res) {
   let sortObj = {}
   sortObj[orderBy] = sort
 
-  Version
-    .find({
-      plugin: req.params.pluginID
-    })
+  Version.find({
+    plugin: req.params.pluginID
+  })
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
@@ -341,46 +345,43 @@ exports.upload = function (req, res, next) {
         cb(null, `${pluginID}/${version}/${pluginID}.jar`)
       }
     })
-
   }).single('jar')
 
-  Version
-    .findById(id)
-    .exec(function (err, version) {
+  Version.findById(id).exec(function (err, version) {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!version) {
+      return handle404(res, id)
+    }
+
+    uploader(req, res, function (err) {
+      if (req.filterError) {
+        return handleError(res, {
+          success: false,
+          message: req.filterError
+        })
+      }
       if (err) {
         return handleError(res, err)
       }
-      if (!version) {
-        return handle404(res, id)
-      }
+      const file = req.file
 
-      uploader(req, res, function (err) {
-        if (req.filterError) {
-          return handleError(res, {
-            success: false,
-            message: req.filterError
-          })
-        }
+      version.size = file.size
+
+      version.save(function (err, response) {
         if (err) {
           return handleError(res, err)
         }
-        const file = req.file
-
-        version.size = file.size
-
-        version.save(function (err, response) {
-          if (err) {
-            return handleError(res, err)
-          }
-          res.status(200).json({
-            success: true,
-            message: 'File uploaded successfully!',
-            file: file,
-            result: file.location
-          })
+        res.status(200).json({
+          success: true,
+          message: 'File uploaded successfully!',
+          file: file,
+          result: file.location
         })
       })
     })
+  })
 }
 
 const handleError = function (res, err) {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Plugin = mongoose.model('Plugin')
 const Version = mongoose.model('Version')
 const path = require('path')
-const request = require('request')
+const axios = require('axios')
 exports.model = Plugin
 
 /**
@@ -27,8 +27,7 @@ exports.all = (req, res, next) => {
   let orderBy = req.query.order_by || 'downloads'
   let sortObj = {}
   sortObj[orderBy] = sort
-  Plugin
-    .find({})
+  Plugin.find({})
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
@@ -40,10 +39,10 @@ exports.all = (req, res, next) => {
         return handle404(res)
       }
       if (req.query.includeBukkitDev) {
-        bukkitApi.getAll()
+        bukkitApi
+          .getAll()
           .then(resp => {
-            let jsonRes = JSON.parse(resp)
-            return convertModel(jsonRes)
+            return convertModel(resp)
               .then(bukkitPlugins => {
                 req.plugins = plugins.concat(bukkitPlugins)
                 return next()
@@ -82,17 +81,16 @@ exports.all = (req, res, next) => {
 exports.create = (req, res, next) => {
   let plugin = req.body
 
-  return Plugin
-    .create(plugin, (err, plugin) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugin) {
-        return handle404(res)
-      }
-      req.plugin = plugin
-      next()
-    })
+  return Plugin.create(plugin, (err, plugin) => {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res)
+    }
+    req.plugin = plugin
+    next()
+  })
 }
 
 /**
@@ -137,18 +135,16 @@ exports.create = (req, res, next) => {
  *     }
  */
 exports.show = (req, res, next) => {
-  Plugin
-    .findById(req.params.id)
-    .exec((err, plugin) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugin) {
-        return handle404(res, req.params.id)
-      }
-      req.plugin = plugin
-      next()
-    })
+  Plugin.findById(req.params.id).exec((err, plugin) => {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res, req.params.id)
+    }
+    req.plugin = plugin
+    next()
+  })
 }
 
 /**
@@ -162,46 +158,55 @@ exports.show = (req, res, next) => {
  */
 exports.download = (req, res, next) => {
   const config = req.config
-  Plugin
-    .findById(req.params.id)
-    .exec((err, plugin) => {
+  Plugin.findById(req.params.id).exec((err, plugin) => {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res, req.params.id)
+    }
+    let id = req.params.id
+    let versionID = `${id}-${plugin.latest_version}`
+    Version.findById(versionID).exec((err, version) => {
       if (err) {
         return handleError(res, err)
       }
-      if (!plugin) {
-        return handle404(res, req.params.id)
+      if (!version) {
+        return handle404(res, plugin.latest_version)
       }
-      let id = req.params.id
-      let versionID = `${id}-${plugin.latest_version}`
-      Version
-        .findById(versionID)
-        .exec((err, version) => {
+      let file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${
+        plugin.latest_version
+      }/${id}.jar`
+      let filename = path.basename(`${id}-${plugin.latest_version}.jar`)
+
+      plugin.downloads += 1
+      plugin.save((err, response) => {
+        if (err) {
+          return handleError(res, err)
+        }
+
+        version.downloads += 1
+        version.save((err, response) => {
           if (err) {
             return handleError(res, err)
           }
-          if (!version) {
-            return handle404(res, plugin.latest_version)
-          }
-          let file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${plugin.latest_version}/${id}.jar`
-          let filename = path.basename(`${id}-${plugin.latest_version}.jar`)
-
-          plugin.downloads += 1
-          plugin.save((err, response) => {
-            if (err) {
-              return handleError(res, err)
-            }
-
-            version.downloads += 1
-            version.save((err, response) => {
-              if (err) {
-                return handleError(res, err)
-              }
-              res.setHeader('content-disposition', `attachment; filename=${filename}`)
-              request(file).pipe(res)
+          res.setHeader(
+            'content-disposition',
+            `attachment; filename=${filename}`
+          )
+          axios
+            .get(file, {
+              responseType: 'stream'
             })
-          })
+            .then(download => {
+              download.data.on('end', () => res.end())
+              download.data.pipe(res)
+            })
+            .catch(err => handleError(res, err))
         })
+      })
     })
+  })
 }
 
 /**
@@ -217,31 +222,33 @@ exports.update = (req, res) => {
   var updatedPlugin = req.body
   updatedPlugin.updated = Date.now()
 
-  Plugin
-    .findById(req.params.id)
-    .exec((err, plugin) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugin) {
-        return handle404(res)
-      }
-      if (req.payload.username !== plugin.author) {
-        return res.status(403).json({
-          name: 'Forbidden',
-          statusCode: 403,
-          message: 'This plugin does not belong to you'
-        })
-      }
+  Plugin.findById(req.params.id).exec((err, plugin) => {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res)
+    }
+    if (req.payload.username !== plugin.author) {
+      return res.status(403).json({
+        name: 'Forbidden',
+        statusCode: 403,
+        message: 'This plugin does not belong to you'
+      })
+    }
 
-      Plugin
-        .update({
-          '_id': req.params.id
-        }, updatedPlugin)
-        .exec(() => {
-          return res.status(200).json(updatedPlugin).end()
-        })
+    Plugin.update(
+      {
+        _id: req.params.id
+      },
+      updatedPlugin
+    ).exec(() => {
+      return res
+        .status(200)
+        .json(updatedPlugin)
+        .end()
     })
+  })
 }
 
 /**
@@ -257,37 +264,33 @@ exports.update = (req, res) => {
  */
 exports.delete = (req, res, next) => {
   let pluginId = req.params.id
-  Plugin
-    .findById(pluginId)
-    .exec((err, plugin) => {
+  Plugin.findById(pluginId).exec((err, plugin) => {
+    if (err) {
+      return handleError(res, err)
+    }
+    if (!plugin) {
+      return handle404(res)
+    }
+    if (req.payload.username !== plugin.author) {
+      return res.status(403).json({
+        name: 'Forbidden',
+        statusCode: 403,
+        message: 'This plugin does not belong to you'
+      })
+    }
+
+    Plugin.remove({
+      _id: pluginId
+    }).exec((err, num) => {
       if (err) {
         return handleError(res, err)
       }
-      if (!plugin) {
-        return handle404(res)
+      if (num === 0) {
+        return res.status(498).end()
       }
-      if (req.payload.username !== plugin.author) {
-        return res.status(403).json({
-          name: 'Forbidden',
-          statusCode: 403,
-          message: 'This plugin does not belong to you'
-        })
-      }
-
-      Plugin
-        .remove({
-          '_id': pluginId
-        })
-        .exec((err, num) => {
-          if (err) {
-            return handleError(res, err)
-          }
-          if (num === 0) {
-            return res.status(498).end()
-          }
-          next()
-        })
+      next()
     })
+  })
 }
 
 /**
@@ -312,10 +315,9 @@ module.exports.showByUser = (req, res) => {
   let sortObj = {}
   sortObj[orderBy] = sort
 
-  Plugin
-    .find({
-      author: req.params.username
-    })
+  Plugin.find({
+    author: req.params.username
+  })
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
@@ -362,15 +364,13 @@ module.exports.search = (req, res) => {
 const handleError = (res, err, code) => {
   console.log('ERROR: ' + err)
   let sCode = code || 500
-  return res
-    .status(sCode)
-    .json({
-      success: false,
-      message: err
-    })
+  return res.status(sCode).json({
+    success: false,
+    message: err
+  })
 }
 
-const handle404 = (res) => {
+const handle404 = res => {
   res.status(404)
   res.json({
     name: 'NotFound',

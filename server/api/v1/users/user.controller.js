@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
-const request = require('request-promise')
-
+const axios = require('axios')
 /**
  * @api {get} /users/me/profile Get Current User
  * @apiName GetCurrentUser
@@ -40,7 +39,7 @@ module.exports.profileRead = function (req, res) {
   // If no user ID exists in the JWT return a 401
   if (!req.payload.id) {
     res.status(401).json({
-      'message': 'UnauthorizedError: private profile'
+      message: 'UnauthorizedError: private profile'
     })
   } else {
     // Otherwise continue
@@ -55,7 +54,7 @@ module.exports.profileRead = function (req, res) {
       }
       if (user === null) {
         return handleError(res, {
-          message: 'The requested user doesn\'t seem to exist.'
+          message: "The requested user doesn't seem to exist."
         })
       }
       res.status(200).json(user)
@@ -110,7 +109,7 @@ module.exports.getUser = function (req, res) {
     if (user === null) {
       return res.status(404).json({
         success: false,
-        message: 'The requested user doesn\'t seem to exist.'
+        message: "The requested user doesn't seem to exist."
       })
     }
     res.status(200).json(user)
@@ -138,8 +137,7 @@ module.exports.showAll = function (req, res) {
   let sortObj = {}
   sortObj[orderBy] = sort
 
-  let query = User
-    .find()
+  let query = User.find()
     .limit(perPage)
     .skip(perPage * page)
     .sort(sortObj)
@@ -180,58 +178,63 @@ module.exports.showAll = function (req, res) {
  */
 module.exports.register = (req, res) => {
   const config = req.config
-  const sendVerificationEmail = require(config.rootPath + '/lib/sendVerificationEmail')
+  const sendVerificationEmail = require(config.rootPath +
+    '/lib/sendVerificationEmail')
 
-  request({
-    uri: `https://www.google.com/recaptcha/api/siteverify?secret=${config.recaptchaKey}&response=${req.body.recaptchaResponse}`,
-    method: 'POST'
-  }).then((resp) => {
-    var recaptchaRes = JSON.parse(resp)
-    console.log(recaptchaRes.success)
-    if (recaptchaRes.success) {
+  axios
+    .post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${
+        config.recaptchaKey
+      }&response=${req.body.recaptchaResponse}`
+    )
+    .then(resp => {
+      var recaptchaRes = resp.data
       console.log(recaptchaRes.success)
-      if (!req.body.email || !req.body.password) {
-        res.json({
-          success: false,
-          message: 'Please enter email and password.'
-        })
-      } else {
-        var newUser = new User({
-          email: req.body.email,
-          username: req.body.username,
-          name: req.body.name,
-          password: req.body.password
-        })
-
-        // Attempt to save the user
-        newUser.save((err, user) => {
-          if (err) {
-            if (err.code === 11000) {
-              return res.status(409).json({
-                success: false,
-                message: 'That email address or username already exists.'
-              })
-            }
-            console.log(err)
-            return res.status(500).json(err)
-          }
-          sendVerificationEmail(user, config)
-          return res.json({
-            success: true,
-            message: 'Successfully created new user.'
+      if (recaptchaRes.success) {
+        console.log(recaptchaRes.success)
+        if (!req.body.email || !req.body.password) {
+          res.json({
+            success: false,
+            message: 'Please enter email and password.'
           })
+        } else {
+          var newUser = new User({
+            email: req.body.email,
+            username: req.body.username,
+            name: req.body.name,
+            password: req.body.password
+          })
+
+          // Attempt to save the user
+          newUser.save((err, user) => {
+            if (err) {
+              if (err.code === 11000) {
+                return res.status(409).json({
+                  success: false,
+                  message: 'That email address or username already exists.'
+                })
+              }
+              console.log(err)
+              return res.status(500).json(err)
+            }
+            sendVerificationEmail(user, config)
+            return res.json({
+              success: true,
+              message: 'Successfully created new user.'
+            })
+          })
+        }
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: 'Recaptcha invalid'
         })
       }
-    } else {
-      return res.status(500).json({
-        success: false,
-        message: 'Recaptcha invalid'
-      })
-    }
-  }).catch((err) => {
-    console.log(err)
-    return res.status(500).json(err)
-  })
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).json(err)
+    })
 }
 
 module.exports.verify = (req, res) => {
@@ -239,12 +242,12 @@ module.exports.verify = (req, res) => {
   console.log(req.params.verificationCode)
   let id = req.params.id
   let code = req.params.verificationCode
-  User
-
-    .findOne({
-      '_id': id,
+  User.findOne(
+    {
+      _id: id,
       '__private.verificationCode': code
-    }, function (err, user) {
+    },
+    function (err, user) {
       if (err) return handleError(res, err.name)
       if (!user) {
         return res.status(400).json({
@@ -260,7 +263,8 @@ module.exports.verify = (req, res) => {
           message: 'Verified'
         })
       })
-    })
+    }
+  )
 }
 
 /**
@@ -285,48 +289,56 @@ module.exports.verify = (req, res) => {
  */
 module.exports.login = function (req, res) {
   const config = req.config
-  User.findOne({
-    username: req.body.username
-  }, function (err, user) {
-    if (err) {
-      handleError(res, err)
-    }
+  User.findOne(
+    {
+      username: req.body.username
+    },
+    function (err, user) {
+      if (err) {
+        handleError(res, err)
+      }
 
-    if (!user) {
-      return res.status(404).send({
-        success: false,
-        message: 'Authentication failed. User not found.'
-      })
-    } else if (!user.isVerified) {
-      return res.status(403).send({
-        success: false,
-        verified: false,
-        message: 'Your email address is not verified! Please check your email.'
-      })
-    } else {
-      // Check if password matches
-      user.comparePassword(req.body.password, function (err, isMatch) {
-        if (isMatch && !err) {
-          // Create token if the password matched and no error was thrown
-          var token = jwt.sign({
-            id: user._id,
-            username: user.username
-          }, config.secret, {
-            expiresIn: 5184000 // in seconds
-          })
-          res.json({
-            success: true,
-            token: token
-          })
-        } else {
-          res.status(401).send({
-            success: false,
-            message: 'Authentication failed. Incorrect username or password.'
-          })
-        }
-      })
+      if (!user) {
+        return res.status(404).send({
+          success: false,
+          message: 'Authentication failed. User not found.'
+        })
+      } else if (!user.isVerified) {
+        return res.status(403).send({
+          success: false,
+          verified: false,
+          message:
+            'Your email address is not verified! Please check your email.'
+        })
+      } else {
+        // Check if password matches
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (isMatch && !err) {
+            // Create token if the password matched and no error was thrown
+            var token = jwt.sign(
+              {
+                id: user._id,
+                username: user.username
+              },
+              config.secret,
+              {
+                expiresIn: 5184000 // in seconds
+              }
+            )
+            res.json({
+              success: true,
+              token: token
+            })
+          } else {
+            res.status(401).send({
+              success: false,
+              message: 'Authentication failed. Incorrect username or password.'
+            })
+          }
+        })
+      }
     }
-  })
+  )
 }
 
 /**
