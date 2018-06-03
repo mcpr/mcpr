@@ -7,7 +7,6 @@ const cleanCSS = require('gulp-clean-css')
 const uglify = require('gulp-uglify')
 const rename = require('gulp-rename')
 const del = require('del')
-const bower = require('bower')
 const concat = require('gulp-concat')
 const imagemin = require('gulp-imagemin')
 const concatCss = require('gulp-concat-css')
@@ -19,9 +18,10 @@ const eslint = require('gulp-eslint')
 const eslintReporter = require('eslint-html-reporter')
 const path = require('path')
 const fs = require('fs')
+const babel = require('gulp-babel')
 
 // config and paths
-const lib = './bower_components'
+const lib = './node_modules'
 const public = './server/public'
 const src = './client/src'
 const dist = `${public}/build`
@@ -29,9 +29,9 @@ const paths = {
   js: {
     lib: [
       `${lib}/jquery/dist/jquery.js`,
-      `${lib}/materialize/dist/js/materialize.js`,
+      `${lib}/materialize-css/dist/js/materialize.js`,
       `${lib}/angular/angular.js`,
-      `${lib}/angular-ui-router/release/angular-ui-router.js`,
+      `${lib}/@uirouter/angularjs/release/angular-ui-router.js`,
       `${lib}/angular-materialize/src/angular-materialize.js`,
       `${lib}/angular-sanitize/angular-sanitize.js`,
       `${lib}/showdown/dist/showdown.js`,
@@ -47,7 +47,7 @@ const paths = {
   },
   css: {
     lib: [
-      `${lib}/materialize/dist/css/materialize.css`,
+      `${lib}/materialize-css/dist/css/materialize.css`,
       `${lib}/font-awesome/css/font-awesome.css`,
       `${lib}/simplemde/dist/simplemde.min.css`
     ],
@@ -57,8 +57,8 @@ const paths = {
   fonts: {
     all: [
       `${src}/fonts/**/*.*`,
-      `${lib}/materialize/dist/fonts/**/*.*`,
-      `${lib}/font-awesome/fonts/**/*.*`
+      `${lib}/materialize-css/dist/fonts/**/*.*`,
+      `${lib}/font-awesome/fonts/*.*`
     ],
     dist: `${dist}/fonts/`
   },
@@ -87,18 +87,6 @@ gulp.task('clean', () => {
 
 gulp.task('clean:tests', () => {
   return del('./tests')
-})
-
-// bower install
-gulp.task('bower', done => {
-  bower.commands
-    .install()
-    .on('log', data => {
-      console.log('bower:', data.message)
-    })
-    .on('end', () => {
-      return done()
-    })
 })
 
 const lint = () => {
@@ -248,6 +236,11 @@ const jsApp = () => {
     .pipe(concat('app.js'))
     .pipe(gulp.dest(paths.app.dist))
     .pipe(ngAnnotate())
+    .pipe(
+      babel({
+        presets: ['env']
+      })
+    )
     .pipe(uglify())
     .pipe(
       rename({
@@ -269,10 +262,7 @@ gulp.task('js', gulp.parallel('js-custom', 'js-lib', 'app'))
 // All CSS Tasks
 gulp.task('css', gulp.parallel('sass', 'css-lib'))
 
-gulp.task(
-  'build',
-  gulp.series('bower', gulp.parallel('js', 'css', 'fonts', 'images'))
-)
+gulp.task('build', gulp.parallel('js', 'css', 'fonts', 'images'))
 
 gulp.task('serve', () => {
   gulp.watch(paths.css.sass, gulp.parallel('sass'))

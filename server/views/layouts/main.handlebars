@@ -8,16 +8,14 @@
     <meta property="og:site_name" content="mcpr">
     <meta property="og:url" content="{{currentUrl}}" />
     <meta property="og:description" content="MCPR - {{plugin.short_description}}">
-    <meta name="description" content="MCPR - {{plugin.short_description}}"> 
-    {{#if pluginName}}
+    <meta name="description" content="MCPR - {{plugin.short_description}}"> {{#if pluginName}}
     <meta property="og:title" content="{{pluginName}}" />
     <title>{{pluginName}} - mcpr</title>
     {{else}}
     <meta property="og:title" content="MCPR" />
     <title>MCPR Beta</title>
     <meta property="og:description" content="MCPR - The Ultimate Minecraft Plugin Registry">
-    <meta name="description" content="MCPR - The Ultimate Minecraft Plugin Registry"> 
-    {{/if}}
+    <meta name="description" content="MCPR - The Ultimate Minecraft Plugin Registry"> {{/if}}
     <base href="/">
     <link rel="manifest" href="manifest.json?v={{deployVersion}}">
 
@@ -26,8 +24,11 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="{{assetBase}}/css/lib.min.css?v={{deployVersion}}">
     <link rel="stylesheet" href="{{assetBase}}/css/app.min.css?v={{deployVersion}}">
-    {{#if gaCode}}
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"
+    />
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->{{#if gaCode}}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{gaCode}}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -35,8 +36,8 @@
         gtag('js', new Date());
 
         gtag('config', '{{gaCode}}');
-    </script>
-    {{/if}}
+    </script> {{/if}}
+
     <script src='https://www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded' async defer></script>
 </head>
 
@@ -54,11 +55,11 @@
         </main>
         <div footer></div>
     </div>
-    <!--Import jQuery before materialize.js-->
+
     <script type="text/javascript" src="{{assetBase}}/js/lib.min.js?v={{deployVersion}}"></script>
     <script type="text/javascript" src="{{assetBase}}/js/custom.min.js?v={{deployVersion}}"></script>
     <script type="text/javascript" src="{{assetBase}}/app/app.min.js?v={{deployVersion}}"></script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script>
         window.addEventListener("load", function () {
