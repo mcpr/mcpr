@@ -51,7 +51,7 @@
     "font-awesome": "^4.7.0",
     "helmet": "^3.8.2",
     "jsonwebtoken": "^8.0.0",
-    "materialize-css": "^0.100.2",
+    "materialize-css": "^1.0.0",
     "md5": "^2.2.1",
     "moment": "^2.22.1",
     "mongoose": "^5.0.15",
