@@ -66,6 +66,8 @@
     "simplemde": "^1.11.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "apidoc": "^0.17.6",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
