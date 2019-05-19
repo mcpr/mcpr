@@ -34,7 +34,6 @@
     "angular-materializecss-autocomplete": "0.0.3",
     "angular-recaptcha": "^4.1.0",
     "angular-sanitize": "^1.7.0",
-    "applicationinsights": "^1.0.0",
     "aws-sdk": "^2.326.0",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
@@ -63,7 +62,9 @@
     "semver": "^5.5.1",
     "serve-favicon": "^2.4.5",
     "showdown": "^1.8.6",
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "uuid": "^3.3.2",
+    "yn": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

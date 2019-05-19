@@ -2,7 +2,7 @@ const express = require('express')
 const apiRouter = express.Router()
 const mongoose = require('mongoose')
 
-module.exports = function (app, config) {
+module.exports = (app, config) => {
   const pkg = require(config.projectPath + '/package.json')
 
   /**

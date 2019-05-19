@@ -1,17 +1,19 @@
 const express = require('express')
 const config = require('./config')
 
-module.exports = function (app) {
+module.exports = app => {
   const router = express.Router()
   router.get(/^(?!.*(docs|api))/, (req, res) => {
     let url = req.originalUrl
     let pluginId = false
     console.log(req.originalUrl)
+
     if (url.includes('/plugin/')) {
       pluginId = url.replace('/plugin/', '')
     }
-    res.render('app', {
-      currentUrl: 'https://mcpr.io' + req.originalUrl,
+
+    return res.render('app', {
+      currentUrl: `${config.externalUrl}${req.originalUrl}`,
       pluginName: pluginId,
       gaCode: config.gaCode
     })

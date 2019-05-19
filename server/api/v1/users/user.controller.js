@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const jwt = require('jsonwebtoken')
 const axios = require('axios')
+const sendVerificationEmail = require('../../../lib/sendVerificationEmail')
 /**
  * @api {get} /users/me/profile Get Current User
  * @apiName GetCurrentUser
@@ -35,30 +35,29 @@ const axios = require('axios')
  *       "twitter": "noahprail"
  *     }
  */
-module.exports.profileRead = function (req, res) {
-  // If no user ID exists in the JWT return a 401
-  if (!req.payload.id) {
-    res.status(401).json({
-      message: 'UnauthorizedError: private profile'
-    })
-  } else {
-    // Otherwise continue
-    let query = User.findById(req.payload.id)
-    query.select('-password')
-    query.select('-__private')
-    query.select('-__v')
+module.exports.profileRead = async (req, res) => {
+  try {
+    // If no user ID exists in the JWT return a 401
+    if (!req.payload.id) {
+      return res.status(401).json({
+        message: 'UnauthorizedError: private profile'
+      })
+    }
 
-    query.exec(function (err, user) {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (user === null) {
-        return handleError(res, {
-          message: "The requested user doesn't seem to exist."
-        })
-      }
-      res.status(200).json(user)
-    })
+    const user = await User.findById(req.payload.id)
+      .select('-password')
+      .select('-__private')
+      .select('-__v')
+
+    if (!user) {
+      return handleError(res, {
+        message: "The requested user doesn't seem to exist."
+      })
+    }
+
+    return res.status(200).json(user)
+  } catch (err) {
+    return handleError(res, err)
   }
 }
 
@@ -94,26 +93,26 @@ module.exports.profileRead = function (req, res) {
  *       "twitter": "noahprail"
  *     }
  */
-module.exports.getUser = function (req, res) {
-  let query = User.findOne({
-    username: req.params.username
-  })
-  query.select('-password')
-  query.select('-__private')
-  query.select('-__v')
+module.exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      username: req.params.username
+    })
+      .select('-password')
+      .select('-__private')
+      .select('-__v')
 
-  query.exec(function (err, user) {
-    if (err) {
-      return handleError(res, err)
-    }
-    if (user === null) {
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: "The requested user doesn't seem to exist."
       })
     }
-    res.status(200).json(user)
-  })
+
+    return res.status(200).json(user)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -129,29 +128,27 @@ module.exports.getUser = function (req, res) {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/users?sort=asc&order_by=username
  */
-module.exports.showAll = function (req, res) {
-  let perPage = Math.max(0, req.query.per_page) || 50
-  let page = Math.max(0, req.query.page)
-  let sort = req.query.sort || 'desc'
-  let orderBy = req.query.order_by || 'updatedAt'
-  let sortObj = {}
-  sortObj[orderBy] = sort
+module.exports.showAll = async (req, res) => {
+  try {
+    const perPage = Math.max(0, req.query.per_page) || 50
+    const page = Math.max(0, req.query.page)
+    const sort = req.query.sort || 'desc'
+    const orderBy = req.query.order_by || 'updatedAt'
+    let sortObj = {}
+    sortObj[orderBy] = sort
 
-  let query = User.find()
-    .limit(perPage)
-    .skip(perPage * page)
-    .sort(sortObj)
+    const users = await User.find()
+      .limit(perPage)
+      .skip(perPage * page)
+      .sort(sortObj)
+      .select('-password')
+      .select('-__private')
+      .select('-__v')
 
-  query.select('-password')
-  query.select('-__private')
-  query.select('-__v')
-
-  query.exec(function (err, users) {
-    if (err) {
-      return handleError(res, err)
-    }
-    res.status(200).json(users)
-  })
+    return res.status(200).json(users)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -176,95 +173,84 @@ module.exports.showAll = function (req, res) {
  *       "message": "Successfully created new user."
  *     }
  */
-module.exports.register = (req, res) => {
-  const config = req.config
-  const sendVerificationEmail = require(config.rootPath +
-    '/lib/sendVerificationEmail')
+module.exports.register = async (req, res) => {
+  try {
+    const { config } = req
 
-  axios
-    .post(
+    const resp = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${
         config.recaptchaKey
       }&response=${req.body.recaptchaResponse}`
     )
-    .then(resp => {
-      var recaptchaRes = resp.data
-      console.log(recaptchaRes.success)
-      if (recaptchaRes.success) {
-        console.log(recaptchaRes.success)
-        if (!req.body.email || !req.body.password) {
-          res.json({
-            success: false,
-            message: 'Please enter email and password.'
-          })
-        } else {
-          var newUser = new User({
-            email: req.body.email,
-            username: req.body.username,
-            name: req.body.name,
-            password: req.body.password
-          })
+    const recaptchaRes = resp.data
 
-          // Attempt to save the user
-          newUser.save((err, user) => {
-            if (err) {
-              if (err.code === 11000) {
-                return res.status(409).json({
-                  success: false,
-                  message: 'That email address or username already exists.'
-                })
-              }
-              console.log(err)
-              return res.status(500).json(err)
-            }
-            sendVerificationEmail(user, config)
-            return res.json({
-              success: true,
-              message: 'Successfully created new user.'
-            })
-          })
-        }
-      } else {
-        return res.status(500).json({
-          success: false,
-          message: 'Recaptcha invalid'
-        })
-      }
-    })
-    .catch(err => {
-      console.log(err)
-      return res.status(500).json(err)
-    })
-}
-
-module.exports.verify = (req, res) => {
-  // const config = req.config
-  console.log(req.params.verificationCode)
-  let id = req.params.id
-  let code = req.params.verificationCode
-  User.findOne(
-    {
-      _id: id,
-      '__private.verificationCode': code
-    },
-    function (err, user) {
-      if (err) return handleError(res, err.name)
-      if (!user) {
-        return res.status(400).json({
-          success: false,
-          message: 'Bad request'
-        })
-      }
-      user.isVerified = true
-      user.save(function (err, updatedTank) {
-        if (err) return handleError(err.name)
-        console.log(user)
-        return res.json({
-          message: 'Verified'
-        })
+    if (!recaptchaRes.success) {
+      return res.status(500).json({
+        success: false,
+        message: 'Recaptcha invalid'
       })
     }
-  )
+
+    if (!req.body.email || !req.body.password) {
+      return res.json({
+        success: false,
+        message: 'Please enter email and password.'
+      })
+    }
+
+    const newUser = new User({
+      email: req.body.email,
+      username: req.body.username,
+      name: req.body.name,
+      password: req.body.password
+    })
+
+    const user = await newUser.save()
+
+    // Attempt to save the user
+    sendVerificationEmail(user, config)
+
+    return res.json({
+      success: true,
+      message: 'Successfully created new user.'
+    })
+  } catch (err) {
+    console.log(err)
+    if (err.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: 'That email address or username already exists.'
+      })
+    }
+    return res.status(500).json(err)
+  }
+}
+
+module.exports.verify = async (req, res) => {
+  try {
+    const { id, verificationCode } = req.params
+
+    const user = await User.findOne({
+      _id: id,
+      '__private.verificationCode': verificationCode
+    })
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bad request'
+      })
+    }
+
+    user.isVerified = true
+    await user.save()
+
+    return res.status(200).json({
+      message: 'Verified'
+    })
+  } catch (err) {
+    return handleError(err.name)
+  }
 }
 
 /**
@@ -287,58 +273,48 @@ module.exports.verify = (req, res) => {
  *       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ"
  *     }
  */
-module.exports.login = function (req, res) {
-  const config = req.config
-  User.findOne(
-    {
-      username: req.body.username
-    },
-    function (err, user) {
-      if (err) {
-        handleError(res, err)
-      }
+module.exports.login = async (req, res) => {
+  try {
+    const { username, password } = req.body
 
-      if (!user) {
-        return res.status(404).send({
-          success: false,
-          message: 'Authentication failed. User not found.'
-        })
-      } else if (!user.isVerified) {
-        return res.status(403).send({
-          success: false,
-          verified: false,
-          message:
-            'Your email address is not verified! Please check your email.'
-        })
-      } else {
-        // Check if password matches
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (isMatch && !err) {
-            // Create token if the password matched and no error was thrown
-            var token = jwt.sign(
-              {
-                id: user._id,
-                username: user.username
-              },
-              config.secret,
-              {
-                expiresIn: 5184000 // in seconds
-              }
-            )
-            res.json({
-              success: true,
-              token: token
-            })
-          } else {
-            res.status(401).send({
-              success: false,
-              message: 'Authentication failed. Incorrect username or password.'
-            })
-          }
-        })
-      }
+    const user = await User.findOne({
+      username
+    })
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: 'Authentication failed. User not found.'
+      })
     }
-  )
+
+    if (!user.isVerified) {
+      return res.status(403).send({
+        success: false,
+        verified: false,
+        message: 'Your email address is not verified! Please check your email.'
+      })
+    }
+
+    // Check if password matches
+    const isMatch = await user.comparePassword(password)
+    if (!isMatch) {
+      return res.status(401).send({
+        success: false,
+        message: 'Authentication failed. Incorrect username or password.'
+      })
+    }
+
+    // Create token if the password matched and no error was thrown
+    const token = user.generateJwt()
+
+    return res.status(200).json({
+      success: true,
+      token
+    })
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -346,7 +322,6 @@ module.exports.login = function (req, res) {
  * @apiName PutProfile
  * @apiGroup Users
  *
- * @apiParam {String} _id       Your user ID
  * @apiParam {String} [name]    Your name
  * @apiParam {String} [github]  Your GitHub username
  * @apiParam {String} [gitlab]  Your GitLab username
@@ -367,27 +342,26 @@ module.exports.login = function (req, res) {
  *       "message": "Profile updated!"
  *     }
  */
-module.exports.updateProfile = (req, res) => {
-  let user = req.body
-  User.findById(user._id, function (err, doc) {
-    if (err) {
-      handleError(res, err)
-    }
-    doc.name = user.name
-    doc.website = user.website
-    doc.github = user.github
-    doc.gitlab = user.gitlab
-    doc.twitter = user.twitter
-    doc.save(function (err) {
-      if (err) {
-        handleError(res, err)
-      }
-      res.status(200).json({
-        success: true,
-        message: 'Profile updated!'
-      })
+module.exports.updateProfile = async (req, res) => {
+  try {
+    const newUser = req.body
+    const user = await User.findById(req.payload.id)
+
+    user.name = newUser.name
+    user.website = newUser.website
+    user.github = newUser.github
+    user.gitlab = newUser.gitlab
+    user.twitter = newUser.twitter
+
+    await user.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Profile updated!'
     })
-  })
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -395,7 +369,6 @@ module.exports.updateProfile = (req, res) => {
  * @apiName PutPassword
  * @apiGroup Users
  *
- * @apiParam {String} _id       Your user ID
  * @apiParam {String} current   Your current password
  * @apiParam {String} new       Your new password
  *
@@ -413,39 +386,34 @@ module.exports.updateProfile = (req, res) => {
  *       "message": "Password updated!"
  *     }
  */
-module.exports.updatePassword = (req, res) => {
-  let passwords = req.body
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const passwords = req.body
 
-  User.findById(passwords.userID, function (err, user) {
-    if (err) {
-      handleError(res, err)
+    const user = await User.findById(req.payload.id)
+
+    const isMatch = await user.comparePassword(passwords.current)
+
+    if (!isMatch) {
+      return res.status(400).send({
+        success: false,
+        message: 'Incorrect current password.'
+      })
     }
-    user.comparePassword(passwords.current, function (err, isMatch) {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (isMatch && !err) {
-        user.password = passwords.new
-        user.save(function (err) {
-          if (err) {
-            return handleError(res, err)
-          }
-          return res.status(200).json({
-            success: true,
-            message: 'Password updated!'
-          })
-        })
-      } else {
-        return res.status(400).send({
-          success: false,
-          message: 'Incorrect current password.'
-        })
-      }
+
+    user.password = passwords.new
+    await user.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password updated!'
     })
-  })
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
-const handleError = function (res, err) {
+const handleError = (res, err) => {
   console.log('ERROR: ' + err)
   return res.status(500).json({
     success: false,

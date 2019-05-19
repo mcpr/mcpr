@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const getRandomString = function () {
-  return require('crypto').randomBytes(16).toString('hex')
-}
-module.exports = function (config) {
-  const key = config.secert
-  const hashEmail = require(config.rootPath + '/lib/hashEmail')
+const uuid = require('uuid/v4')
 
+const hashEmail = require('../../../lib/hashEmail')
+
+const { Schema } = mongoose
+
+module.exports = function (config) {
   const userSchema = new Schema({
     email: {
       type: String,
@@ -44,55 +43,47 @@ module.exports = function (config) {
     }
   })
 
-  userSchema.pre('save', function (next) {
-    let user = this
-    const hashPassword = require(config.rootPath + '/lib/hashPassword')
+  userSchema.pre('save', async function (next) {
+    try {
+      let user = this
 
-    if (user.isNew) {
-      user.__private.verificationCode = getRandomString()
-    }
-    if (user.isModified('email') || user.isNew) {
-      let hashedEmail = hashEmail(user.email)
-      user.hashedEmail = hashedEmail
-    }
+      if (user.isNew) {
+        user.__private.verificationCode = uuid()
+      }
 
-    if (user.isModified('password') || user.isNew) {
-      hashPassword(user.password).then((res) => {
-        user.password = res
-        next()
-      }).catch((err) => {
-        return next(err)
-      })
-    } else {
+      if (user.isModified('email') || user.isNew) {
+        user.hashedEmail = hashEmail(user.email)
+      }
+
+      if (user.isModified('password') || user.isNew) {
+        const hashedPass = await bcrypt.hash(user.password, 10)
+
+        user.password = hashedPass
+      }
+
       return next()
+    } catch (err) {
+      return next(err)
     }
-  })
-
-  userSchema.post('find', function (result) {
-    console.log('postfind')
-    console.log('find() returned ' + JSON.stringify(result))
   })
 
   // Create method to compare password input to password saved in database
-  userSchema.methods.comparePassword = function (password, cb) {
-    bcrypt.compare(password, this.password, function (err, isMatch) {
-      if (err) {
-        return cb(err)
-      }
-      cb(null, isMatch)
-    })
+  userSchema.methods.comparePassword = async function (password) {
+    return bcrypt.compare(password, this.password)
   }
 
   userSchema.methods.generateJwt = function () {
-    var expiry = new Date()
-    expiry.setDate(expiry.getDate() + 7)
-
-    return jwt.sign({
-      _id: this._id,
-      email: this.email,
-      name: this.name,
-      exp: parseInt(expiry.getTime() / 1000)
-    }, key)
+    return jwt.sign(
+      {
+        id: this._id,
+        email: this.email,
+        name: this.name
+      },
+      config.secert,
+      {
+        expiresIn: '7d'
+      }
+    )
   }
   const model = mongoose.model('User', userSchema)
   return model

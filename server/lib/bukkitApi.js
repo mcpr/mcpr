@@ -1,25 +1,24 @@
 const axios = require('axios')
 const bukkitApiBase = 'https://dbo.aternos.org'
 
-async function get (endpoint) {
-  let url = bukkitApiBase + endpoint
-  const resp = await axios.get(url)
+const get = async endpoint => {
+  const resp = await axios.get(bukkitApiBase + endpoint)
   return resp.data
 }
 
-function getPlugin (pluginId) {
-  return get('/projects/' + pluginId)
+const getPlugin = async pluginId => {
+  return get(`/projects/${pluginId}`)
 }
 
-function getPluginFiles (pluginId) {
+const getPluginFiles = async pluginId => {
   return get(`/projects/${pluginId}/files`)
 }
 
-function getPluginFile (pluginId, fileId) {
+const getPluginFile = async (pluginId, fileId) => {
   return get(`/projects/${pluginId}/files/${fileId}`)
 }
 
-function getAll () {
+const getAll = async () => {
   return get('/bukkit-plugins')
 }
 

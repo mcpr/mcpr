@@ -9,7 +9,7 @@ const favicon = require('serve-favicon')
 const path = require('path')
 
 const config = require('./config')
-module.exports = function (app) {
+module.exports = app => {
   app.use(helmet())
   app.use(favicon(config.rootPath + '/public/favicon.ico'))
   app.use(morgan('dev'))
@@ -23,7 +23,7 @@ module.exports = function (app) {
   }))
   app.use(bodyParser.json())
   app.use(cookieParser())
-  app.use(function (req, res, next) {
+  app.use((req, res, next) => {
     req.config = config
     return next()
   })

@@ -1,10 +1,10 @@
 const nodemailer = require('nodemailer')
 
 module.exports = (user, config) => {
-  let transporter = nodemailer.createTransport(config.smtp)
+  const transporter = nodemailer.createTransport(config.smtp)
 
   // setup email data with unicode symbols
-  let mailOptions = {
+  const mailOptions = {
     from: config.smtpFrom,
     to: user.email,
     subject: 'MCPR Email Verification',

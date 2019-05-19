@@ -1,13 +1,7 @@
 const env = process.env
 const path = require('path')
+const yn = require('yn')
 
-const secure = function () {
-  if (env.SMTP_SECURE === 'false') {
-    return false
-  } else {
-    return true
-  }
-}
 const config = {
   dbUrl: env.MONGODB_URI || 'mongodb://localhost:27017/mcpr',
   secret: env.MCPR_KEY || '',
@@ -15,12 +9,11 @@ const config = {
   s3Bucket: env.S3_BUCKET || 'download.mcpr.io',
   rootPath: path.normalize(path.join(__dirname, '/../')),
   projectPath: path.normalize(path.join(__dirname, '/../../')),
-  AIIK: env.APPINSIGHTS_INSTRUMENTATIONKEY,
   gaCode: env.GA_CODE,
   smtp: {
     host: env.SMTP_HOST,
     port: env.SMTP_PORT || 587,
-    secure: secure(),
+    secure: yn(env.SMTP_SECURE),
     auth: {
       user: env.SMTP_USER,
       pass: env.SMTP_PASS

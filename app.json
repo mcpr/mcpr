@@ -1,26 +1,7 @@
 {
   "name": "mcpr",
-  "scripts": {
-  },
+  "scripts": {},
   "env": {
-    "DB_HOST": {
-      "required": true
-    },
-    "DB_NAME": {
-      "required": true
-    },
-    "DB_PASS": {
-      "required": true
-    },
-    "DB_PORT": {
-      "required": true
-    },
-    "DB_SSL": {
-      "required": true
-    },
-    "DB_USER": {
-      "required": true
-    },
     "GA_CODE": {
       "required": true
     },
@@ -66,9 +47,7 @@
   "addons": [
 
   ],
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ]
+  "buildpacks": [{
+    "url": "heroku/nodejs"
+  }]
 }
