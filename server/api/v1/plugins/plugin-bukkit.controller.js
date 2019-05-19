@@ -1,51 +1,48 @@
 const path = require('path')
 const axios = require('axios')
 
-module.exports = function (config) {
-  const bukkitApi = require(config.rootPath + '/lib/bukkitApi')
-  const slugify = require(config.rootPath + '/lib/slug')
-  const convertModel = require(config.rootPath + '/lib/bukkitToMcpr')
+const bukkitApi = require('../../../lib/bukkitApi')
+const slugify = require('../../../lib/slug')
+const convertModel = require('../../../lib/bukkitToMcpr')
 
-  const show = function (req, res, next) {
-    bukkitApi
-      .getPlugin(req.params.id)
-      .then(resp => {
-        return bukkitApi
-          .getPluginFiles(req.params.id)
-          .then(files => {
-            let latestFiles = files[0]
-            let keywords = []
-            let lt = resp.categories.length
-            for (var i = 0; i < lt; i++) {
-              ;(function () {
-                let slug = slugify(resp.categories[i].name)
-                keywords.push(slug)
-              })()
-            }
-            let plugin = {
-              _id: req.params.id,
-              short_description: resp.shortdescription,
-              title: resp.title,
-              author: resp.authors,
-              latest_version_date: resp.lastrelease,
-              latest_version: latestFiles.name,
-              latest_version_file: latestFiles,
-              readme: resp.description,
-              keywords: keywords,
-              externalUrl: resp.url,
-              external: true,
-              namespace: '@bukkitdev'
-            }
-            req.bukkitPlugin = plugin
-            next()
-          })
-          .catch(err => {
-            return handleError(res, err)
-          })
-      })
-      .catch(err => {
-        return handleError(res, err)
-      })
+module.exports = config => {
+  const show = async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const resps = await Promise.all([
+        bukkitApi.getPlugin(id),
+        bukkitApi.getPluginFiles(id)
+      ])
+      const pluginInfo = resps[0]
+      const files = resps[1]
+
+      const latestFiles = files[0]
+      const keywords = []
+
+      for (const category of pluginInfo.categories) {
+        const slug = slugify(category.name)
+        keywords.push(slug)
+      }
+
+      const plugin = {
+        _id: id,
+        short_description: pluginInfo.shortdescription,
+        title: pluginInfo.title,
+        author: pluginInfo.authors,
+        latest_version_date: pluginInfo.lastrelease,
+        latest_version: latestFiles.name,
+        latest_version_file: latestFiles,
+        readme: pluginInfo.description,
+        keywords: keywords,
+        externalUrl: pluginInfo.url,
+        external: true,
+        namespace: '@bukkitdev'
+      }
+
+      return res.status(200).json(plugin)
+    } catch (err) {
+      return handleError(res, err)
+    }
   }
 
   const download = async (req, res) => {
@@ -68,27 +65,19 @@ module.exports = function (config) {
     }
   }
 
-  const showAll = function (req, res, next) {
-    bukkitApi
-      .getAll()
-      .then(res => {
-        convertModel(res)
-          .then(plugins => {
-            req.bukkitPlugins = plugins
-            next()
-          })
-          .catch(err => {
-            console.error(err)
-            return handleError(res, err)
-          })
-      })
-      .catch(err => {
-        console.error(err)
-        return handleError(res, err)
-      })
+  const showAll = async (req, res, next) => {
+    try {
+      const resp = await bukkitApi.getAll()
+
+      const plugins = await convertModel(resp)
+
+      return res.status(200).json(plugins)
+    } catch (err) {
+      return handleError(res, err)
+    }
   }
 
-  const handleError = function (res, err) {
+  const handleError = (res, err) => {
     if (err.statusCode === 404) {
       return res
         .status(404)

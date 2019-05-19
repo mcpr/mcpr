@@ -15,7 +15,7 @@ MCPR is built on the MEAN stack (`MongoDB, Express, Angular.js, Node`).
 ```
 MIT License
 
-Copyright (c) 2018 Noah Prail
+Copyright (c) 2019 Noah Prail
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

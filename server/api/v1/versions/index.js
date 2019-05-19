@@ -19,10 +19,7 @@ module.exports = function (config) {
       let versions = req.versions
       return res.json(versions)
     }
-    if (req.download) {
-      let download = req.download
-      return res.json(download)
-    }
+
     if (req.file) {
       return res.send({
         message: 'Successfully uploaded file!',

@@ -79,7 +79,7 @@ module.exports = function (config) {
         email: this.email,
         name: this.name
       },
-      config.secert,
+      config.secret,
       {
         expiresIn: '7d'
       }

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
-module.exports = function (config) {
+module.exports = config => {
   const slugify = require(config.rootPath + '/lib/slug')
-  const Schema = mongoose.Schema
+  const { Schema } = mongoose
 
   const PluginSchema = new Schema({
     _id: {
@@ -32,17 +32,12 @@ module.exports = function (config) {
     }
     return next()
   })
+
   const model = mongoose.model('Plugin', PluginSchema)
 
-  model.schema
-    .path('title')
-    .required('You need to give your plugin a title')
-  model.schema
-    .path('author')
-    .required('You need to have an author')
-  model.schema
-    .path('license')
-    .required('You need to have a license')
+  model.schema.path('title').required('You need to give your plugin a title')
+  model.schema.path('author').required('You need to have an author')
+  model.schema.path('license').required('You need to have a license')
   model.schema
     .path('short_description')
     .required('You need to have a description')

@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
-const Plugin = mongoose.model('Plugin')
-const Version = mongoose.model('Version')
 const path = require('path')
 const axios = require('axios')
+
+const bukkitApi = require('../../../lib/bukkitApi')
+const convertModel = require('../../../lib/bukkitToMcpr')
+
+const Plugin = mongoose.model('Plugin')
+const Version = mongoose.model('Version')
+
 exports.model = Plugin
 
 /**
@@ -18,47 +23,39 @@ exports.model = Plugin
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/plugins
  */
-exports.all = (req, res, next) => {
-  const bukkitApi = require(req.config.rootPath + '/lib/bukkitApi')
-  const convertModel = require(req.config.rootPath + '/lib/bukkitToMcpr')
-  let perPage = Math.max(0, req.query.per_page) || 50
-  let page = Math.max(0, req.query.page)
-  let sort = req.query.sort || 'desc'
-  let orderBy = req.query.order_by || 'downloads'
-  let sortObj = {}
-  sortObj[orderBy] = sort
-  Plugin.find({})
-    .limit(perPage)
-    .skip(perPage * page)
-    .sort(sortObj)
-    .exec((err, plugins) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugins) {
-        return handle404(res)
-      }
-      if (req.query.includeBukkitDev) {
-        bukkitApi
-          .getAll()
-          .then(resp => {
-            return convertModel(resp)
-              .then(bukkitPlugins => {
-                req.plugins = plugins.concat(bukkitPlugins)
-                return next()
-              })
-              .catch(err => {
-                return handleError(res, err)
-              })
-          })
-          .catch(err => {
-            return handleError(res, err)
-          })
-      } else {
-        req.plugins = plugins
-        next()
-      }
-    })
+exports.all = async (req, res, next) => {
+  try {
+    const perPage = Math.max(0, req.query.per_page) || 50
+    const page = Math.max(0, req.query.page)
+    const sort = req.query.sort || 'desc'
+    const orderBy = req.query.order_by || 'downloads'
+    let sortObj = {}
+    sortObj[orderBy] = sort
+
+    let plugins = []
+
+    const normalPlugins = await Plugin.find({})
+      .limit(perPage)
+      .skip(perPage * page)
+      .sort(sortObj)
+
+    if (!normalPlugins) {
+      return handle404(res)
+    }
+
+    plugins = normalPlugins
+
+    if (req.query.includeBukkitDev) {
+      const resp = await bukkitApi.getAll()
+
+      const bukkitPlugins = await convertModel(resp)
+      plugins = plugins.concat(bukkitPlugins)
+    }
+
+    return res.status(200).json(plugins)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -68,7 +65,6 @@ exports.all = (req, res, next) => {
  *
  * @apiPermission authenticated
  *
- * @apiParam  {String} _id       ID of plugin
  * @apiParam  {String} short_description       A short description of the plugin
  * @apiParam  {String} author       The author's user ID
  * @apiParam  {Date} created="CurrentTime"       The date on which the plugin was created
@@ -78,19 +74,16 @@ exports.all = (req, res, next) => {
  * @apiParam  {String} license       The license of the plugin
  * @apiParam  {Array} [keywords]       List of plugin keywords
  */
-exports.create = (req, res, next) => {
-  let plugin = req.body
+exports.create = async (req, res, next) => {
+  try {
+    const plugin = new Plugin(req.body)
 
-  return Plugin.create(plugin, (err, plugin) => {
-    if (err) {
-      return handleError(res, err)
-    }
-    if (!plugin) {
-      return handle404(res)
-    }
-    req.plugin = plugin
-    next()
-  })
+    await plugin.save()
+
+    return res.status(201).json(plugin)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -134,17 +127,19 @@ exports.create = (req, res, next) => {
  *       "created": "2017-06-12T22:55:07.759Z"
  *     }
  */
-exports.show = (req, res, next) => {
-  Plugin.findById(req.params.id).exec((err, plugin) => {
-    if (err) {
-      return handleError(res, err)
-    }
+exports.show = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const plugin = await Plugin.findById(id)
+
     if (!plugin) {
-      return handle404(res, req.params.id)
+      return handle404(res, id)
     }
-    req.plugin = plugin
-    next()
-  })
+
+    return res.status(200).json(plugin)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -156,57 +151,44 @@ exports.show = (req, res, next) => {
  * @apiExample {curl} Example usage:
  *     curl -i -o dynmap.jar https://mcpr.io/api/v1/plugins/dynmap/download
  */
-exports.download = (req, res, next) => {
-  const config = req.config
-  Plugin.findById(req.params.id).exec((err, plugin) => {
-    if (err) {
-      return handleError(res, err)
-    }
+exports.download = async (req, res, next) => {
+  try {
+    const { config } = req
+    const { id } = req.params
+
+    // get the plugin
+    const plugin = await Plugin.findById(id)
     if (!plugin) {
-      return handle404(res, req.params.id)
+      return handle404(res, id)
     }
-    let id = req.params.id
-    let versionID = `${id}-${plugin.latest_version}`
-    Version.findById(versionID).exec((err, version) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!version) {
-        return handle404(res, plugin.latest_version)
-      }
-      let file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${
-        plugin.latest_version
-      }/${id}.jar`
-      let filename = path.basename(`${id}-${plugin.latest_version}.jar`)
 
-      plugin.downloads += 1
-      plugin.save((err, response) => {
-        if (err) {
-          return handleError(res, err)
-        }
+    // get the version
+    const versionId = `${id}-${plugin.latest_version}`
+    const version = await Version.findById(versionId)
+    if (!version) {
+      return handle404(res, plugin.latest_version)
+    }
 
-        version.downloads += 1
-        version.save((err, response) => {
-          if (err) {
-            return handleError(res, err)
-          }
-          res.setHeader(
-            'content-disposition',
-            `attachment; filename=${filename}`
-          )
-          axios
-            .get(file, {
-              responseType: 'stream'
-            })
-            .then(download => {
-              download.data.on('end', () => res.end())
-              download.data.pipe(res)
-            })
-            .catch(err => handleError(res, err))
-        })
-      })
+    const file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${
+      plugin.latest_version
+    }/${id}.jar`
+    const filename = path.basename(`${id}-${plugin.latest_version}.jar`)
+
+    plugin.downloads += 1
+    await plugin.save()
+
+    version.downloads += 1
+    await version.save()
+
+    res.setHeader('content-disposition', `attachment; filename=${filename}`)
+    const download = await axios.get(file, {
+      responseType: 'stream'
     })
-  })
+    download.data.on('end', () => res.end())
+    download.data.pipe(res)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -218,17 +200,18 @@ exports.download = (req, res, next) => {
  *
  * @apiParam {String} id ID of plugin
  */
-exports.update = (req, res) => {
-  var updatedPlugin = req.body
-  updatedPlugin.updated = Date.now()
+exports.update = async (req, res) => {
+  try {
+    const { id } = req.params
+    const newPlugin = req.body
+    newPlugin.updated = Date.now()
 
-  Plugin.findById(req.params.id).exec((err, plugin) => {
-    if (err) {
-      return handleError(res, err)
-    }
+    const plugin = await Plugin.findById(id)
+
     if (!plugin) {
       return handle404(res)
     }
+
     if (req.payload.username !== plugin.author) {
       return res.status(403).json({
         name: 'Forbidden',
@@ -237,18 +220,17 @@ exports.update = (req, res) => {
       })
     }
 
-    Plugin.update(
+    const updatedPlugin = await Plugin.update(
       {
-        _id: req.params.id
+        _id: id
       },
-      updatedPlugin
-    ).exec(() => {
-      return res
-        .status(200)
-        .json(updatedPlugin)
-        .end()
-    })
-  })
+      newPlugin
+    )
+
+    return res.status(200).json(updatedPlugin)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -262,15 +244,15 @@ exports.update = (req, res) => {
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://mcpr.io/api/v1/plugins/dynmap
  */
-exports.delete = (req, res, next) => {
-  let pluginId = req.params.id
-  Plugin.findById(pluginId).exec((err, plugin) => {
-    if (err) {
-      return handleError(res, err)
-    }
+exports.delete = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const plugin = await Plugin.findById(id)
+
     if (!plugin) {
       return handle404(res)
     }
+
     if (req.payload.username !== plugin.author) {
       return res.status(403).json({
         name: 'Forbidden',
@@ -279,18 +261,12 @@ exports.delete = (req, res, next) => {
       })
     }
 
-    Plugin.remove({
-      _id: pluginId
-    }).exec((err, num) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (num === 0) {
-        return res.status(498).end()
-      }
-      next()
-    })
-  })
+    await plugin.remove()
+
+    return res.status(498).end()
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -307,29 +283,26 @@ exports.delete = (req, res, next) => {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/users/nprail/plugins
  */
-module.exports.showByUser = (req, res) => {
-  let perPage = Math.max(0, req.query.per_page) || 50
-  let page = Math.max(0, req.query.page)
-  let sort = req.query.sort || 'desc'
-  let orderBy = req.query.order_by || 'downloads'
-  let sortObj = {}
-  sortObj[orderBy] = sort
+module.exports.showByUser = async (req, res) => {
+  try {
+    const perPage = Math.max(0, req.query.per_page) || 50
+    const page = Math.max(0, req.query.page)
+    const sort = req.query.sort || 'desc'
+    const orderBy = req.query.order_by || 'downloads'
+    let sortObj = {}
+    sortObj[orderBy] = sort
 
-  Plugin.find({
-    author: req.params.username
-  })
-    .limit(perPage)
-    .skip(perPage * page)
-    .sort(sortObj)
-    .exec((err, plugins) => {
-      if (err) {
-        return handleError(res, err)
-      }
-      if (!plugins) {
-        return handle404(res)
-      }
-      return res.status(200).json(plugins)
+    const plugins = await Plugin.find({
+      author: req.params.username
     })
+      .limit(perPage)
+      .skip(perPage * page)
+      .sort(sortObj)
+
+    return res.status(200).json(plugins)
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 /**
@@ -341,24 +314,17 @@ module.exports.showByUser = (req, res) => {
  * @apiExample {curl} Example usage:
  *     curl -X "GET" https://mcpr.io/api/v1/plugins/search?q=dynmap
  */
-module.exports.search = (req, res) => {
-  var query = {}
-  query.title = new RegExp(req.query.q, 'i')
+module.exports.search = async (req, res) => {
+  try {
+    const query = {}
+    query.title = new RegExp(req.query.q, 'i')
 
-  let pluginQuery = Plugin.find(query)
-  pluginQuery.select('_id short_description')
+    const results = await Plugin.find(query).select('_id short_description')
 
-  pluginQuery.exec((err, results) => {
-    if (err) {
-      handleError(res, err)
-    }
-    let out = {}
-    for (var i in results) {
-      var id = results[i]._id
-      out[id] = null
-    }
     return res.status(200).send(results)
-  })
+  } catch (err) {
+    return handleError(res, err)
+  }
 }
 
 const handleError = (res, err, code) => {

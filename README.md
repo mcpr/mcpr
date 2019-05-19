@@ -29,13 +29,13 @@ cd docker
 docker-compose up -d
 ```
 
-* Web App: [http://localhost:3000](http://localhost:3000)
-* REST API: [http://localhost:3000/api](http://localhost:3000/api)
+- Web App: [http://localhost:3000](http://localhost:3000)
+- REST API: [http://localhost:3000/api](http://localhost:3000/api)
 
 ### Hosted Registry
 
-* Web App: [https://mcpr.io](https://mcpr.io)
-* REST API: [https://mcpr.io/api](https://mcpr.io/api)
+- Web App: [https://mcpr.io](https://mcpr.io)
+- REST API: [https://mcpr.io/api](https://mcpr.io/api)
 
 ## Documentation
 
@@ -53,7 +53,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Noah Prail** - _Project Lead_ - [@nprail](https://github.com/nprail)
+- **Noah Prail** - _Project Lead_ - [@nprail](https://github.com/nprail)
 
 See also the list of [contributors](https://github.com/mcpr/mcpr/contributors) who participated in this project.
 
