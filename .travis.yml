@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - '10'
 before_install:
-- pip3 install mkdocs mkdocs-material
+- pip install --user mkdocs mkdocs-material
 - npm i -g npm@6.9.0 greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
 script:
