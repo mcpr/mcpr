@@ -1,7 +1,7 @@
 site_name: MCPR Docs
 site_description: MCPR - The ultimate Minecraft plugin registry documentation!
 theme: material
-copyright: Copyright &copy; 2018 Noah Prail
+copyright: Copyright &copy; 2019 Noah Prail
 site_author: Noah Prail
 repo_url: https://github.com/mcpr/mcpr/
 site_dir: docs-site
