@@ -1,9 +1,6 @@
-module.exports = app => {
-  app.use((err, req, res, next) => {
-    console.error(err.message)
-    next(err)
-  })
+const handleError = require('../lib/middleware/errors')
 
+module.exports = app => {
   app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({
@@ -12,4 +9,6 @@ module.exports = app => {
       })
     }
   })
+
+  app.use(handleError)
 }

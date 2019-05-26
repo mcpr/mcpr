@@ -41,11 +41,11 @@ module.exports = config => {
 
       return res.status(200).json(plugin)
     } catch (err) {
-      return handleError(res, err)
+      return next(err)
     }
   }
 
-  const download = async (req, res) => {
+  const download = async (req, res, next) => {
     try {
       const plugin = await bukkitApi.getPlugin(req.params.id)
       const filename = path.basename(`${req.params.id}.jar`)
@@ -61,7 +61,7 @@ module.exports = config => {
       download.data.on('end', () => res.end())
       download.data.pipe(res)
     } catch (err) {
-      return handleError(res, err)
+      return next(err)
     }
   }
 
@@ -73,22 +73,8 @@ module.exports = config => {
 
       return res.status(200).json(plugins)
     } catch (err) {
-      return handleError(res, err)
+      return next(err)
     }
-  }
-
-  const handleError = (res, err) => {
-    if (err.statusCode === 404) {
-      return res
-        .status(404)
-        .send({
-          name: err.name,
-          statusCode: err.statusCode,
-          message: err.message
-        })
-        .end()
-    }
-    return res.status(500).send(err)
   }
 
   return {

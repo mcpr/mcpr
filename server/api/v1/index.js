@@ -32,7 +32,7 @@ module.exports = (app, config) => {
    *     }
    */
   apiRouter.get('/', (req, res) => {
-    res.json({
+    return res.json({
       name: 'MCPR API',
       version: pkg.version,
       homepage: pkg.homepage,
@@ -79,7 +79,7 @@ module.exports = (app, config) => {
       mongoConnection = 'disconnecting'
     }
 
-    res.json({
+    return res.json({
       nodeCheck: {
         status: 'ok'
       },

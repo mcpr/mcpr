@@ -40,7 +40,7 @@ exports.all = async (req, res, next) => {
       .sort(sortObj)
 
     if (!normalPlugins) {
-      return handle404(res)
+      return handle404()
     }
 
     plugins = normalPlugins
@@ -54,7 +54,7 @@ exports.all = async (req, res, next) => {
 
     return res.status(200).json(plugins)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -82,7 +82,7 @@ exports.create = async (req, res, next) => {
 
     return res.status(201).json(plugin)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -133,12 +133,12 @@ exports.show = async (req, res, next) => {
     const plugin = await Plugin.findById(id)
 
     if (!plugin) {
-      return handle404(res, id)
+      return handle404()
     }
 
     return res.status(200).json(plugin)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -159,14 +159,14 @@ exports.download = async (req, res, next) => {
     // get the plugin
     const plugin = await Plugin.findById(id)
     if (!plugin) {
-      return handle404(res, id)
+      return handle404()
     }
 
     // get the version
     const versionId = `${id}-${plugin.latest_version}`
     const version = await Version.findById(versionId)
     if (!version) {
-      return handle404(res, plugin.latest_version)
+      return handle404()
     }
 
     const file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${
@@ -187,7 +187,7 @@ exports.download = async (req, res, next) => {
     download.data.on('end', () => res.end())
     download.data.pipe(res)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -200,7 +200,7 @@ exports.download = async (req, res, next) => {
  *
  * @apiParam {String} id ID of plugin
  */
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
   try {
     const { id } = req.params
     const newPlugin = req.body
@@ -209,7 +209,7 @@ exports.update = async (req, res) => {
     const plugin = await Plugin.findById(id)
 
     if (!plugin) {
-      return handle404(res)
+      return handle404()
     }
 
     if (req.payload.username !== plugin.author) {
@@ -229,7 +229,7 @@ exports.update = async (req, res) => {
 
     return res.status(200).json(updatedPlugin)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -250,7 +250,7 @@ exports.delete = async (req, res, next) => {
     const plugin = await Plugin.findById(id)
 
     if (!plugin) {
-      return handle404(res)
+      return handle404()
     }
 
     if (req.payload.username !== plugin.author) {
@@ -265,7 +265,7 @@ exports.delete = async (req, res, next) => {
 
     return res.status(498).end()
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -283,7 +283,7 @@ exports.delete = async (req, res, next) => {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/users/nprail/plugins
  */
-module.exports.showByUser = async (req, res) => {
+module.exports.showByUser = async (req, res, next) => {
   try {
     const perPage = Math.max(0, req.query.per_page) || 50
     const page = Math.max(0, req.query.page)
@@ -301,7 +301,7 @@ module.exports.showByUser = async (req, res) => {
 
     return res.status(200).json(plugins)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -314,7 +314,7 @@ module.exports.showByUser = async (req, res) => {
  * @apiExample {curl} Example usage:
  *     curl -X "GET" https://mcpr.io/api/v1/plugins/search?q=dynmap
  */
-module.exports.search = async (req, res) => {
+module.exports.search = async (req, res, next) => {
   try {
     const query = {}
     query.title = new RegExp(req.query.q, 'i')
@@ -323,24 +323,16 @@ module.exports.search = async (req, res) => {
 
     return res.status(200).send(results)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
-const handleError = (res, err, code) => {
-  console.log('ERROR: ' + err)
-  let sCode = code || 500
-  return res.status(sCode).json({
-    success: false,
-    message: err
-  })
-}
+const handle404 = () => {
+  const err = new Error(
+    '404: the resource that you requested could not be found'
+  )
+  err.name = 'NotFound'
+  err.statusCode = 404
 
-const handle404 = res => {
-  res.status(404)
-  res.json({
-    name: 'NotFound',
-    statusCode: 404,
-    message: '404: the resource that you requested could not be found'
-  })
+  throw err
 }

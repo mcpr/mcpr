@@ -10,7 +10,7 @@ module.exports = function (config) {
 
   const controller = require('./versions.controller')
 
-  const after = function (req, res) {
+  const after = function (req, res, next) {
     if (req.version) {
       let version = req.version.toObject()
       return res.json(version)

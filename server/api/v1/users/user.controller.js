@@ -35,7 +35,7 @@ const sendVerificationEmail = require('../../../lib/sendVerificationEmail')
  *       "twitter": "noahprail"
  *     }
  */
-module.exports.profileRead = async (req, res) => {
+module.exports.profileRead = async (req, res, next) => {
   try {
     // If no user ID exists in the JWT return a 401
     if (!req.payload.id) {
@@ -50,14 +50,12 @@ module.exports.profileRead = async (req, res) => {
       .select('-__v')
 
     if (!user) {
-      return handleError(res, {
-        message: "The requested user doesn't seem to exist."
-      })
+      return handle404()
     }
 
     return res.status(200).json(user)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -93,7 +91,7 @@ module.exports.profileRead = async (req, res) => {
  *       "twitter": "noahprail"
  *     }
  */
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findOne({
       username: req.params.username
@@ -103,15 +101,12 @@ module.exports.getUser = async (req, res) => {
       .select('-__v')
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "The requested user doesn't seem to exist."
-      })
+      return handle404()
     }
 
     return res.status(200).json(user)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -128,7 +123,7 @@ module.exports.getUser = async (req, res) => {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/users?sort=asc&order_by=username
  */
-module.exports.showAll = async (req, res) => {
+module.exports.showAll = async (req, res, next) => {
   try {
     const perPage = Math.max(0, req.query.per_page) || 50
     const page = Math.max(0, req.query.page)
@@ -147,7 +142,7 @@ module.exports.showAll = async (req, res) => {
 
     return res.status(200).json(users)
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -173,7 +168,7 @@ module.exports.showAll = async (req, res) => {
  *       "message": "Successfully created new user."
  *     }
  */
-module.exports.register = async (req, res) => {
+module.exports.register = async (req, res, next) => {
   try {
     const { config } = req
 
@@ -226,7 +221,7 @@ module.exports.register = async (req, res) => {
   }
 }
 
-module.exports.verify = async (req, res) => {
+module.exports.verify = async (req, res, next) => {
   try {
     const { id, verificationCode } = req.params
 
@@ -249,7 +244,7 @@ module.exports.verify = async (req, res) => {
       message: 'Verified'
     })
   } catch (err) {
-    return handleError(err.name)
+    return next(err)
   }
 }
 
@@ -273,7 +268,7 @@ module.exports.verify = async (req, res) => {
  *       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5OTVlOTI0MjE2NTY2MDAxOGJiMGE4YSIsInVzZXJuYW1lIjoibnByYWlsIiwiaWF0IjoxNTAzMzE4MTIwLCJleHAiOjE1MDMzMjgyMDB9.CATgjmJm-qzq9IAYI5mFMjKe9LdFmF7pvBFMSNwDjLQ"
  *     }
  */
-module.exports.login = async (req, res) => {
+module.exports.login = async (req, res, next) => {
   try {
     const { username, password } = req.body
 
@@ -313,7 +308,7 @@ module.exports.login = async (req, res) => {
       token
     })
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -342,7 +337,7 @@ module.exports.login = async (req, res) => {
  *       "message": "Profile updated!"
  *     }
  */
-module.exports.updateProfile = async (req, res) => {
+module.exports.updateProfile = async (req, res, next) => {
   try {
     const newUser = req.body
     const user = await User.findById(req.payload.id)
@@ -360,7 +355,7 @@ module.exports.updateProfile = async (req, res) => {
       message: 'Profile updated!'
     })
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
@@ -386,7 +381,7 @@ module.exports.updateProfile = async (req, res) => {
  *       "message": "Password updated!"
  *     }
  */
-module.exports.updatePassword = async (req, res) => {
+module.exports.updatePassword = async (req, res, next) => {
   try {
     const passwords = req.body
 
@@ -395,7 +390,7 @@ module.exports.updatePassword = async (req, res) => {
     const isMatch = await user.comparePassword(passwords.current)
 
     if (!isMatch) {
-      return res.status(400).send({
+      return res.status(401).send({
         success: false,
         message: 'Incorrect current password.'
       })
@@ -409,14 +404,16 @@ module.exports.updatePassword = async (req, res) => {
       message: 'Password updated!'
     })
   } catch (err) {
-    return handleError(res, err)
+    return next(err)
   }
 }
 
-const handleError = (res, err) => {
-  console.log('ERROR: ' + err)
-  return res.status(500).json({
-    success: false,
-    message: err
-  })
+const handle404 = () => {
+  const err = new Error(
+    '404: the resource that you requested could not be found'
+  )
+  err.name = 'NotFound'
+  err.statusCode = 404
+
+  throw err
 }

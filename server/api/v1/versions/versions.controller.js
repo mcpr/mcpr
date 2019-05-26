@@ -37,10 +37,10 @@ exports.all = function (req, res, next) {
     .sort(sortObj)
     .exec(function (err, versions) {
       if (err) {
-        return handleError(res, err)
+        return next(err)
       }
       if (!versions) {
-        return handle404(res)
+        return handle404()
       }
       req.versions = versions
       next()
@@ -65,26 +65,24 @@ exports.create = function (req, res, next) {
   version._id = `${version.plugin}-${version.version}`
   return Plugin.findById(version.plugin).exec(function (err, plugin) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (!plugin) {
-      return handle404(res, {
-        message: 'The plugin you tried to create a version for does not exist'
-      })
+      return handle404()
     }
 
     return Version.create(version, function (err, version) {
       if (err) {
-        return handleError(res, err)
+        return next(err)
       }
       if (!version) {
-        return handle404(res)
+        return handle404()
       }
       plugin.latest_version = version.version
       plugin.latest_version_date = Date.now()
       plugin.save(function (err, response) {
         if (err) {
-          return handleError(res, err)
+          return next(err)
         }
         req.version = version
         next()
@@ -128,10 +126,10 @@ exports.show = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
   Version.findById(id).exec(function (err, version) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (!version) {
-      return handle404(res, id)
+      return handle404()
     }
     req.version = version
     next()
@@ -154,21 +152,18 @@ exports.download = function (req, res, next) {
 
   return Plugin.findById(req.params.pluginID).exec(function (err, plugin) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (!plugin) {
-      return handle404(res, {
-        message:
-          'The plugin you tried to download a version from does not exist'
-      })
+      return handle404()
     }
 
     Version.findById(id).exec(function (err, version) {
       if (err) {
-        return handleError(res, err)
+        return next(err)
       }
       if (!version) {
-        return handle404(res, id)
+        return handle404()
       }
       let filename
       let file
@@ -182,11 +177,11 @@ exports.download = function (req, res, next) {
       plugin.downloads += 1
       plugin.save(function (err, response) {
         if (err) {
-          return handleError(res, err)
+          return next(err)
         }
         version.save(function (err, response) {
           if (err) {
-            return handleError(res, err)
+            return next(err)
           }
           res.setHeader(
             'content-disposition',
@@ -200,7 +195,7 @@ exports.download = function (req, res, next) {
               download.data.on('end', () => res.end())
               download.data.pipe(res)
             })
-            .catch(err => handleError(res, err))
+            .catch(err => next(err))
         })
       })
     })
@@ -217,17 +212,17 @@ exports.download = function (req, res, next) {
  * @apiParam {String} pluginID ID of plugin
  * @apiParam {String} versionID Version of plugin
  */
-exports.update = function (req, res) {
+exports.update = function (req, res, next) {
   let id = `${req.params.pluginID}-${req.params.versionID}`
   var updatedVersion = req.body
   updatedVersion.updated = Date.now()
 
   Version.findById(id).exec(function (err, plugin) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (!plugin) {
-      return handle404(res)
+      return handle404()
     }
     Version.update(
       {
@@ -258,7 +253,7 @@ exports.delete = function (req, res, next) {
     _id: id
   }).exec(function (err, num) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (num === 0) {
       return res.status(498).end()
@@ -280,7 +275,7 @@ exports.delete = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/versions/dynmap
  */
-module.exports.showByPlugin = function (req, res) {
+module.exports.showByPlugin = function (req, res, next) {
   let perPage = Math.max(0, req.query.per_page) || 50
   let page = Math.max(0, req.query.page)
   let sort = req.query.sort || 'desc'
@@ -296,10 +291,10 @@ module.exports.showByPlugin = function (req, res) {
     .sort(sortObj)
     .exec(function (err, versions) {
       if (err) {
-        return handleError(res, err)
+        return next(err)
       }
       if (!versions) {
-        return handle404(res)
+        return handle404()
       }
       return res.status(200).json(versions)
     })
@@ -349,21 +344,18 @@ exports.upload = function (req, res, next) {
 
   Version.findById(id).exec(function (err, version) {
     if (err) {
-      return handleError(res, err)
+      return next(err)
     }
     if (!version) {
-      return handle404(res, id)
+      return handle404()
     }
 
     uploader(req, res, function (err) {
       if (req.filterError) {
-        return handleError(res, {
-          success: false,
-          message: req.filterError
-        })
+        return next(new Error(req.filterError))
       }
       if (err) {
-        return handleError(res, err)
+        return next(err)
       }
       const file = req.file
 
@@ -371,7 +363,7 @@ exports.upload = function (req, res, next) {
 
       version.save(function (err, response) {
         if (err) {
-          return handleError(res, err)
+          return next(err)
         }
         res.status(200).json({
           success: true,
@@ -384,23 +376,12 @@ exports.upload = function (req, res, next) {
   })
 }
 
-const handleError = function (res, err) {
-  console.log('ERROR: ' + err)
-  return res.status(500).send(err)
-}
+const handle404 = () => {
+  const err = new Error(
+    '404: the resource that you requested could not be found'
+  )
+  err.name = 'NotFound'
+  err.statusCode = 404
 
-const handle404 = function (res, err) {
-  res.status(404)
-  if (err.message) {
-    return res.json({
-      name: 'NotFound',
-      statusCode: 404,
-      message: err.message
-    })
-  }
-  res.json({
-    name: 'NotFound',
-    statusCode: 404,
-    message: '404: the resource that you requested could not be found'
-  })
+  throw err
 }
