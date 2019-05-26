@@ -25,10 +25,11 @@
     <link rel="stylesheet" href="{{assetBase}}/css/lib.min.css?v={{deployVersion}}">
     <link rel="stylesheet" href="{{assetBase}}/css/app.min.css?v={{deployVersion}}">
 
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"
-    />
+    <link rel="stylesheet" type="text/css"
+        href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->{{#if gaCode}}
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    {{#if gaCode}}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{gaCode}}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -36,9 +37,11 @@
         gtag('js', new Date());
 
         gtag('config', '{{gaCode}}');
-    </script> {{/if}}
+    </script>
+    {{/if}}
 
-    <script src='https://www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded' async defer></script>
+    <script src='https://www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded' async
+        defer></script>
 </head>
 
 <body>
@@ -74,7 +77,7 @@
                 }
             })
         });
-        setTimeout(function () {
+        /* setTimeout(function () {
             if (typeof ___browserSync___ === 'undefined') {
                 if ('serviceWorker' in navigator) {
                     navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then(function (res) {
@@ -84,7 +87,7 @@
                     });
                 }
             }
-        }, 1000)
+        }, 1000) */
     </script>
 </body>
 

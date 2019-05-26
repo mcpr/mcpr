@@ -270,11 +270,13 @@ gulp.task('serve', () => {
   gulp.watch(paths.app.js, gulp.series('js-app'))
   gulp.watch(paths.app.templates, gulp.series('templates', 'js-app'))
 
+  const nodePort = 3000
   nodemon({
     script: 'server/server.js',
     ext: 'js handlebars',
     env: {
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      PORT: nodePort
     },
     ignore: [
       'server/public/',
@@ -289,7 +291,7 @@ gulp.task('serve', () => {
     ui: {
       port: 5001
     },
-    proxy: 'http://localhost:5000',
+    proxy: `http://localhost:${nodePort}`,
     files: [
       'server/public/build/fonts/**/*.*',
       'server/public/build/**/*.min.*',
