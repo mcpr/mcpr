@@ -10,6 +10,7 @@ const get = async endpoint => {
     const resp = await http.get(endpoint)
     return resp.data
   } catch (err) {
+    console.log(err)
     let error
 
     if (err && err.response) {

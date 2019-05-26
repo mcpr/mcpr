@@ -3,7 +3,8 @@ const config = require('./config')
 
 module.exports = () => {
   mongoose.connect(config.dbUrl, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
   })
   mongoose.Promise = Promise
 
