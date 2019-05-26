@@ -1,9 +1,24 @@
 const axios = require('axios')
-const bukkitApiBase = 'https://dbo.aternos.org'
+const baseURL = 'https://dbo.aternos.org'
+
+const http = axios.create({
+  baseURL
+})
 
 const get = async endpoint => {
-  const resp = await axios.get(bukkitApiBase + endpoint)
-  return resp.data
+  try {
+    const resp = await http.get(endpoint + 'fdsafsa')
+    return resp.data
+  } catch (err) {
+    let error
+
+    if (err && err.response) {
+      error = new Error(err.response.statusText)
+      error.statusCode = err.response.status
+    }
+
+    throw err || error
+  }
 }
 
 const getPlugin = async pluginId => {
@@ -23,9 +38,9 @@ const getAll = async () => {
 }
 
 module.exports = {
-  get: get,
-  getAll: getAll,
-  getPlugin: getPlugin,
-  getPluginFiles: getPluginFiles,
-  getPluginFile: getPluginFile
+  get,
+  getAll,
+  getPlugin,
+  getPluginFiles,
+  getPluginFile
 }

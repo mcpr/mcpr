@@ -8,6 +8,8 @@ module.exports = app => {
         message: err.message
       })
     }
+
+    return next(err)
   })
 
   app.use(handleError)
