@@ -9,18 +9,32 @@ const favicon = require('serve-favicon')
 const path = require('path')
 
 const config = require('./config')
+
 module.exports = app => {
+  const publicDir = './server/public'
+
   app.use(helmet())
-  app.use(favicon(config.rootPath + '/public/favicon.ico'))
-  app.use(morgan('dev'))
-  app.use(session({
-    secret: config.secret,
-    resave: false,
-    saveUninitialized: false
-  })) // session secret
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }))
+  app.use(favicon(`${publicDir}/favicon.ico`))
+
+  if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'))
+  } else {
+    app.use(morgan('combined'))
+  }
+
+  // session secret
+  app.use(
+    session({
+      secret: config.secret,
+      resave: false,
+      saveUninitialized: false
+    })
+  )
+  app.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  )
   app.use(bodyParser.json())
   app.use(cookieParser())
   app.use((req, res, next) => {
@@ -33,15 +47,20 @@ module.exports = app => {
 
   app.locals.deployVersion = new Date().getTime()
 
-  app.use(express.static(config.rootPath + '/public', {
-    maxAge: maxAge
-  }))
+  app.use(
+    express.static(publicDir, {
+      maxAge: maxAge
+    })
+  )
 
-  const viewsDir = path.normalize(config.rootPath + '/views')
+  const viewsDir = path.resolve('./server/views')
   app.set('views', viewsDir)
-  app.engine('handlebars', exphbs({
-    defaultLayout: 'main',
-    layoutsDir: path.normalize(viewsDir + '/layouts')
-  }))
+  app.engine(
+    'handlebars',
+    exphbs({
+      defaultLayout: 'main',
+      layoutsDir: path.normalize(`${viewsDir}/layouts`)
+    })
+  )
   app.set('view engine', 'handlebars')
 }
