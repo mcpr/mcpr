@@ -7,7 +7,7 @@ const http = axios.create({
 
 const get = async endpoint => {
   try {
-    const resp = await http.get(endpoint + 'fdsafsa')
+    const resp = await http.get(endpoint)
     return resp.data
   } catch (err) {
     let error
