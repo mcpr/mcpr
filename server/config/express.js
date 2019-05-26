@@ -3,7 +3,6 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
-const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
 const path = require('path')
@@ -22,14 +21,6 @@ module.exports = app => {
     app.use(morgan('combined'))
   }
 
-  // session secret
-  app.use(
-    session({
-      secret: config.secret,
-      resave: false,
-      saveUninitialized: false
-    })
-  )
   app.use(
     bodyParser.urlencoded({
       extended: true
