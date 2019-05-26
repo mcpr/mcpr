@@ -46,10 +46,14 @@ exports.all = async (req, res, next) => {
     plugins = normalPlugins
 
     if (req.query.includeBukkitDev) {
-      const resp = await bukkitApi.getAll()
+      try {
+        const resp = await bukkitApi.getAll()
 
-      const bukkitPlugins = await convertModel(resp)
-      plugins = plugins.concat(bukkitPlugins)
+        const bukkitPlugins = await convertModel(resp)
+        plugins = plugins.concat(bukkitPlugins)
+      } catch (err) {
+        console.log('Failed to get Bukkit plugins...')
+      }
     }
 
     return res.status(200).json(plugins)
