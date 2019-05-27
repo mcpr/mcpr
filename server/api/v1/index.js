@@ -1,6 +1,7 @@
 const express = require('express')
-const apiRouter = express.Router()
 const mongoose = require('mongoose')
+
+const apiRouter = express.Router()
 
 module.exports = (app, config) => {
   const pkg = require(config.projectPath + '/package.json')

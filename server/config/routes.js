@@ -1,12 +1,12 @@
 const express = require('express')
 const config = require('./config')
 
+const router = express.Router()
+
 module.exports = app => {
-  const router = express.Router()
   router.get(/^(?!.*(docs|api))/, (req, res) => {
-    let url = req.originalUrl
+    const url = req.originalUrl
     let pluginId = false
-    console.log(req.originalUrl)
 
     if (url.includes('/plugin/')) {
       pluginId = url.replace('/plugin/', '')

@@ -1,7 +1,8 @@
 const express = require('express')
+const os = require('os')
+
 const app = express()
 const nEnv = app.get('env')
-const os = require('os')
 
 // Setup ENV
 require('dotenv').config()

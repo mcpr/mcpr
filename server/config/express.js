@@ -40,7 +40,7 @@ module.exports = app => {
 
   app.use(
     express.static(publicDir, {
-      maxAge: maxAge
+      maxAge
     })
   )
 

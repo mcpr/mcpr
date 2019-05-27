@@ -1,6 +1,7 @@
-const env = process.env
 const path = require('path')
 const yn = require('yn')
+
+const env = process.env
 
 const config = {
   dbUrl: env.MONGODB_URI || 'mongodb://localhost:27017/mcpr',
