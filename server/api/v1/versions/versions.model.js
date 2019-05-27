@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const semver = require('semver')
 const Schema = mongoose.Schema
 
-module.exports = function (config) {
+module.exports = config => {
   const VersionSchema = new Schema({
     _id: {
       type: String
@@ -24,7 +24,7 @@ module.exports = function (config) {
   })
 
   VersionSchema.pre('save', function (next) {
-    let version = this
+    const version = this
 
     if (!version.downloads) {
       version.downloads = 0
@@ -33,18 +33,14 @@ module.exports = function (config) {
   })
   const model = mongoose.model('Version', VersionSchema)
 
-  model.schema
-    .path('release_notes')
-    .required('You need to have release notes')
+  model.schema.path('release_notes').required('You need to have release notes')
   model.schema
     .path('version')
     .required('You need to have a version string')
     .validate(function (value) {
       return semver.valid(value)
     }, 'Version must be a valid semver string!')
-  model.schema
-    .path('plugin')
-    .required('This version must belong to a plugin')
+  model.schema.path('plugin').required('This version must belong to a plugin')
 
   return model
 }

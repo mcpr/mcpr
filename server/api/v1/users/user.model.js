@@ -7,7 +7,7 @@ const hashEmail = require('../../../lib/hashEmail')
 
 const { Schema } = mongoose
 
-module.exports = function (config) {
+module.exports = config => {
   const userSchema = new Schema({
     email: {
       type: String,

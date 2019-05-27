@@ -1,44 +1,27 @@
 const express = require('express')
-const router = express.Router()
 const jwt = require('express-jwt')
 
-module.exports = function (config) {
+const uploader = require('../../../lib/uploader')
+
+const router = express.Router()
+
+module.exports = config => {
   const auth = jwt({
     secret: config.secret,
     userProperty: 'payload'
   })
 
-  const controller = require('./versions.controller')
+  const ctrl = require('./versions.controller')
 
-  const after = function (req, res, next) {
-    if (req.version) {
-      let version = req.version.toObject()
-      return res.json(version)
-    }
-    if (req.versions) {
-      let versions = req.versions
-      return res.json(versions)
-    }
+  router.get('/', ctrl.all)
+  router.post('/', auth, ctrl.create)
 
-    if (req.file) {
-      return res.send({
-        message: 'Successfully uploaded file!',
-        file: req.file
-      })
-    } else {
-      res.status(204).end()
-    }
-  }
-
-  router.get('/', controller.all, after)
-  router.post('/', auth, controller.create, after)
-
-  router.get('/:pluginID', controller.showByPlugin, after)
-  router.get('/:pluginID/:versionID', controller.show, after)
-  router.put('/:pluginID/:versionID', auth, controller.update, after)
-  router.delete('/:pluginID/:versionID', auth, controller.delete, after)
-  router.get('/:pluginID/:versionID/download', controller.download)
-  router.post('/:pluginID/:versionID/upload', controller.upload, after)
+  router.get('/:pluginID', ctrl.showByPlugin)
+  router.get('/:pluginID/:versionID', ctrl.show)
+  router.put('/:pluginID/:versionID', auth, ctrl.update)
+  router.delete('/:pluginID/:versionID', auth, ctrl.delete)
+  router.get('/:pluginID/:versionID/download', ctrl.download)
+  router.post('/:pluginID/:versionID/upload', auth, uploader, ctrl.upload)
 
   return router
 }

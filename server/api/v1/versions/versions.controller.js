@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
-const Plugin = mongoose.model('Plugin')
-const Version = mongoose.model('Version')
-const aws = require('aws-sdk')
-const multer = require('multer')
-const multerS3 = require('multer-s3')
-const s3 = new aws.S3()
 const path = require('path')
 const axios = require('axios')
+
+const Plugin = mongoose.model('Plugin')
+const Version = mongoose.model('Version')
 
 exports.model = Version
 
@@ -23,28 +20,28 @@ exports.model = Version
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/verions
  */
-exports.all = function (req, res, next) {
-  let perPage = Math.max(0, req.query.per_page) || 50
-  let page = Math.max(0, req.query.page)
-  let sort = req.query.sort || 'desc'
-  let orderBy = req.query.order_by || 'downloads'
-  let sortObj = {}
-  sortObj[orderBy] = sort
+exports.all = async (req, res, next) => {
+  try {
+    const perPage = Math.max(0, req.query.per_page) || 50
+    const page = Math.max(0, req.query.page)
+    const sort = req.query.sort || 'desc'
+    const orderBy = req.query.order_by || 'downloads'
+    let sortObj = {}
+    sortObj[orderBy] = sort
 
-  Version.find({})
-    .limit(perPage)
-    .skip(perPage * page)
-    .sort(sortObj)
-    .exec(function (err, versions) {
-      if (err) {
-        return next(err)
-      }
-      if (!versions) {
-        return handle404()
-      }
-      req.versions = versions
-      next()
-    })
+    const versions = await Version.find({})
+      .limit(perPage)
+      .skip(perPage * page)
+      .sort(sortObj)
+
+    if (!versions) {
+      return handle404()
+    }
+
+    return res.status(200).json(versions)
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -60,35 +57,26 @@ exports.all = function (req, res, next) {
  * @apiParam  {String} type           Type of the version. (Valid values are R, RC, B, and A)
  * @apiParam  {Array} game_versions   List of supported Minecraft versions
  */
-exports.create = function (req, res, next) {
-  let version = req.body
-  version._id = `${version.plugin}-${version.version}`
-  return Plugin.findById(version.plugin).exec(function (err, plugin) {
-    if (err) {
-      return next(err)
-    }
+exports.create = async (req, res, next) => {
+  try {
+    const versionData = req.body
+    versionData._id = `${versionData.plugin}-${versionData.version}`
+
+    const plugin = await Plugin.findById(versionData.plugin)
+
     if (!plugin) {
       return handle404()
     }
 
-    return Version.create(version, function (err, version) {
-      if (err) {
-        return next(err)
-      }
-      if (!version) {
-        return handle404()
-      }
-      plugin.latest_version = version.version
-      plugin.latest_version_date = Date.now()
-      plugin.save(function (err, response) {
-        if (err) {
-          return next(err)
-        }
-        req.version = version
-        next()
-      })
-    })
-  })
+    const version = await Version.create(versionData)
+
+    plugin.latest_version = version.version
+    plugin.latest_version_date = Date.now()
+
+    await plugin.save()
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -122,18 +110,21 @@ exports.create = function (req, res, next) {
  *       "created": "2017-06-12T22:55:07.759Z"
  *     }
  */
-exports.show = function (req, res, next) {
-  let id = `${req.params.pluginID}-${req.params.versionID}`
-  Version.findById(id).exec(function (err, version) {
-    if (err) {
-      return next(err)
-    }
+exports.show = async (req, res, next) => {
+  try {
+    const { pluginID, versionID } = req.params
+    const id = `${pluginID}-${versionID}`
+
+    const version = await Version.findById(id)
+
     if (!version) {
       return handle404()
     }
-    req.version = version
-    next()
-  })
+
+    return res.status(200).json(version)
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -146,60 +137,45 @@ exports.show = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -i -o dynmap.jar https://mcpr.io/api/v1/versions/dynmap/2.4.0/download
  */
-exports.download = function (req, res, next) {
-  let id = `${req.params.pluginID}-${req.params.versionID}`
-  const config = req.config
+exports.download = async (req, res, next) => {
+  try {
+    const { pluginID, versionID } = req.params
+    const id = `${pluginID}-${versionID}`
+    const config = req.config
 
-  return Plugin.findById(req.params.pluginID).exec(function (err, plugin) {
-    if (err) {
-      return next(err)
-    }
+    const plugin = await Plugin.findById(pluginID)
+
     if (!plugin) {
       return handle404()
     }
 
-    Version.findById(id).exec(function (err, version) {
-      if (err) {
-        return next(err)
-      }
-      if (!version) {
-        return handle404()
-      }
-      let filename
-      let file
-      filename = path.basename(
-        `${req.params.pluginID}-${req.params.versionID}.jar`
-      )
-      file = `https://s3.amazonaws.com/${config.s3Bucket}/${
-        req.params.pluginID
-      }/${req.params.versionID}/${req.params.pluginID}.jar`
-      version.downloads += 1
-      plugin.downloads += 1
-      plugin.save(function (err, response) {
-        if (err) {
-          return next(err)
-        }
-        version.save(function (err, response) {
-          if (err) {
-            return next(err)
-          }
-          res.setHeader(
-            'content-disposition',
-            `attachment; filename=${filename}`
-          )
-          axios
-            .get(file, {
-              responseType: 'stream'
-            })
-            .then(download => {
-              download.data.on('end', () => res.end())
-              download.data.pipe(res)
-            })
-            .catch(err => next(err))
-        })
-      })
+    const version = await Version.findById(id)
+
+    if (!version) {
+      return handle404()
+    }
+
+    const bucket = `https://s3.amazonaws.com/${config.s3Bucket}`
+    const filename = path.basename(`${pluginID}-${versionID}.jar`)
+    const file = `${bucket}/${pluginID}/${versionID}/${pluginID}.jar`
+
+    plugin.downloads += 1
+    await plugin.save()
+
+    version.downloads += 1
+    await version.save()
+
+    res.setHeader('content-disposition', `attachment; filename=${filename}`)
+
+    const download = await axios.get(file, {
+      responseType: 'stream'
     })
-  })
+
+    download.data.pipe(res)
+    download.data.on('end', () => res.end())
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -212,27 +188,32 @@ exports.download = function (req, res, next) {
  * @apiParam {String} pluginID ID of plugin
  * @apiParam {String} versionID Version of plugin
  */
-exports.update = function (req, res, next) {
-  let id = `${req.params.pluginID}-${req.params.versionID}`
-  var updatedVersion = req.body
-  updatedVersion.updated = Date.now()
+exports.update = async (req, res, next) => {
+  try {
+    const { pluginID, versionID } = req.params
+    const id = `${pluginID}-${versionID}`
 
-  Version.findById(id).exec(function (err, plugin) {
-    if (err) {
-      return next(err)
-    }
-    if (!plugin) {
-      return handle404()
-    }
-    Version.update(
+    const version = req.body
+    version.updated = Date.now()
+
+    const updatedVersion = await Version.update(
       {
         _id: id
       },
-      updatedVersion
-    ).exec(function () {
-      return res.status(204).end()
-    })
-  })
+      version,
+      {
+        new: true
+      }
+    )
+
+    if (!updatedVersion) {
+      return handle404()
+    }
+
+    return res.status(200).json(updatedVersion)
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -247,19 +228,23 @@ exports.update = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -X "DELETE" https://mcpr.io/api/v1/versions/dynmap/2.4.0
  */
-exports.delete = function (req, res, next) {
-  let id = `${req.params.pluginID}-${req.params.versionID}`
-  Version.remove({
-    _id: id
-  }).exec(function (err, num) {
-    if (err) {
-      return next(err)
+exports.delete = async (req, res, next) => {
+  try {
+    const { pluginID, versionID } = req.params
+    const id = `${pluginID}-${versionID}`
+
+    const changed = await Version.remove({
+      _id: id
+    })
+
+    if (changed === 0) {
+      return handle404()
     }
-    if (num === 0) {
-      return res.status(498).end()
-    }
-    next()
-  })
+
+    return res.status(204).end()
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -275,29 +260,30 @@ exports.delete = function (req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/versions/dynmap
  */
-module.exports.showByPlugin = function (req, res, next) {
-  let perPage = Math.max(0, req.query.per_page) || 50
-  let page = Math.max(0, req.query.page)
-  let sort = req.query.sort || 'desc'
-  let orderBy = req.query.order_by || 'downloads'
-  let sortObj = {}
-  sortObj[orderBy] = sort
+module.exports.showByPlugin = async (req, res, next) => {
+  try {
+    const perPage = Math.max(0, req.query.per_page) || 50
+    const page = Math.max(0, req.query.page)
+    const sort = req.query.sort || 'desc'
+    const orderBy = req.query.order_by || 'downloads'
+    let sortObj = {}
+    sortObj[orderBy] = sort
 
-  Version.find({
-    plugin: req.params.pluginID
-  })
-    .limit(perPage)
-    .skip(perPage * page)
-    .sort(sortObj)
-    .exec(function (err, versions) {
-      if (err) {
-        return next(err)
-      }
-      if (!versions) {
-        return handle404()
-      }
-      return res.status(200).json(versions)
+    const versions = await Version.find({
+      plugin: req.params.pluginID
     })
+      .limit(perPage)
+      .skip(perPage * page)
+      .sort(sortObj)
+
+    if (!versions) {
+      return handle404()
+    }
+
+    return res.status(200).json(versions)
+  } catch (err) {
+    return next(err)
+  }
 }
 
 /**
@@ -311,69 +297,36 @@ module.exports.showByPlugin = function (req, res, next) {
  * @apiParam  {String} version  Version number of the plugin
  * @apiParam  {String} jar      Plugin jar file `multipart/form-data`
  */
-exports.upload = function (req, res, next) {
-  const config = req.config
-  const version = req.params.versionID
-  const pluginID = req.params.pluginID
-  const bucket = config.s3Bucket
-  const id = `${pluginID}-${version}`
+exports.upload = async (req, res, next) => {
+  try {
+    const { versionID, pluginID } = req.params
+    const id = `${pluginID}-${versionID}`
 
-  const uploader = multer({
-    fileFilter: function (req, file, cb) {
-      if (path.extname(file.originalname) !== '.jar') {
-        req.filterError = 'Only jars are allowed'
-        return cb(new Error('Only jars are allowed'))
-      }
-
-      cb(null, true)
-    },
-    storage: multerS3({
-      s3: s3,
-      bucket: bucket,
-      metadata: function (req, file, cb) {
-        cb(null, {
-          fieldName: file.fieldname
-        })
-      },
-      key: function (req, file, cb) {
-        console.log(file)
-        cb(null, `${pluginID}/${version}/${pluginID}.jar`)
-      }
-    })
-  }).single('jar')
-
-  Version.findById(id).exec(function (err, version) {
-    if (err) {
-      return next(err)
+    if (req.filterError) {
+      return next(new Error(req.filterError))
     }
+
+    const version = await Version.findById(id)
+
     if (!version) {
       return handle404()
     }
 
-    uploader(req, res, function (err) {
-      if (req.filterError) {
-        return next(new Error(req.filterError))
-      }
-      if (err) {
-        return next(err)
-      }
-      const file = req.file
+    const file = req.file
 
-      version.size = file.size
+    version.size = file.size
 
-      version.save(function (err, response) {
-        if (err) {
-          return next(err)
-        }
-        res.status(200).json({
-          success: true,
-          message: 'File uploaded successfully!',
-          file: file,
-          result: file.location
-        })
-      })
+    await version.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'File uploaded successfully!',
+      file,
+      result: file.location
     })
-  })
+  } catch (err) {
+    return next(err)
+  }
 }
 
 const handle404 = () => {
