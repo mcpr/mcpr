@@ -1,16 +1,15 @@
 const mongoose = require('mongoose')
 const config = require('./config')
 
-module.exports = () => {
-  mongoose.connect(config.dbUrl, {
+module.exports = async () => {
+  const mongo = await mongoose.connect(config.dbUrl, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
   })
-  mongoose.Promise = Promise
+  const db = mongo.connection.db
 
-  const monDb = mongoose.connection
-  monDb.on('error', console.error.bind(console, 'Connection Error:'))
-  monDb.once('open', () => {
-    console.log('Connected Successfully to DB: ' + monDb.db.s.databaseName)
-  })
+  console.log(`MongoDB opened: ${db.databaseName}`)
+
+  db.on('error', console.error.bind(console, 'Connection Error:'))
 }

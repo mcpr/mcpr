@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{assetBase}}/css/app.min.css?v={{deployVersion}}">
 
     <link rel="stylesheet" type="text/css"
-        href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     {{#if gaCode}}
@@ -63,7 +63,7 @@
     <script type="text/javascript" src="{{assetBase}}/js/custom.min.js?v={{deployVersion}}"></script>
     <script type="text/javascript" src="{{assetBase}}/app/app.min.js?v={{deployVersion}}"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script>
         window.addEventListener("load", function () {
             window.cookieconsent.initialise({
@@ -77,17 +77,6 @@
                 }
             })
         });
-        /* setTimeout(function () {
-            if (typeof ___browserSync___ === 'undefined') {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then(function (res) {
-                        console.log(res)
-                    }).catch(function (err) {
-                        console.log(err)
-                    });
-                }
-            }
-        }, 1000) */
     </script>
 </body>
 

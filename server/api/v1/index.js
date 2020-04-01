@@ -1,11 +1,18 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
+const pkg = require('../../../package.json')
+
 const apiRouter = express.Router()
 
-module.exports = (app, config) => {
-  const pkg = require(config.projectPath + '/package.json')
+const mongoConnectionStatuses = {
+  0: 'disconnected',
+  1: 'connected',
+  2: 'connecting',
+  3: 'disconnecting'
+}
 
+module.exports = (app, config) => {
   /**
    * @api {get} / Version
    * @apiName Version
@@ -66,18 +73,34 @@ module.exports = (app, config) => {
    *     }
    */
   apiRouter.get('/healthcheck', (req, res) => {
+    let status = 200
     let mongoConnection
-    if (mongoose.connection.readyState === 0) {
-      mongoConnection = 'disconnected'
+
+    const setStatus = newStatus => {
+      if (newStatus > status) {
+        status = newStatus
+      }
     }
-    if (mongoose.connection.readyState === 1) {
-      mongoConnection = 'connected'
-    }
-    if (mongoose.connection.readyState === 2) {
-      mongoConnection = 'connecting'
-    }
-    if (mongoose.connection.readyState === 3) {
-      mongoConnection = 'disconnecting'
+
+    try {
+      mongoConnection =
+        mongoConnectionStatuses[mongoose.connection.readyState] || 'unknown'
+
+      if (mongoConnection !== 'connected') {
+        setStatus(500)
+      }
+
+      mongoose.connection.db.admin().ping((err, result) => {
+        if (err || !result) {
+          setStatus(500)
+        }
+      })
+    } catch (err) {
+      setStatus(500)
+      if (!mongoConnection) {
+        mongoConnection = 'error'
+      }
+      console.log(err)
     }
 
     return res.json({

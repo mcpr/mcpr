@@ -2,14 +2,14 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('express-jwt')
 
+const pluginController = require('../plugins/plugin.controller')
+
 module.exports = config => {
   const auth = jwt({
     secret: config.secret,
     userProperty: 'payload'
   })
   const controller = require('./user.controller')
-  const pluginController = require(config.rootPath +
-    '/api/v1/plugins/plugin.controller')
 
   router.get('/', controller.showAll)
   router.post('/me/login', controller.login)

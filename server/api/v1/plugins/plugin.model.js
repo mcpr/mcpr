@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
+const slugify = require('../../../lib/slug')
 
 module.exports = config => {
-  const slugify = require(config.rootPath + '/lib/slug')
   const { Schema } = mongoose
 
   const PluginSchema = new Schema({
@@ -25,7 +25,7 @@ module.exports = config => {
   })
 
   PluginSchema.pre('save', function (next) {
-    let plugin = this
+    const plugin = this
     plugin._id = slugify(plugin.title)
     if (!plugin.downloads) {
       plugin.downloads = 0

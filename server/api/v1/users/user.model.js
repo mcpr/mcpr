@@ -45,7 +45,7 @@ module.exports = config => {
 
   userSchema.pre('save', async function (next) {
     try {
-      let user = this
+      const user = this
 
       if (user.isNew) {
         user.__private.verificationCode = uuid()

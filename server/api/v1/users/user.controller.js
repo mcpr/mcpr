@@ -129,7 +129,7 @@ module.exports.showAll = async (req, res, next) => {
     const page = Math.max(0, req.query.page)
     const sort = req.query.sort || 'desc'
     const orderBy = req.query.order_by || 'updatedAt'
-    let sortObj = {}
+    const sortObj = {}
     sortObj[orderBy] = sort
 
     const users = await User.find()

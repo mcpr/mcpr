@@ -29,7 +29,7 @@ exports.all = async (req, res, next) => {
     const page = Math.max(0, req.query.page)
     const sort = req.query.sort || 'desc'
     const orderBy = req.query.order_by || 'downloads'
-    let sortObj = {}
+    const sortObj = {}
     sortObj[orderBy] = sort
 
     let plugins = []
@@ -293,7 +293,7 @@ module.exports.showByUser = async (req, res, next) => {
     const page = Math.max(0, req.query.page)
     const sort = req.query.sort || 'desc'
     const orderBy = req.query.order_by || 'downloads'
-    let sortObj = {}
+    const sortObj = {}
     sortObj[orderBy] = sort
 
     const plugins = await Plugin.find({

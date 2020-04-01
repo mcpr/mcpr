@@ -19,7 +19,7 @@ module.exports = app => {
     })
   })
 
-  require(config.rootPath + '/api/api')(app, config)
+  require('../api/api')(app, config)
 
   app.use('/', router)
 }
