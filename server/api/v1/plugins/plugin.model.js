@@ -1,46 +1,49 @@
 const mongoose = require('mongoose')
-const slugify = require('../../../lib/slug')
+const slugify = require('slugify')
 
-module.exports = config => {
-  const { Schema } = mongoose
+const { Schema } = mongoose
+const { ObjectId } = Schema.Types
 
-  const PluginSchema = new Schema({
-    _id: {
-      type: String
+const pluginSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'You need to give your plugin a name']
     },
-    short_description: String,
-    author: String,
-    created: {
-      type: Date,
-      default: Date.now
+    slug: {
+      type: String,
+      unique: true,
+      default: function () {
+        return this.slug || slugify(this.name, { lower: true })
+      },
+      required: true
     },
-    title: String,
-    latest_version_date: Date,
-    latest_version: String,
-    downloads: Number,
-    source: String,
+    description: String,
+    author_id: {
+      type: ObjectId,
+      ref: 'User',
+      required: [true, 'You need to have an author']
+    },
+    downloads: {
+      type: Number,
+      default: 0
+    },
+    repository: {
+      url: String
+    },
     readme: String,
-    license: String,
-    keywords: []
-  })
-
-  PluginSchema.pre('save', function (next) {
-    const plugin = this
-    plugin._id = slugify(plugin.title)
-    if (!plugin.downloads) {
-      plugin.downloads = 0
+    license: {
+      type: String,
+      required: [true, 'You need to have a license']
+    },
+    keywords: {
+      type: [String],
+      default: []
     }
-    return next()
-  })
+  },
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
+)
 
-  const model = mongoose.model('Plugin', PluginSchema)
+const PluginModel = mongoose.model('Plugin', pluginSchema)
 
-  model.schema.path('title').required('You need to give your plugin a title')
-  model.schema.path('author').required('You need to have an author')
-  model.schema.path('license').required('You need to have a license')
-  model.schema
-    .path('short_description')
-    .required('You need to have a description')
-
-  return model
-}
+module.exports = { PluginModel }

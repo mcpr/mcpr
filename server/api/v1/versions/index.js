@@ -13,15 +13,15 @@ module.exports = config => {
 
   const ctrl = require('./versions.controller')
 
-  router.get('/', ctrl.all)
-  router.post('/', auth, ctrl.create)
+  router.get('/', ctrl.getVersions)
+  router.post('/', auth, ctrl.createVersion)
 
-  router.get('/:pluginID', ctrl.showByPlugin)
-  router.get('/:pluginID/:versionID', ctrl.show)
-  router.put('/:pluginID/:versionID', auth, ctrl.update)
-  router.delete('/:pluginID/:versionID', auth, ctrl.delete)
-  router.get('/:pluginID/:versionID/download', ctrl.download)
-  router.post('/:pluginID/:versionID/upload', auth, uploader, ctrl.upload)
+  router.get('/:pluginId', ctrl.showByPlugin)
+  router.get('/:pluginId/:versionId', ctrl.getVersion)
+  router.put('/:pluginId/:versionId', auth, ctrl.updateVersion)
+  router.delete('/:pluginId/:versionId', auth, ctrl.deleteVersion)
+  router.get('/:pluginId/:versionId/download', ctrl.download)
+  router.post('/:pluginId/:versionId/upload', auth, uploader, ctrl.upload)
 
   return router
 }

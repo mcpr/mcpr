@@ -1,46 +1,56 @@
 const mongoose = require('mongoose')
 const semver = require('semver')
-const Schema = mongoose.Schema
+const { Schema } = mongoose
+const { ObjectId } = Schema.Types
 
-module.exports = config => {
-  const VersionSchema = new Schema({
-    _id: {
-      type: String
+const versionSchema = new Schema(
+  {
+    version: {
+      type: String,
+      required: [true, 'You need to have a version string'],
+      validate: {
+        validator: function (value) {
+          return semver.valid(value)
+        },
+        message: props => `${props.value} is not a valid SemVer string!`
+      }
     },
-    version: String,
-    plugin: String,
-    release_notes: String,
-    type: String,
-    created: {
-      type: Date,
-      default: Date.now
+    plugin_id: {
+      type: ObjectId,
+      required: [true, 'This version must belong to a plugin'],
+      ref: 'Plugin'
+    },
+    release_notes: {
+      type: String,
+      required: [true, 'You need to have release notes']
+    },
+    type: {
+      type: String,
+      enum: ['R', 'RC', 'B', 'A'],
+      default: 'R'
     },
     downloads: {
       type: Number,
       default: 0
     },
     size: Number,
-    game_versions: []
-  })
-
-  VersionSchema.pre('save', function (next) {
-    const version = this
-
-    if (!version.downloads) {
-      version.downloads = 0
+    game_versions: {
+      type: [String],
+      default: []
     }
-    return next()
-  })
-  const model = mongoose.model('Version', VersionSchema)
+  },
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
+)
 
-  model.schema.path('release_notes').required('You need to have release notes')
-  model.schema
-    .path('version')
-    .required('You need to have a version string')
-    .validate(function (value) {
-      return semver.valid(value)
-    }, 'Version must be a valid semver string!')
-  model.schema.path('plugin').required('This version must belong to a plugin')
+versionSchema.pre('save', function (next) {
+  const version = this
 
-  return model
-}
+  if (version.isModified('version') || version.isNew) {
+    this.version = semver.clean(this.version)
+  }
+  return next()
+})
+
+const VersionModel = mongoose.model('Version', versionSchema)
+
+module.exports = { VersionModel }

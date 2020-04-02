@@ -8,40 +8,42 @@ const hashEmail = require('../../../lib/hashEmail')
 const { Schema } = mongoose
 
 module.exports = config => {
-  const userSchema = new Schema({
-    email: {
-      type: String,
-      unique: true,
-      required: true
+  const userSchema = new Schema(
+    {
+      email: {
+        type: String,
+        required: true
+      },
+      username: {
+        type: String,
+        unique: true,
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      password: {
+        type: String,
+        required: true
+      },
+      isVerified: {
+        type: Boolean,
+        default: false
+      },
+      hashedEmail: String,
+      website: String,
+      github: String,
+      gitlab: String,
+      twitter: String,
+      updatedAt: Date,
+      __private: {
+        verificationCode: String,
+        unsubscribeCode: String
+      }
     },
-    username: {
-      type: String,
-      unique: true,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    password: {
-      type: String,
-      required: true
-    },
-    isVerified: {
-      type: Boolean,
-      default: false
-    },
-    hashedEmail: String,
-    website: String,
-    github: String,
-    gitlab: String,
-    twitter: String,
-    updatedAt: Date,
-    __private: {
-      verificationCode: String,
-      unsubscribeCode: String
-    }
-  })
+    { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
+  )
 
   userSchema.pre('save', async function (next) {
     try {

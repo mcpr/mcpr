@@ -1,14 +1,12 @@
-const mongoose = require('mongoose')
-const path = require('path')
-const axios = require('axios')
+const createError = require('http-errors')
 
 const bukkitApi = require('../../../lib/bukkitApi')
 const convertModel = require('../../../lib/bukkitToMcpr')
 
-const Plugin = mongoose.model('Plugin')
-const Version = mongoose.model('Version')
+const { PluginModel } = require('./plugin.model')
+const { VersionModel } = require('../versions/versions.model')
 
-exports.model = Plugin
+const { paginateQuery } = require('../../../lib/paginate-query')
 
 /**
  * @api {get} /plugins Request Plugin List
@@ -17,32 +15,26 @@ exports.model = Plugin
  *
  * @apiSuccess {Array} plugins       List of plugins.
  *
- * @apiParam  {string}  [sort]  Return plugins sorted in `asc` or `desc` order. Default is `desc`
- * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `_id`, `title`, `author`, `latest_version`, `latest_version_date`, or `created` fields. Default is `downloads`
+ * @apiParam  {string}  [sort]      Return plugins sorted in `asc` or `desc` order. Default is `desc`
+ * @apiParam  {string}  [order_by]  Return plugins ordered by `downloads`, `slug`, `name`, `author`, or `created_at` fields. Default is `downloads`
  *
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/plugins
  */
 exports.all = async (req, res, next) => {
   try {
-    const perPage = Math.max(0, req.query.per_page) || 50
-    const page = Math.max(0, req.query.page)
-    const sort = req.query.sort || 'desc'
-    const orderBy = req.query.order_by || 'downloads'
-    const sortObj = {}
-    sortObj[orderBy] = sort
+    const normalPlugins = await paginateQuery(
+      PluginModel,
+      {
+        perPage: req.query.per_page,
+        page: req.query.page,
+        sortDirection: req.query.sort || 'desc',
+        orderBy: req.query.order_by || 'downloads'
+      },
+      {}
+    )
 
     let plugins = []
-
-    const normalPlugins = await Plugin.find({})
-      .limit(perPage)
-      .skip(perPage * page)
-      .sort(sortObj)
-
-    if (!normalPlugins) {
-      return handle404()
-    }
-
     plugins = normalPlugins
 
     if (req.query.includeBukkitDev) {
@@ -80,12 +72,19 @@ exports.all = async (req, res, next) => {
  */
 exports.create = async (req, res, next) => {
   try {
-    const plugin = new Plugin(req.body)
+    const pluginPayload = req.body
+
+    delete pluginPayload.downloads
+
+    const plugin = new PluginModel(pluginPayload)
 
     await plugin.save()
 
     return res.status(201).json(plugin)
   } catch (err) {
+    if (err.code === 11000) {
+      return next(createError(409, 'There is already a plugin with this name.'))
+    }
     return next(err)
   }
 }
@@ -96,48 +95,50 @@ exports.create = async (req, res, next) => {
  * @apiGroup Plugin
  * @apiParam {String} id ID of plugin
  *
- * @apiSuccess {String} _id       ID of plugin
- * @apiSuccess {String} short_description       A short description of the plugin
- * @apiSuccess {String} author       The author's user ID
- * @apiSuccess {Date} created       The date on which the plugin was created
- * @apiSuccess {String} title       The title of the plugin
- * @apiSuccess {Date} latest_version_date       The date on which the latest version was published
- * @apiSuccess {String} latest_version       Version number of the latest version
- * @apiSuccess {String} source       URL of the source code
- * @apiSuccess {Boolean} sourceGithub       Specifies whether or not the plugin source is hosted on GitHub
- * @apiSuccess {Array} flavors       List of supported Minecraft flavors
- * @apiSuccess {String} readme       The README.md file
- * @apiSuccess {String} license       The license of the plugin
- * @apiSuccess {Array} keywords       List of plugin keywords
+ * @apiSuccess {String} _id               ID of plugin
+ * @apiSuccess {String} slug              Unique slug of plugin
+ * @apiSuccess {String} description       A short description of the plugin
+ * @apiSuccess {String} author            The author's user ID
+ * @apiSuccess {String} name              The name of the plugin
+ * @apiSuccess {Object} repository        URL of the source code
+ * @apiSuccess {String} repository.url    URL of the source code
+ * @apiSuccess {String} repository.type   Specifies whether or not the plugin source is hosted on GitHub
+ * @apiSuccess {Array} flavors            List of supported Minecraft flavors
+ * @apiSuccess {String} readme            The README.md file
+ * @apiSuccess {String} license           The license of the plugin
+ * @apiSuccess {Array} keywords           List of plugin keywords
+ * @apiSuccess {Date} created_at          The date on which the plugin was created
+ * @apiSuccess {Date} updated_at          The date on which the plugin was last updated
  *
  * @apiExample {curl} Example usage:
  *     curl -i https://mcpr.io/api/v1/plugins/dynmap
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "_id": "dynmap",
- *       "title": "Dynmap",
+ *       "_id": "5e85081df5c24f350095ec25",
+ *       "slug": "dynmap",
+ *       "name": "Dynmap",
  *       "author": "mikeprimm",
- *       "short_description": "Dynamic \"Google Maps\" style web maps for your Spigot/Bukkit server",
- *       "latest_version": "2.4",
- *       "latest_version_date": "2017-02-11T00:00:00.000Z",
- *       "source": "webbukkit/dynmap",
- *       "sourceGithub": true,
+ *       "description": "Dynamic \"Google Maps\" style web maps for your Spigot/Bukkit server",
+ *       "repository": {
+ *         "url": "webbukkit/dynmap",
+ *         "type": "gh"
+ *       },
  *       "readme": "## Dynamp Readme",
  *       "license": "MIT",
- *       "__v": 0,
  *       "keywords": ["map", "dynamic"],
  *       "flavors": ["bukkit", "spigot"],
- *       "created": "2017-06-12T22:55:07.759Z"
+ *       "created_at": "2017-06-12T22:55:07.759Z",
+ *       "updated_at": "2017-06-12T22:55:07.759Z"
  *     }
  */
 exports.show = async (req, res, next) => {
   try {
     const { id } = req.params
-    const plugin = await Plugin.findById(id)
+    const plugin = await PluginModel.findOne({ slug: id })
 
     if (!plugin) {
-      return handle404()
+      return next(createError(404))
     }
 
     return res.status(200).json(plugin)
@@ -161,22 +162,19 @@ exports.download = async (req, res, next) => {
     const { id } = req.params
 
     // get the plugin
-    const plugin = await Plugin.findById(id)
+    const plugin = await PluginModel.findOne({ slug: id })
     if (!plugin) {
-      return handle404()
+      return next(createError(404))
     }
 
     // get the version
     const versionId = `${id}-${plugin.latest_version}`
-    const version = await Version.findById(versionId)
+    const version = await VersionModel.findById(versionId)
     if (!version) {
-      return handle404()
+      return next(createError(404))
     }
 
-    const file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${
-      plugin.latest_version
-    }/${id}.jar`
-    const filename = path.basename(`${id}-${plugin.latest_version}.jar`)
+    const file = `https://s3.amazonaws.com/${config.s3Bucket}/${id}/${plugin.latest_version}/${id}.jar`
 
     plugin.downloads += 1
     await plugin.save()
@@ -184,12 +182,7 @@ exports.download = async (req, res, next) => {
     version.downloads += 1
     await version.save()
 
-    res.setHeader('content-disposition', `attachment; filename=${filename}`)
-    const download = await axios.get(file, {
-      responseType: 'stream'
-    })
-    download.data.on('end', () => res.end())
-    download.data.pipe(res)
+    return res.redirect(302, file)
   } catch (err) {
     return next(err)
   }
@@ -208,23 +201,25 @@ exports.update = async (req, res, next) => {
   try {
     const { id } = req.params
     const newPlugin = req.body
-    newPlugin.updated = Date.now()
+    if (!id || !newPlugin) {
+      return next(createError(400, 'Please specify an ID and body.'))
+    }
 
-    const plugin = await Plugin.findById(id)
+    delete newPlugin.downloads
+    delete newPlugin.created_at
+    delete newPlugin.updated_at
+
+    const plugin = await PluginModel.findById(id)
 
     if (!plugin) {
-      return handle404()
+      return next(createError(404))
     }
 
-    if (req.payload.username !== plugin.author) {
-      return res.status(403).json({
-        name: 'Forbidden',
-        statusCode: 403,
-        message: 'This plugin does not belong to you'
-      })
+    if (req.payload.id !== plugin.author_id.toString()) {
+      return next(createError(403, 'This plugin does not belong to you.'))
     }
 
-    const updatedPlugin = await Plugin.update(
+    const updatedPlugin = await PluginModel.update(
       {
         _id: id
       },
@@ -251,23 +246,22 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params
-    const plugin = await Plugin.findById(id)
+
+    const plugin = await PluginModel.findOne({
+      slug: id
+    })
 
     if (!plugin) {
-      return handle404()
+      return next(createError(404))
     }
 
-    if (req.payload.username !== plugin.author) {
-      return res.status(403).json({
-        name: 'Forbidden',
-        statusCode: 403,
-        message: 'This plugin does not belong to you'
-      })
+    if (req.payload.id !== plugin.author_id.toString()) {
+      return next(createError(403, 'This plugin does not belong to you.'))
     }
 
     await plugin.remove()
 
-    return res.status(498).end()
+    return res.status(204).end()
   } catch (err) {
     return next(err)
   }
@@ -296,7 +290,7 @@ module.exports.showByUser = async (req, res, next) => {
     const sortObj = {}
     sortObj[orderBy] = sort
 
-    const plugins = await Plugin.find({
+    const plugins = await PluginModel.find({
       author: req.params.username
     })
       .limit(perPage)
@@ -321,22 +315,12 @@ module.exports.showByUser = async (req, res, next) => {
 module.exports.search = async (req, res, next) => {
   try {
     const query = {}
-    query.title = new RegExp(req.query.q, 'i')
+    query.name = new RegExp(req.query.q, 'i')
 
-    const results = await Plugin.find(query).select('_id short_description')
+    const results = await PluginModel.find(query).select('_id slug description')
 
-    return res.status(200).send(results)
+    return res.status(200).json(results)
   } catch (err) {
     return next(err)
   }
-}
-
-const handle404 = () => {
-  const err = new Error(
-    '404: the resource that you requested could not be found'
-  )
-  err.name = 'NotFound'
-  err.statusCode = 404
-
-  throw err
 }

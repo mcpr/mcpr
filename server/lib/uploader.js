@@ -26,8 +26,8 @@ const uploader = multer({
       })
     },
     key: (req, file, cb) => {
-      const { versionID, pluginID } = req.params
-      cb(null, `${pluginID}/${versionID}/${pluginID}.jar`)
+      const { versionId, pluginId } = req.params
+      cb(null, `${pluginId}/${versionId}/${pluginId}.jar`)
     }
   })
 }).single('jar')
