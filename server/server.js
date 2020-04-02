@@ -15,10 +15,6 @@ app.get('/status', statusMonitor.pageRoute)
 
 const config = require('./config/config')
 
-// require('./api/v1/plugins/plugin.model')
-require('./api/v1/users/user.model')(config)
-// require('./api/v1/versions/versions.model')
-
 // Express config
 require('./config/express')(app)
 
