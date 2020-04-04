@@ -5,8 +5,6 @@
   "main": "server.js",
   "scripts": {
     "test": "npm run lint -- --fail && npm audit || true",
-    "build": "echo No build...",
-    "postinstall": "npm run build",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint:report": "eslint . -f html -o tests/eslint-report.html || true && eslint . -f junit -o tests/eslint-report.xml || true",

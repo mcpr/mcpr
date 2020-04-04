@@ -3,14 +3,13 @@ const config = require('./config')
 
 const router = express.Router()
 
-module.exports = (server, app) => {
-  const handle = app.getRequestHandler()
-
-  router.get(/^(?!.*(docs|api))/, (req, res) => {
-    return handle(req, res)
+module.exports = (app) => {
+  router.get(/^(?!.*(docs|api))/, (req, res, next) => {
+    // return handle(req, res)
+    return next()
   })
 
-  require('../api/api')(server, config)
+  require('../api/api')(app, config)
 
-  server.use('/', router)
+  app.use('/', router)
 }
