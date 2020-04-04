@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
-const pkg = require('../../../package.json')
+const pkg = require('../../package.json')
 
 const apiRouter = express.Router()
 

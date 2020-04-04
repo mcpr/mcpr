@@ -10,7 +10,7 @@ const path = require('path')
 const config = require('./config')
 
 module.exports = app => {
-  const publicDir = './server/public'
+  const publicDir = './public'
 
   app.use(helmet())
   app.use(favicon(`${publicDir}/favicon.ico`))
@@ -44,7 +44,7 @@ module.exports = app => {
     })
   )
 
-  const viewsDir = path.resolve('./server/views')
+  const viewsDir = path.resolve('./views')
   app.set('views', viewsDir)
   app.engine(
     'handlebars',

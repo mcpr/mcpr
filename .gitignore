@@ -37,8 +37,6 @@ jspm_packages
 .node_repl_history
 .vscode
 tests
-server/public/build/
 node_modules/
-bower_components/
 .env
 docs-site/
